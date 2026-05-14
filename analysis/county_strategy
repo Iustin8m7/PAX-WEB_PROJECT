@@ -1,0 +1,12 @@
+# Strategie pentru judete
+
+Datele sursa contin judetele in format uppercase si fara diacritice.
+Pentru a facilita integrarea cu harta si utilizarea interna consistenta, aplicatia va folosi:
+
+- county_name: denumirea judetului din sursa
+- county_code: cod intern standard al judetului
+
+Avantaje:
+- mapare mai usoara la GeoJSON
+- join-uri mai stabile
+- consistenta in aplicatie

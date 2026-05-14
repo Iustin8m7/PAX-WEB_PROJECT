@@ -1,0 +1,8 @@
+/db/*.db
+/logs/*.log
+/vendor/
+node_modules/
+.env
+*.tmp
+*.swp
+.DS_Store

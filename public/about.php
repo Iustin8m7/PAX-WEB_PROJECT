@@ -32,7 +32,7 @@ if (isset($config['app']['max_year'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($appName); ?> - Despre</title>
     <link rel="stylesheet" href="assets/css/main.css">
-    
+
     <style>
         /* Ajustări de layout specifice pentru pagina Despre */
         .about-content-grid {
@@ -118,35 +118,44 @@ if (isset($config['app']['max_year'])) {
                 <div class="section-heading">
                     <p class="section-kicker">Informații Proiect</p>
                     <h2>Despre Documentație</h2>
-                    <p class="section-lead">Aici găsești detaliile legate de scopul aplicației și tehnologiile implementate.</p>
+                    <p class="section-lead">Aici găsești detaliile legate de scopul aplicației și tehnologiile
+                        implementate.</p>
                 </div>
 
                 <div class="about-content-grid">
-                    
+
                     <div style="display: flex; flex-direction: column; gap: 24px;">
-                        
+
                         <div class="hero-panel-card" style="padding: 24px;">
                             <h3 style="font-size: 1.25rem; margin-bottom: 12px; color: #f8fafc;">Scopul aplicației</h3>
                             <p style="color: #94a3b8; line-height: 1.6; margin: 0;">
-                                Această platformă a fost creată pentru a oferi o interfață intuitivă și modernă de explorare a datelor statistice privind parcul auto din România. Proiectul permite vizualizarea distribuției autovehiculelor pe județe, mărci și tipuri de combustibil în intervalul de timp <strong><?php echo $minYear; ?> - <?php echo $maxYear; ?></strong>, transformând fișiere brute de date în grafice și hărți tematice interactive.
+                                Această platformă a fost creată pentru a oferi o interfață intuitivă și modernă de
+                                explorare a datelor statistice privind parcul auto din România. Proiectul permite
+                                vizualizarea distribuției autovehiculelor pe județe, mărci și tipuri de combustibil în
+                                intervalul de timp <strong><?php echo $minYear; ?> - <?php echo $maxYear; ?></strong>,
+                                transformând fișiere brute de date în grafice și hărți tematice interactive.
                             </p>
                         </div>
 
                         <div class="hero-panel-card" style="padding: 24px;">
-                            <h3 style="font-size: 1.25rem; margin-bottom: 12px; color: #f8fafc;">Funcționalități cheie</h3>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 12px; color: #f8fafc;">Funcționalități cheie
+                            </h3>
                             <ul class="features-bullet-list">
                                 <li>Dashboard analitic cu topuri de mărci și distribuția tipurilor de combustibili.</li>
                                 <li>Hartă tematică interactivă bazată pe marcaje geografice pentru fiecare județ.</li>
                                 <li>Căutare avansată cu filtre multiple și paginare eficientă a seturilor de date.</li>
-                                <li>Comparație în timp real între performanțele și volumele a două mărci auto diferite.</li>
+                                <li>Comparație în timp real între performanțele și volumele a două mărci auto diferite.
+                                </li>
                                 <li>Statistici și topuri optimizate generate asincron direct la nivelul clientului.</li>
                             </ul>
                         </div>
 
                         <div class="hero-panel-card" style="padding: 24px;">
-                            <h3 style="font-size: 1.25rem; margin-bottom: 12px; color: #f8fafc;">Tehnologii utilizate</h3>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 12px; color: #f8fafc;">Tehnologii utilizate
+                            </h3>
                             <p style="color: #94a3b8; line-height: 1.6; margin: 0;">
-                                Proiectul este construit pe o arhitectură modernă de tip **decoupled** (separată), unde interfața grafică comunică exclusiv prin servicii web asincrone cu serverul de date:
+                                Proiectul este construit pe o arhitectură modernă de tip **decoupled** (separată), unde
+                                interfața grafică comunică exclusiv prin servicii web asincrone cu serverul de date:
                             </p>
                             <div class="tech-list">
                                 <span class="tech-item highlight">PHP 8 (Strict Types)</span>
@@ -163,12 +172,15 @@ if (isset($config['app']['max_year'])) {
 
                     <div>
                         <div class="hero-panel-card" style="padding: 20px; position: sticky; top: 24px;">
-                            <h3 style="font-size: 1rem; margin-bottom: 16px; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(148,163,184,0.12); padding-bottom: 8px;">🖥️ Status Mediu</h3>
-                            
+                            <h3
+                                style="font-size: 1rem; margin-bottom: 16px; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(148,163,184,0.12); padding-bottom: 8px;">
+                                🖥️ Status Mediu</h3>
+
                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                 <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
                                     <span style="color: #94a3b8;">Aplicație:</span>
-                                    <span style="color: var(--accent); font-weight: 600;"><?php echo htmlspecialchars($appName); ?></span>
+                                    <span
+                                        style="color: var(--accent); font-weight: 600;"><?php echo htmlspecialchars($appName); ?></span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
                                     <span style="color: #94a3b8;">Mediu rulare:</span>
@@ -176,12 +188,15 @@ if (isset($config['app']['max_year'])) {
                                 </div>
                                 <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
                                     <span style="color: #94a3b8;">Interval Date:</span>
-                                    <span style="color: #f8fafc; font-weight: 600;"><?php echo $minYear; ?> - <?php echo $maxYear; ?></span>
+                                    <span style="color: #f8fafc; font-weight: 600;"><?php echo $minYear; ?> -
+                                        <?php echo $maxYear; ?></span>
                                 </div>
                             </div>
 
-                            <div style="margin-top: 20px; padding: 10px; background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 8px; text-align: center;">
-                                <p style="font-size: 0.8rem; color: #94a3b8; margin: 0;">Toate modulele platformei sunt acum complet configurate și active.</p>
+                            <div
+                                style="margin-top: 20px; padding: 10px; background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 8px; text-align: center;">
+                                <p style="font-size: 0.8rem; color: #94a3b8; margin: 0;">Toate modulele platformei sunt
+                                    acum complet configurate și active.</p>
                             </div>
                         </div>
                     </div>
@@ -194,7 +209,8 @@ if (isset($config['app']['max_year'])) {
             <div class="container footer-content">
                 <div>
                     <p class="footer-brand"><?php echo htmlspecialchars($appName); ?> <span>Info</span></p>
-                    <p class="footer-text">Pagina Despre oferă context asupra funcțiilor și a tehnologiilor folosite în proiect.</p>
+                    <p class="footer-text">Pagina Despre oferă context asupra funcțiilor și a tehnologiilor folosite în
+                        proiect.</p>
                 </div>
             </div>
         </footer>

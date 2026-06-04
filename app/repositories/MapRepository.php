@@ -126,4 +126,66 @@ class MapRepository
 
         return $stmt->fetchAll();
     }
+
+    public function getCountyTopBrandsByYear(
+        int $year,
+        ?string $fuelType = null,
+        ?string $nationalCategory = null
+    ): array {
+        $sql = '
+            SELECT
+                c.code AS county_code,
+                c.name AS county_name,
+                b.name AS brand_name,
+                SUM(vr.vehicle_count) AS total_vehicles
+            FROM vehicle_records vr
+            INNER JOIN counties c ON vr.county_id = c.id
+            LEFT JOIN brands b ON vr.brand_id = b.id
+            LEFT JOIN fuel_types ft ON vr.fuel_type_id = ft.id
+            LEFT JOIN vehicle_categories vc ON vr.national_category_id = vc.id
+            WHERE vr.year = :year
+        ';
+
+        $params = [
+            ':year' => $year,
+        ];
+
+        if ($fuelType !== null) {
+            $sql .= ' AND ft.name = :fuel_type ';
+            $params[':fuel_type'] = $fuelType;
+        }
+
+        if ($nationalCategory !== null) {
+            $sql .= ' AND vc.name = :national_category ';
+            $params[':national_category'] = $nationalCategory;
+        }
+
+        $sql .= '
+            GROUP BY c.code, c.name, b.name
+            ORDER BY c.name ASC, total_vehicles DESC
+        ';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        $rows = $stmt->fetchAll();
+        $topBrands = [];
+
+        foreach ($rows as $row) {
+            $countyCode = $row['county_code'];
+            $current = $topBrands[$countyCode] ?? null;
+            $totalVehicles = isset($row['total_vehicles']) ? (int) $row['total_vehicles'] : 0;
+
+            if ($current === null || $totalVehicles > $current['total_vehicles']) {
+                $topBrands[$countyCode] = [
+                    'county_code' => $countyCode,
+                    'county_name' => $row['county_name'],
+                    'top_brand' => $row['brand_name'] ?? 'Necunoscut',
+                    'total_vehicles' => $totalVehicles,
+                ];
+            }
+        }
+
+        return array_values($topBrands);
+    }
 }

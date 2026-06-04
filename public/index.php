@@ -25,13 +25,20 @@ if (isset($config['app']['max_year'])) {
 ?>
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($appName); ?> - Auto Park Web Explorer</title>
-    <meta name="description" content="Platformă Web pentru explorarea, compararea și vizualizarea datelor publice despre parcul auto din România.">
+    <title><?php echo htmlspecialchars($appName); ?> - Auto Park Intelligence</title>
+    <meta name="description"
+        content="Platformă interactivă de business intelligence pentru analiza, compararea și vizualizarea evoluției parcului auto din România.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
+
 <body>
     <div class="page-shell">
         <header class="site-header">
@@ -42,11 +49,11 @@ if (isset($config['app']['max_year'])) {
                 </a>
 
                 <nav class="main-nav" aria-label="Navigație principală">
-                    <a href="dashboard.php">Dashboard</a>
-                    <a href="map-view.php">Hartă</a>
-                    <a href="search-view.php">Căutare</a>
-                    <a href="compare.php">Comparații</a>
-                    <a href="about.php">Despre</a>
+                    <a href="dashboard.php" class="nav-link">Dashboard</a>
+                    <a href="map-view.php" class="nav-link">Hartă Interactivă</a>
+                    <a href="search-view.php" class="nav-link">Filtrare Date</a>
+                    <a href="compare.php" class="nav-link">Analiză Comparativă</a>
+                    <a href="about.php" class="nav-link">Despre</a>
                 </nav>
             </div>
         </header>
@@ -55,7 +62,7 @@ if (isset($config['app']['max_year'])) {
             <section class="hero-section">
                 <div class="container hero-grid">
                     <div class="hero-content">
-                        <p class="hero-kicker">Analiză vizuală a parcului auto din România</p>
+                        <p class="hero-kicker">📊 Smart Data Visualizer</p>
 
                         <h1 class="hero-title">
                             <?php echo htmlspecialchars($appName); ?>
@@ -63,54 +70,57 @@ if (isset($config['app']['max_year'])) {
                         </h1>
 
                         <p class="hero-description">
-                            Platformă Web pentru explorarea, compararea și vizualizarea interactivă a datelor publice
-                            referitoare la parcul auto din România, pentru perioada
-                            <?php echo htmlspecialchars((string)$minYear); ?> - <?php echo htmlspecialchars((string)$maxYear); ?>.
+                            Descoperă radiografia completă a parcului auto din România. O platformă avansată de
+                            explorare analitică ce transformă milioane de înregistrări publice în insight-uri vizuale
+                            clare, hărți tematice și statistici evolutive pentru perioada
+                            <strong><?php echo htmlspecialchars((string) $minYear); ?> -
+                                <?php echo htmlspecialchars((string) $maxYear); ?></strong>.
                         </p>
 
                         <div class="hero-actions">
-                            <a class="btn btn-primary" href="dashboard.php">Acces către dashboard</a>
-                            <a class="btn btn-secondary" href="map-view.php">Acces către harta interactivă</a>
+                            <a class="btn btn-primary" href="dashboard.php">Explorează Dashboard-ul</a>
+                            <a class="btn btn-secondary" href="map-view.php">Vezi Harta Distribuiției</a>
                         </div>
 
                         <div class="hero-meta">
                             <div class="meta-pill">
-                                <span class="meta-label">Perioada analizată</span>
-                                <span class="meta-value"><?php echo htmlspecialchars((string)$minYear); ?> - <?php echo htmlspecialchars((string)$maxYear); ?></span>
+                                <span class="meta-label">Orizont Temporal</span>
+                                <span class="meta-value"><?php echo htmlspecialchars((string) $minYear); ?> -
+                                    <?php echo htmlspecialchars((string) $maxYear); ?></span>
                             </div>
                             <div class="meta-pill">
-                                <span class="meta-label">Sursă</span>
-                                <span class="meta-value">Date publice oficiale</span>
+                                <span class="meta-label">Sursă Date</span>
+                                <span class="meta-value">Seturi Oficiale Open-Data</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="hero-panel">
                         <div class="hero-panel-card hero-panel-card-main">
-                            <p class="panel-eyebrow">Funcționalități principale</p>
-                            <h2>Explorare, comparare și vizualizare avansată</h2>
+                            <p class="panel-eyebrow">Arhitectură Performantă</p>
+                            <h2>Procesare rapidă și rapoarte intuitive</h2>
                             <p>
-                                Interfața reunește statistici, filtre, tabele, grafice și reprezentare cartografică
-                                într-un flux coerent de analiză a datelor.
+                                Interfața consolidează date complexe, permițând izolarea tendințelor macroeconomice,
+                                preferințele eco (electrice/hibride) și densitatea auto regională.
                             </p>
                         </div>
 
                         <div class="hero-panel-grid">
                             <div class="hero-mini-card">
-                                <span class="mini-value">3+</span>
-                                <span class="mini-label">tipuri de vizualizare</span>
+                                <span class="mini-value">4</span>
+                                <span class="mini-label">Module Analitice</span>
                             </div>
                             <div class="hero-mini-card">
                                 <span class="mini-value">REST</span>
-                                <span class="mini-label">servicii Web asincrone</span>
+                                <span class="mini-label">API Asincron (Ajax)</span>
                             </div>
                             <div class="hero-mini-card">
-                                <span class="mini-value">RO</span>
-                                <span class="mini-label">acoperire națională</span>
+                                <span class="mini-value">100%</span>
+                                <span class="mini-label">Acoperire Națională</span>
                             </div>
                             <div class="hero-mini-card">
-                                <span class="mini-value">CSV</span>
-                                <span class="mini-label">date publice procesate</span>
+                                <span class="mini-value">Optimized</span>
+                                <span class="mini-label">Procesare CSV</span>
                             </div>
                         </div>
                     </div>
@@ -120,53 +130,53 @@ if (isset($config['app']['max_year'])) {
             <section class="section section-features">
                 <div class="container">
                     <div class="section-heading">
-                        <p class="section-kicker">Module publice</p>
-                        <h2>Zonele principale ale aplicației</h2>
+                        <p class="section-kicker">Ecosistemul Aplicației</p>
+                        <h2>Zonele principale de analiză</h2>
                         <p class="section-lead">
-                            Accesul către principalele funcționalități este organizat în module dedicate,
-                            fiecare orientat pe un tip clar de analiză.
+                            Aplicația este structurată în module specializate pentru a-ți oferi perspective diferite
+                            asupra setului de date.
                         </p>
                     </div>
 
                     <div class="feature-grid">
                         <article class="feature-card feature-card-accent">
-                            <div class="feature-icon">01</div>
-                            <h3>Dashboard analitic</h3>
+                            <div class="feature-icon">📊</div>
+                            <h3>Dashboard Analitic</h3>
                             <p>
-                                Explorează distribuția indicatorilor principali, evoluția pe ani, topurile relevante
-                                și structura generală a datelor disponibile.
+                                Vizualizează macro-tendințele, evoluția de la an la an, topul mărcilor preferate de
+                                români și distribuția pe tipuri de combustibil.
                             </p>
-                            <a class="feature-link" href="dashboard.php">Deschidere dashboard</a>
+                            <a class="feature-link" href="dashboard.php">Deschide dashboard &rarr;</a>
                         </article>
 
                         <article class="feature-card">
-                            <div class="feature-icon">02</div>
-                            <h3>Hartă interactivă</h3>
+                            <div class="feature-icon">🗺️</div>
+                            <h3>Hartă Interactivă</h3>
                             <p>
-                                Explorează distribuția geografică la nivel de județ și evidențiază diferențele
-                                teritoriale prin filtrare după an, combustibil și categorie națională.
+                                Filtrează vizual județele României. Descoperă zonele cu cea mai mare densitate auto și
+                                mărcile predominante dintr-o singură privire direct pe hartă.
                             </p>
-                            <a class="feature-link" href="map-view.php">Acces către hartă</a>
+                            <a class="feature-link" href="map-view.php">Acces către hartă &rarr;</a>
                         </article>
 
                         <article class="feature-card">
-                            <div class="feature-icon">03</div>
-                            <h3>Căutare multi-criterială</h3>
+                            <div class="feature-icon">🔍</div>
+                            <h3>Căutare Multi-Criterială</h3>
                             <p>
-                                Filtrează înregistrările după an, județ, categorie, combustibil, marcă
-                                sau model comercial și analizează segmentul relevant de date.
+                                Sapează adânc în baza de date folosind filtre combinate: an, județ, categorie,
+                                combustibil, marcă sau un anumit model comercial.
                             </p>
-                            <a class="feature-link" href="search-view.php">Acces către căutare</a>
+                            <a class="feature-link" href="search-view.php">Acces către căutare &rarr;</a>
                         </article>
 
                         <article class="feature-card">
-                            <div class="feature-icon">04</div>
-                            <h3>Comparații dedicate</h3>
+                            <div class="feature-icon">⚔️</div>
+                            <h3>Comparații Dedicate</h3>
                             <p>
-                                Compară perioade, județe sau segmente de date pentru evidențierea
-                                diferențelor, tendințelor și concentrărilor relevante.
+                                Pune față în față două județe sau perioade diferite de timp pentru a genera grafice
+                                comparative și a evidenția anomaliile de creștere.
                             </p>
-                            <a class="feature-link" href="compare.php">Acces către comparații</a>
+                            <a class="feature-link" href="compare.php">Acces către comparații &rarr;</a>
                         </article>
                     </div>
                 </div>
@@ -175,32 +185,34 @@ if (isset($config['app']['max_year'])) {
             <section class="section section-showcase">
                 <div class="container showcase-grid">
                     <div class="showcase-card">
-                        <p class="section-kicker">Despre proiect</p>
-                        <h2>Aplicație Web orientată pe analiză și explorare de date</h2>
+                        <p class="section-kicker">Inovație Tehnică</p>
+                        <h2>Transformăm datele brute în cunoaștere</h2>
                         <p>
-                            <?php echo htmlspecialchars($appName); ?> integrează servicii Web, filtrare asincronă și
-                            vizualizări moderne pentru a transforma un set de date publice într-o experiență
-                            interactivă de explorare.
+                            <strong><?php echo htmlspecialchars($appName); ?></strong> rezolvă problema fișierelor
+                            masive de date guvernamentale. În loc să navighezi prin tabele infinite Excel, aplicația
+                            noastră compilează totul instant.
                         </p>
                         <p>
-                            Arhitectura aplicației este construită în jurul unui API REST realizat în PHP,
-                            iar interfața publică consumă datele în mod asincron prin apeluri Ajax.
+                            În timp ce back-end-ul procesează eficient algoritmii statistici în PHP, front-end-ul
+                            interoghează datele asincron pentru o experiență fluidă și rapidă, fără reîncărcarea
+                            paginii.
                         </p>
                     </div>
 
                     <div class="showcase-card">
-                        <p class="section-kicker">Despre date</p>
-                        <h2>Seturi publice structurate pentru analiză comparativă</h2>
+                        <p class="section-kicker">Granularitatea Datelor</p>
+                        <h2>Segmente acoperite în analiză</h2>
                         <p>
-                            Datele acoperă perioada <?php echo htmlspecialchars((string)$minYear); ?> - <?php echo htmlspecialchars((string)$maxYear); ?>
-                            și permit analiza pe:
+                            Baza de date cuprinde înregistrări oficiale din perioada
+                            <?php echo htmlspecialchars((string) $minYear); ?> -
+                            <?php echo htmlspecialchars((string) $maxYear); ?> și permite filtrarea pe:
                         </p>
                         <ul class="info-list">
-                            <li>ani și evoluție temporală</li>
-                            <li>județe și distribuție geografică</li>
-                            <li>categorii naționale și comunitare</li>
-                            <li>tipuri de combustibil</li>
-                            <li>mărci și modele comerciale</li>
+                            <li>Cronologie (Evoluție anuală și trenduri)</li>
+                            <li>Geografie (Distribuție regională pe județe)</li>
+                            <li>Clasificare (Categorii naționale și europene)</li>
+                            <li>Sursă de energie (Benzină, Diesel, Electrice, Hibrid)</li>
+                            <li>Nomenclator producători (Mărci și Modele comerciale)</li>
                         </ul>
                     </div>
                 </div>
@@ -209,11 +221,10 @@ if (isset($config['app']['max_year'])) {
             <section class="section section-cta">
                 <div class="container cta-box">
                     <div class="cta-content">
-                        <p class="section-kicker">Punct de intrare rapid</p>
-                        <h2>Acces direct către modulele principale</h2>
+                        <p class="section-kicker">Navigare Rapidă</p>
+                        <h2>Ești gata să începi analiza?</h2>
                         <p>
-                            Selectarea zonei de interes permite trecerea directă către analiza statistică,
-                            harta interactivă, căutare sau comparații.
+                            Alege modulul dorit pentru a accesa seturile de date și instrumentele grafice.
                         </p>
                     </div>
 
@@ -222,7 +233,6 @@ if (isset($config['app']['max_year'])) {
                         <a class="btn btn-secondary" href="map-view.php">Hartă</a>
                         <a class="btn btn-secondary" href="search-view.php">Căutare</a>
                         <a class="btn btn-secondary" href="compare.php">Comparații</a>
-                        <a class="btn btn-secondary" href="about.php">Despre aplicație</a>
                     </div>
                 </div>
             </section>
@@ -231,16 +241,19 @@ if (isset($config['app']['max_year'])) {
         <footer class="site-footer">
             <div class="container footer-content">
                 <div>
-                    <p class="footer-brand"><?php echo htmlspecialchars($appName); ?></p>
-                    <p class="footer-text">Proiect academic pentru analiza parcului auto din România.</p>
+                    <p class="footer-brand"><?php echo htmlspecialchars($appName); ?> <span>Auto Explorer</span></p>
+                    <p class="footer-text">Proiect academic avansat dezvoltat pentru analiza parcului auto din România.
+                    </p>
                 </div>
 
                 <div class="footer-meta">
-                    <span>Perioada analizată: <?php echo htmlspecialchars((string)$minYear); ?> - <?php echo htmlspecialchars((string)$maxYear); ?></span>
-                    <span>Interfață publică + servicii Web REST</span>
+                    <span>📅 Interval: <?php echo htmlspecialchars((string) $minYear); ?> -
+                        <?php echo htmlspecialchars((string) $maxYear); ?></span>
+                    <span>⚡ Arhitectură: PHP REST API + Async UI</span>
                 </div>
             </div>
         </footer>
     </div>
 </body>
+
 </html>

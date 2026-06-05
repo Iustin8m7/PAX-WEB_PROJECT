@@ -22,21 +22,21 @@ function normalizeUtf8Value($value)
         return $value;
     }
 
-    if (mb_check_encoding($value, 'UTF-8')) {
+    if (function_exists('mb_check_encoding') && mb_check_encoding($value, 'UTF-8')) {
         return $value;
     }
 
-    $converted = @mb_convert_encoding($value, 'UTF-8', 'UTF-8, ISO-8859-1, Windows-1252');
-
-    if ($converted === false) {
-        $fallback = @iconv('UTF-8', 'UTF-8//IGNORE', $value);
-
-        if ($fallback === false) {
-            return '';
+    if (function_exists('mb_convert_encoding')) {
+        $converted = @mb_convert_encoding($value, 'UTF-8', 'UTF-8, ISO-8859-1, Windows-1252');
+        if ($converted !== false) {
+            return $converted;
         }
-
-        return $fallback;
     }
 
-    return $converted;
+    $fallback = @iconv('UTF-8', 'UTF-8//IGNORE', $value);
+    if ($fallback === false) {
+        return '';
+    }
+
+    return $fallback;
 }

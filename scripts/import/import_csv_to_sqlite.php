@@ -35,7 +35,9 @@ try {
     exit("Eroare la conectarea la baza de date: " . $e->getMessage() . PHP_EOL);
 }
 
+$schemaSqlPath = __DIR__ . '/../../db/schema.sql';
 $seedSqlPath = __DIR__ . '/../../db/seed_counties.sql';
+ensureDatabaseSchema($pdo, $schemaSqlPath);
 ensureCountiesSeeded($pdo, $seedSqlPath);
 
 
@@ -231,6 +233,26 @@ function loadCountySeedFile(PDO $pdo, string $seedSqlPath): void
     $pdo->beginTransaction();
     $pdo->exec($sql);
     $pdo->commit();
+}
+
+function ensureDatabaseSchema(PDO $pdo, string $schemaSqlPath): void
+{
+    $tableExists = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='counties' LIMIT 1")->fetchColumn();
+    if ($tableExists === false) {
+        if (!file_exists($schemaSqlPath)) {
+            throw new RuntimeException("Fisierul schema.sql nu exista: $schemaSqlPath");
+        }
+
+        $sql = file_get_contents($schemaSqlPath);
+        if ($sql === false) {
+            throw new RuntimeException("Nu s-a putut citi schema.sql: $schemaSqlPath");
+        }
+
+        echo "[SCHEMA] Initializare baza de date cu schema din $schemaSqlPath\n";
+        $pdo->beginTransaction();
+        $pdo->exec($sql);
+        $pdo->commit();
+    }
 }
 
 function ensureCountiesSeeded(PDO $pdo, string $seedSqlPath): void

@@ -2,10 +2,19 @@
 
 declare(strict_types=1);
 
-$projectRoot = rtrim(getenv('HOME'), '/') . '/Projects/pax';
+$projectRoot = realpath(__DIR__ . '/../../');
+if ($projectRoot === false) {
+    throw new RuntimeException('Nu am putut determina calea proiectului.');
+}
 $dbPath = $projectRoot . '/db/pax.db';
 $csvDir = $projectRoot . '/raw_data/csv';
-$logPath = $projectRoot . '/logs/import_errors.log';
+$logDir = $projectRoot . '/logs';
+$logPath = $logDir . '/import_errors.log';
+$forceImport = in_array('--force', $argv ?? [], true) || in_array('-f', $argv ?? [], true);
+
+if (!is_dir($logDir) && !mkdir($logDir, 0777, true) && !is_dir($logDir)) {
+    throw new RuntimeException("Nu am putut crea directorul de log: $logDir");
+}
 
 $csvFiles = [
     'parc_auto_2020_combustibil.csv',
@@ -18,10 +27,16 @@ $csvFiles = [
 try {
     $pdo = new PDO('sqlite:' . $dbPath);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     $pdo->exec('PRAGMA foreign_keys = ON');
+    $pdo->exec('PRAGMA journal_mode = WAL');
+    $pdo->exec('PRAGMA busy_timeout = 5000');
 } catch (PDOException $e) {
     exit("Eroare la conectarea la baza de date: " . $e->getMessage() . PHP_EOL);
 }
+
+$seedSqlPath = __DIR__ . '/../../db/seed_counties.sql';
+ensureCountiesSeeded($pdo, $seedSqlPath);
 
 
 function logError(string $logPath, string $message): void
@@ -31,12 +46,12 @@ function logError(string $logPath, string $message): void
 
 function cleanText(?string $value): string
 {
-    return trim((string)$value);
+    return trim((string) $value);
 }
 
 function cleanNullableText($value)
 {
-    $cleaned = trim((string)$value);
+    $cleaned = trim((string) $value);
 
     if ($cleaned === '') {
         return null;
@@ -48,7 +63,7 @@ function cleanNullableText($value)
 function extractYearFromFilename(string $filename): int
 {
     if (preg_match('/(20\d{2})/', $filename, $matches)) {
-        return (int)$matches[1];
+        return (int) $matches[1];
     }
 
     throw new RuntimeException("Nu s-a putut extrage anul din numele fisierului: $filename");
@@ -120,7 +135,7 @@ function createImportBatch(PDO $pdo, int $sourceYear, string $sourceFile): int
         ':imported_at' => $importedAt,
     ]);
 
-    return (int)$pdo->lastInsertId();
+    return (int) $pdo->lastInsertId();
 }
 
 function updateImportBatch(PDO $pdo, int $batchId, int $rowsInserted, int $rowsRejected): void
@@ -141,11 +156,26 @@ function updateImportBatch(PDO $pdo, int $batchId, int $rowsInserted, int $rowsR
 
 function importBatchExists(PDO $pdo, string $sourceFile): bool
 {
-    $stmt = $pdo->prepare('SELECT id FROM import_batches WHERE source_file = :source_file LIMIT 1');
+    $stmt = $pdo->prepare('SELECT rows_inserted, rows_rejected FROM import_batches WHERE source_file = :source_file LIMIT 1');
     $stmt->execute([':source_file' => $sourceFile]);
+    $batch = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    return (bool)$stmt->fetchColumn();
+    if ($batch === false) {
+        return false;
+    }
+
+    $rowsInserted = (int) $batch['rows_inserted'];
+    $rowsRejected = (int) $batch['rows_rejected'];
+
+    if ($rowsInserted === 0 && $rowsRejected === 0) {
+        $deleteStmt = $pdo->prepare('DELETE FROM import_batches WHERE source_file = :source_file');
+        $deleteStmt->execute([':source_file' => $sourceFile]);
+        return false;
+    }
+
+    return true;
 }
+
 function getOrCreateLookupId(PDO $pdo, string $tableName, string $value): int
 {
     $allowedTables = [
@@ -165,14 +195,14 @@ function getOrCreateLookupId(PDO $pdo, string $tableName, string $value): int
 
     $existingId = $selectStmt->fetchColumn();
     if ($existingId !== false) {
-        return (int)$existingId;
+        return (int) $existingId;
     }
 
     $insertSql = "INSERT INTO {$tableName} (name) VALUES (:name)";
     $insertStmt = $pdo->prepare($insertSql);
     $insertStmt->execute([':name' => $value]);
 
-    return (int)$pdo->lastInsertId();
+    return (int) $pdo->lastInsertId();
 }
 function getCountyId(PDO $pdo, string $countyName): int
 {
@@ -184,7 +214,32 @@ function getCountyId(PDO $pdo, string $countyName): int
         throw new RuntimeException("Judetul nu exista in tabela counties: $countyName");
     }
 
-    return (int)$id;
+    return (int) $id;
+}
+
+function loadCountySeedFile(PDO $pdo, string $seedSqlPath): void
+{
+    if (!file_exists($seedSqlPath)) {
+        throw new RuntimeException("Fisierul de seed pentru judete nu exista: $seedSqlPath");
+    }
+
+    $sql = file_get_contents($seedSqlPath);
+    if ($sql === false) {
+        throw new RuntimeException("Nu s-a putut citi fisierul de seed: $seedSqlPath");
+    }
+
+    $pdo->beginTransaction();
+    $pdo->exec($sql);
+    $pdo->commit();
+}
+
+function ensureCountiesSeeded(PDO $pdo, string $seedSqlPath): void
+{
+    $rowCount = (int) $pdo->query('SELECT count(*) FROM counties')->fetchColumn();
+    if ($rowCount === 0) {
+        echo "[SEED] Popularea tabelului counties\n";
+        loadCountySeedFile($pdo, $seedSqlPath);
+    }
 }
 
 function normalizeCountyName(string $countyName): string
@@ -226,15 +281,19 @@ $insertVehicleRecordStmt = $pdo->prepare('
     )
 ');
 
-function importCsvFile(PDO $pdo, string $csvPath, string $csvFilename, string $logPath, PDOStatement $insertVehicleRecordStmt): void
+function importCsvFile(PDO $pdo, string $csvPath, string $csvFilename, string $logPath, PDOStatement $insertVehicleRecordStmt, bool $forceImport = false): void
 {
     $year = extractYearFromFilename($csvFilename);
     $csvDelimiter = getDelimiterForYear($year);
     $expectedHeader = getExpectedHeaderForYear($year);
 
     if (importBatchExists($pdo, $csvFilename)) {
-        echo "[SKIP] Fisier deja importat: {$csvFilename}" . PHP_EOL;
-        return;
+        if ($forceImport) {
+            echo "[FORCE] Reimport fișier: {$csvFilename}" . PHP_EOL;
+        } else {
+            echo "[SKIP] Fisier deja importat: {$csvFilename}" . PHP_EOL;
+            return;
+        }
     }
 
     $batchId = createImportBatch($pdo, $year, $csvFilename);
@@ -262,9 +321,9 @@ function importCsvFile(PDO $pdo, string $csvPath, string $csvFilename, string $l
     $rowNumber = 0;
 
     if (isExpectedHeaderForYear($firstRow, $year)) {
-    $rowNumber = 1;
+        $rowNumber = 1;
     } else {
-    $pendingRow = $firstRow;
+        $pendingRow = $firstRow;
     }
 
     while (true) {
@@ -287,7 +346,7 @@ function importCsvFile(PDO $pdo, string $csvPath, string $csvFilename, string $l
 
             if (isExpectedHeaderForYear($row, $year)) {
                 continue;
-}
+            }
 
             $assoc = array_combine($header, $row);
             if ($assoc === false) {
@@ -351,8 +410,8 @@ function importCsvFile(PDO $pdo, string $csvPath, string $csvFilename, string $l
                 throw new RuntimeException("TOTAL_VEHICULE nu este numeric: {$vehicleCountRaw}");
             }
 
-            $vehicleCount = (int)$vehicleCountRaw;
-            $countyName = normalizeCountyName($countyName);
+            $vehicleCount = (int) $vehicleCountRaw;
+            $countyName = normalizeCountyName(strtoupper($countyName));
             $countyId = getCountyId($pdo, $countyName);
             $nationalCategoryId = getOrCreateLookupId($pdo, 'vehicle_categories', $nationalCategory);
             $communityCategoryId = getOrCreateLookupId($pdo, 'community_categories', $communityCategory);
@@ -385,7 +444,7 @@ function importCsvFile(PDO $pdo, string $csvPath, string $csvFilename, string $l
     echo "[OK] {$csvFilename}: inserate={$rowsInserted}, respinse={$rowsRejected}" . PHP_EOL;
 }
 
-    
+
 foreach ($csvFiles as $csvFilename) {
     $csvPath = $csvDir . '/' . $csvFilename;
 
@@ -395,7 +454,7 @@ foreach ($csvFiles as $csvFilename) {
     }
 
     try {
-        importCsvFile($pdo, $csvPath, $csvFilename, $logPath, $insertVehicleRecordStmt);
+        importCsvFile($pdo, $csvPath, $csvFilename, $logPath, $insertVehicleRecordStmt, $forceImport);
     } catch (Throwable $e) {
         logError($logPath, '[FATAL][' . $csvFilename . '] ' . $e->getMessage());
         echo "[EROARE] {$csvFilename}: " . $e->getMessage() . PHP_EOL;

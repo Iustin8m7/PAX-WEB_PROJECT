@@ -31,14 +31,17 @@ if (isset($config['app']['max_year'])) {
 ?>
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($appName); ?> - Dashboard</title>
-    <meta name="description" content="Dashboard analitic pentru explorarea și vizualizarea datelor despre parcul auto din România.">
+    <meta name="description"
+        content="Dashboard analitic pentru explorarea și vizualizarea datelor despre parcul auto din România.">
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
 </head>
+
 <body>
     <div class="page-shell dashboard-shell">
         <header class="site-header">
@@ -67,7 +70,8 @@ if (isset($config['app']['max_year'])) {
                         <h1>Dashboard analitic pentru parcul auto din România</h1>
                         <p class="dashboard-lead">
                             Explorează distribuția indicatorilor principali, vizualizează tendințele pe ani,
-                            analizează topurile relevante și corelează rezultatele statistice cu reprezentarea geografică.
+                            analizează topurile relevante și corelează rezultatele statistice cu reprezentarea
+                            geografică.
                         </p>
 
                         <div class="dashboard-hero-actions">
@@ -79,11 +83,12 @@ if (isset($config['app']['max_year'])) {
                     <aside class="dashboard-hero-panel">
                         <div class="hero-stat-card">
                             <span class="hero-stat-label">An implicit</span>
-                            <span class="hero-stat-value"><?php echo htmlspecialchars((string)$defaultYear); ?></span>
+                            <span class="hero-stat-value"><?php echo htmlspecialchars((string) $defaultYear); ?></span>
                         </div>
                         <div class="hero-stat-card">
                             <span class="hero-stat-label">Interval disponibil</span>
-                            <span class="hero-stat-value"><?php echo htmlspecialchars((string)$minYear); ?> - <?php echo htmlspecialchars((string)$maxYear); ?></span>
+                            <span class="hero-stat-value"><?php echo htmlspecialchars((string) $minYear); ?> -
+                                <?php echo htmlspecialchars((string) $maxYear); ?></span>
                         </div>
                         <div class="hero-stat-card">
                             <span class="hero-stat-label">Tip analiză</span>
@@ -151,7 +156,8 @@ if (isset($config['app']['max_year'])) {
 
                         <div class="filters-actions">
                             <button type="submit" class="btn btn-primary">Aplicare filtre</button>
-                            <button type="button" class="btn btn-secondary" id="reset-dashboard-filters">Resetare filtre</button>
+                            <button type="button" class="btn btn-secondary" id="reset-dashboard-filters">Resetare
+                                filtre</button>
                         </div>
                     </form>
                 </div>
@@ -339,21 +345,30 @@ if (isset($config['app']['max_year'])) {
             <div class="container footer-content">
                 <div>
                     <p class="footer-brand"><?php echo htmlspecialchars($appName); ?></p>
-                    <p class="footer-text">Dashboard public pentru explorarea datelor despre parcul auto din România.</p>
+                    <p class="footer-text">Dashboard public pentru explorarea datelor despre parcul auto din România.
+                    </p>
                 </div>
 
                 <div class="footer-meta">
-                    <span>Date analizate: <?php echo htmlspecialchars((string)$minYear); ?> - <?php echo htmlspecialchars((string)$maxYear); ?></span>
+                    <span>Date analizate: <?php echo htmlspecialchars((string) $minYear); ?> -
+                        <?php echo htmlspecialchars((string) $maxYear); ?></span>
                     <span>Interfață publică conectată la servicii Web REST</span>
                 </div>
             </div>
         </footer>
     </div>
 
+    <script>
+        window.APP_API_BASE_URL = 'api';
+        window.APP_DEFAULT_YEAR = <?php echo json_encode((int) $defaultYear); ?>;
+        window.APP_MIN_YEAR = <?php echo json_encode((int) $minYear); ?>;
+        window.APP_MAX_YEAR = <?php echo json_encode((int) $maxYear); ?>;
+    </script>
     <script src="assets/js/api.js"></script>
     <script src="assets/js/utils.js"></script>
     <script src="assets/js/filters.js"></script>
     <script src="assets/js/charts.js"></script>
     <script src="assets/js/dashboard.js"></script>
 </body>
+
 </html>

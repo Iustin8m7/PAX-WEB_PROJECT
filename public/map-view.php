@@ -46,8 +46,7 @@ if (isset($config['app']['max_year'])) {
 
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/map.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-o9N1j7kZH7sZ6w6mx0GPRg3a9gk7tK2wr48H68yTgPc=" crossorigin="" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css?cachebust=1" />
 </head>
 
 <body>
@@ -243,8 +242,7 @@ if (isset($config['app']['max_year'])) {
         </footer>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-QV8MtD8MVgynMIK4LrG+iX7Fqm2Qh27YVb2w8Z5Pq3o=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js?cachebust=1"></script>
     <script src="assets/js/api.js"></script>
     <script src="assets/js/utils.js"></script>
     <script>

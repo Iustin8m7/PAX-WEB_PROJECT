@@ -174,6 +174,7 @@ if (isset($config['app']['max_year'])) {
     <script src="assets/js/api.js"></script>
     <script src="assets/js/utils.js"></script>
     <script>
+        window.APP_API_BASE_URL = 'api';
         (async function () {
             const form = document.getElementById('search-form');
             const year = document.getElementById('search-year');
@@ -184,10 +185,13 @@ if (isset($config['app']['max_year'])) {
             const resultsList = document.getElementById('results-list');
             const resetBtn = document.getElementById('search-reset');
 
+            function buildApiUrl(path) {
+                return `${window.APP_API_BASE_URL}/${path}`;
+            }
+
             async function loadFilters() {
                 try {
-                    // CORECTAT: Schimbat din '/api/filters.php' în 'api/filters.php' pentru compatibilitate locală
-                    const filters = await window.appApi.getJson('api/filters.php');
+                    const filters = await window.appApi.getJson(buildApiUrl('filters.php'));
 
                     year.innerHTML = '<option value="">Toți anii</option>';
                     (Array.isArray(filters.years) ? filters.years : []).forEach(y => {
@@ -274,8 +278,7 @@ if (isset($config['app']['max_year'])) {
                 resultsList.textContent = 'Se caută...';
 
                 try {
-                    // CORECTAT: Schimbat din '/api/search.php?' în 'api/search.php?' pentru a funcționa corect local
-                    const data = await window.appApi.getJson('api/search.php?' + params.toString());
+                    const data = await window.appApi.getJson(buildApiUrl('search.php?' + params.toString()));
                     renderResults(data.result || data || []);
                 } catch (err) {
                     console.error('search error', err);
@@ -286,6 +289,7 @@ if (isset($config['app']['max_year'])) {
             form.addEventListener('submit', doSearch);
             resetBtn.addEventListener('click', () => {
                 form.reset();
+                resultsList.innerHTML = '<div>Rezultatele vor apărea aici după căutare.</div>';
             });
 
             await loadFilters();

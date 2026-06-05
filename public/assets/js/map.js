@@ -73,28 +73,63 @@ const elements = {
     selectionSummary: document.getElementById('map-selection-summary'),
 };
 
-const mapInstance = L.map('map-canvas', {
-    minZoom: 6,
-    maxZoom: 12,
-    zoomControl: true,
-}).setView(mapCenter, mapZoom);
+const missingElements = Object.entries(elements).filter(([, element]) => !element);
+if (missingElements.length > 0) {
+    console.error('Map init failed: missing DOM elements', missingElements.map(([key]) => key));
+}
+
+if (typeof L === 'undefined') {
+    console.error('Leaflet library not found. Ensure Leaflet JS is loaded before map.js');
+}
+
+let mapInstance;
+try {
+    mapInstance = L.map('map-canvas', {
+        minZoom: 6,
+        maxZoom: 12,
+        zoomControl: true,
+    }).setView(mapCenter, mapZoom);
+} catch (err) {
+    console.error('Failed to initialize Leaflet map:', err);
+    // Fallback: create a minimal stub so later calls won't throw further errors
+    mapInstance = {
+        addLayer() { },
+        on() { },
+        setView() { },
+    };
+}
 
 const mapLoader = document.querySelector('.map-loader');
 const defaultYear = window.APP_DEFAULT_YEAR || new Date().getFullYear();
+const apiBase = window.APP_API_BASE_URL || 'api';
 
-const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    subdomains: 'abcd',
-    maxZoom: 19,
-}).addTo(mapInstance);
+function buildApiUrl(path) {
+    return `${apiBase}/${path}`;
+}
 
-tileLayer.on('load', () => {
-    if (mapLoader) {
-        mapLoader.style.display = 'none';
-    }
-});
+let markerLayer;
 
-const markerLayer = L.layerGroup().addTo(mapInstance);
+if (typeof L !== 'undefined' && mapInstance && typeof mapInstance.addLayer === 'function') {
+    const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        subdomains: 'abcd',
+        maxZoom: 19,
+    }).addTo(mapInstance);
+
+    tileLayer.on('load', () => {
+        if (mapLoader) {
+            mapLoader.style.display = 'none';
+        }
+    });
+
+    markerLayer = L.layerGroup().addTo(mapInstance);
+} else {
+    console.warn('Leaflet is unavailable; skipping tile and marker layer creation.');
+    markerLayer = {
+        clearLayers() { },
+        addLayer() { },
+    };
+}
 
 function getBrandColor(brand) {
     if (!brand) {
@@ -146,7 +181,8 @@ function renderCountyMarkers(counties) {
             return;
         }
 
-        const color = getBrandColor(county.top_brand);
+        const brand = getCountyBrand(county);
+        const color = getBrandColor(brand);
         const radius = getMarkerRadius(county.total_vehicles);
 
         const marker = L.circleMarker(coords, {
@@ -164,7 +200,7 @@ function renderCountyMarkers(counties) {
             <div style="font-family: Inter, system-ui, sans-serif; font-size: 0.95rem;">
                 <strong>${county.county_name}</strong><br/>
                 Total vehicule: <strong>${window.appUtils.formatNumber(county.total_vehicles)}</strong><br/>
-                Marcă predominantă: <strong>${county.top_brand}</strong>
+                Marcă predominantă: <strong>${brand}</strong>
             </div>
         `;
 
@@ -177,12 +213,12 @@ function updateSelectedCounty(county) {
     elements.selectedCountyName.textContent = county.county_name;
     elements.selectedCountyCode.textContent = `Cod județ: ${county.county_code}`;
     elements.selectedCountyTotal.textContent = window.appUtils.formatNumber(county.total_vehicles);
-    elements.selectedCountyBrand.textContent = county.top_brand;
+    elements.selectedCountyBrand.textContent = getCountyBrand(county);
 }
 
 async function loadFilters() {
     try {
-        const filters = await window.appApi.getJson('/api/filters.php');
+        const filters = await window.appApi.getJson(buildApiUrl('filters.php'));
 
         console.log('filters payload', filters);
 
@@ -206,10 +242,13 @@ async function loadFilters() {
             elements.year.appendChild(window.appUtils.createOption(year, year));
         });
 
-        const selectedYear = String(defaultYear);
-        if (filters.years.some((year) => String(year) === selectedYear)) {
-            elements.year.value = selectedYear;
+        let selectedYear = String(defaultYear);
+        if (!filters.years.some((year) => String(year) === selectedYear)) {
+            selectedYear = filters.years.length > 0 ? String(filters.years[filters.years.length - 1]) : selectedYear;
+            console.warn('Anul implicit nu este disponibil în date. Setez anul existent cel mai recent:', selectedYear);
         }
+
+        elements.year.value = selectedYear;
 
         elements.fuelType.innerHTML = '<option value="">Toate tipurile de combustibil</option>';
         (Array.isArray(filters.fuel_types) ? filters.fuel_types : []).forEach((fuel) => {
@@ -226,12 +265,16 @@ async function loadFilters() {
     }
 }
 
+function getCountyBrand(county) {
+    return county.top_brand || county.brand_name || county.brand || 'Necunoscut';
+}
+
 async function refreshMap() {
     const year = elements.year.value || String(defaultYear);
     const fuelType = elements.fuelType.value || null;
     const nationalCategory = elements.nationalCategory.value || null;
 
-    elements.selectedCountyName.textContent = 'Încarcare date...';
+    elements.selectedCountyName.textContent = 'Se încarcă date...';
     elements.selectedCountyCode.textContent = 'Cod județ: -';
     elements.selectedCountyTotal.textContent = '-';
     elements.selectedCountyBrand.textContent = '-';
@@ -240,7 +283,7 @@ async function refreshMap() {
 
     try {
         const data = await window.appApi.getJson(
-            `api/brand-map-data.php?year=${encodeURIComponent(year)}${fuelType ? `&fuel_type=${encodeURIComponent(fuelType)}` : ''}${nationalCategory ? `&national_category=${encodeURIComponent(nationalCategory)}` : ''}`
+            buildApiUrl(`brand-map-data.php?year=${encodeURIComponent(year)}${fuelType ? `&fuel_type=${encodeURIComponent(fuelType)}` : ''}${nationalCategory ? `&national_category=${encodeURIComponent(nationalCategory)}` : ''}`)
         );
 
         if (!Array.isArray(data.result) || data.result.length === 0) {
@@ -258,15 +301,19 @@ async function refreshMap() {
     }
 }
 
-elements.form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    refreshMap();
-});
+if (elements.form) {
+    elements.form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        refreshMap();
+    });
+}
 
-elements.reset.addEventListener('click', () => {
-    elements.form.reset();
-    refreshMap();
-});
+if (elements.reset) {
+    elements.reset.addEventListener('click', () => {
+        if (elements.form) elements.form.reset();
+        refreshMap();
+    });
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
     await loadFilters();

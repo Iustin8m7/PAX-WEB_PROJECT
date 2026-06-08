@@ -1,0 +1,416 @@
+/* ==========================================================================
+   SEARCH PAGE LAYOUT
+   ========================================================================== */
+
+.search-main {
+    background:
+        radial-gradient(circle at 86% 14%, rgba(59, 130, 246, 0.08), transparent 24%),
+        radial-gradient(circle at 14% 86%, rgba(217, 70, 239, 0.08), transparent 26%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
+}
+
+.search-hero-section {
+    padding-bottom: 58px;
+}
+
+.search-hero-content h1 {
+    max-width: 900px;
+    font-size: clamp(2.35rem, 4vw, 3.45rem);
+    margin-bottom: 20px;
+}
+
+.search-hero-content .search-lead {
+    max-width: 780px;
+}
+
+.search-hero-panel {
+    display: grid;
+    gap: 18px;
+}
+
+.search-hero-panel .hero-stat-card {
+    min-height: 118px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   SEARCH FILTERS / STATUS
+   ========================================================================== */
+
+.search-section:first-of-type {
+    padding-top: 28px;
+}
+
+.search-page-shell .filters-panel {
+    display: grid;
+    gap: 22px;
+    background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(30, 41, 59, 0.76));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 28px;
+    border-radius: 24px;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+}
+
+.search-page-shell .search-filters-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.search-page-shell .form-field label {
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.search-page-shell .form-field select,
+.search-page-shell .form-field input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: var(--transition-smooth);
+}
+
+.search-page-shell .form-field select:focus,
+.search-page-shell .form-field input:focus {
+    outline: none;
+    border-color: rgba(96, 165, 250, 0.5);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+.search-page-shell .form-field input::placeholder {
+    color: rgba(148, 163, 184, 0.72);
+}
+
+.search-page-shell .form-field-wide {
+    grid-column: span 2;
+}
+
+.search-page-shell .filters-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.search-status-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.search-status-bar .status-pill {
+    min-height: 88px;
+    justify-content: center;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+}
+
+.search-status-bar .status-value {
+    font-size: 0.98rem;
+    color: var(--text-soft);
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   SEARCH RESULTS CARD
+   ========================================================================== */
+
+.search-results-card {
+    padding: 26px;
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.24);
+}
+
+.search-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.search-results-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.search-results-body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ==========================================================================
+   RESULTS META
+   ========================================================================== */
+
+.results-meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.meta-stat {
+    min-width: 140px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.meta-stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+}
+
+.meta-stat-value {
+    display: block;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+/* ==========================================================================
+   EMPTY / LOADING STATES
+   ========================================================================== */
+
+.search-empty-state {
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    border: 1px dashed rgba(148, 163, 184, 0.22);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.search-loading,
+.search-error,
+.search-no-results {
+    padding: 22px;
+    border-radius: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    border: 1px dashed rgba(148, 163, 184, 0.22);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* ==========================================================================
+   RESULTS TABLE
+   ========================================================================== */
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1080px;
+}
+
+.results-table thead {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.results-table th,
+.results-table td {
+    padding: 14px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.results-table th {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.results-table td {
+    color: var(--text-soft);
+    font-size: 0.94rem;
+    line-height: 1.5;
+}
+
+.results-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.results-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================================================================
+   SORTING STATES
+   ========================================================================== */
+
+.results-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition-smooth);
+}
+
+.results-table th.sortable:hover {
+    color: var(--text-main);
+}
+
+.results-table th.sortable .sort-indicator {
+    margin-left: 8px;
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    opacity: 0.9;
+}
+
+/* ==========================================================================
+   PAGINATION
+   ========================================================================== */
+
+.pagination-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-top: 6px;
+}
+
+.pagination-info {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.94rem;
+}
+
+.pagination-bar .btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ==========================================================================
+   SEARCH CONTEXT / FINAL INSIGHT
+   ========================================================================== */
+
+.search-section-final {
+    padding-bottom: 110px;
+}
+
+.search-section-final .insight-box {
+    background:
+        linear-gradient(135deg, rgba(29, 78, 216, 0.10), rgba(217, 70, 239, 0.08)),
+        rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(96, 165, 250, 0.16);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.search-section-final .insight-content h2 {
+    font-size: 1.7rem;
+    margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   HELPER ELEMENTS FOR SEARCH RESULTS
+   ========================================================================== */
+
+.search-tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--color-accent);
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.search-muted {
+    color: var(--text-muted);
+}
+
+.search-strong {
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+    .search-page-shell .search-filters-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .search-page-shell .form-field-wide {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-results-card,
+    .search-page-shell .filters-panel {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .search-page-shell .search-filters-grid,
+    .search-status-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .search-page-shell .form-field-wide {
+        grid-column: span 1;
+    }
+
+    .search-results-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .results-meta {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .pagination-bar,
+    .search-page-shell .filters-actions,
+    .search-section-final .insight-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagination-bar .btn,
+    .search-page-shell .filters-actions .btn,
+    .search-section-final .insight-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 560px) {
+    .results-table th,
+    .results-table td {
+        padding: 12px 10px;
+    }
+
+    .meta-stat {
+        min-width: 100%;
+    }
+}

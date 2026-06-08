@@ -137,7 +137,7 @@ class MapRepository
                 c.code AS county_code,
                 c.name AS county_name,
                 b.name AS brand_name,
-                SUM(vr.vehicle_count) AS total_vehicles
+                SUM(vr.vehicle_count) AS brand_vehicles
             FROM vehicle_records vr
             INNER JOIN counties c ON vr.county_id = c.id
             LEFT JOIN brands b ON vr.brand_id = b.id
@@ -162,30 +162,54 @@ class MapRepository
 
         $sql .= '
             GROUP BY c.code, c.name, b.name
-            ORDER BY c.name ASC, total_vehicles DESC
+            ORDER BY c.name ASC, brand_vehicles DESC
         ';
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
 
         $rows = $stmt->fetchAll();
+
+        $countyTotals = [];
         $topBrands = [];
 
         foreach ($rows as $row) {
             $countyCode = $row['county_code'];
-            $current = $topBrands[$countyCode] ?? null;
-            $totalVehicles = isset($row['total_vehicles']) ? (int) $row['total_vehicles'] : 0;
+            $brandVehicles = isset($row['brand_vehicles']) ? (int) $row['brand_vehicles'] : 0;
 
-            if ($current === null || $totalVehicles > $current['total_vehicles']) {
+            if (!isset($countyTotals[$countyCode])) {
+                $countyTotals[$countyCode] = 0;
+            }
+
+            $countyTotals[$countyCode] += $brandVehicles;
+
+            $currentTop = $topBrands[$countyCode] ?? null;
+
+            if ($currentTop === null || $brandVehicles > $currentTop['brand_vehicles']) {
                 $topBrands[$countyCode] = [
                     'county_code' => $countyCode,
                     'county_name' => $row['county_name'],
                     'top_brand' => $row['brand_name'] ?? 'Necunoscut',
-                    'total_vehicles' => $totalVehicles,
+                    'brand_vehicles' => $brandVehicles,
                 ];
             }
         }
 
-        return array_values($topBrands);
+        $result = [];
+
+        foreach ($topBrands as $countyCode => $data) {
+            $result[] = [
+                'county_code' => $data['county_code'],
+                'county_name' => $data['county_name'],
+                'top_brand' => $data['top_brand'],
+                'total_vehicles' => $countyTotals[$countyCode] ?? 0,
+            ];
+        }
+
+        usort($result, static function (array $a, array $b): int {
+            return strcmp($a['county_name'], $b['county_name']);
+        });
+
+        return $result;
     }
 }

@@ -35,18 +35,19 @@ if (isset($config['app']['max_year'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($appName); ?> - Hartă Interactivă</title>
+    <title><?php echo htmlspecialchars($appName); ?> - Hartă interactivă</title>
     <meta name="description"
-        content="Hartă interactivă bazată pe Leaflet pentru explorarea distribuției geografice a parcului auto din România.">
+        content="Componentă cartografică pentru explorarea distribuției geografice a parcului auto din România.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/map.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css?cachebust=1" />
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 
 <body>
@@ -70,158 +71,220 @@ if (isset($config['app']['max_year'])) {
         </header>
 
         <main class="map-main">
-            <section class="hero-section map-hero">
+            <section class="map-hero-section">
                 <div class="container map-hero-grid">
                     <div class="map-hero-content">
-                        <p class="hero-kicker">🗺️ Modul Cartografic Asincron</p>
-                        <h1 class="hero-title">Distribuția Geografică <span class="hero-title-accent">a Parcului
-                                Auto</span></h1>
-                        <p class="hero-description">
-                            Explorează vizual densitatea vehiculelor din România. Selectează filtrele dorite pentru a
-                            vedea cum se reconfigurează topul producătorilor și numărul total de mașini la nivel de
-                            județ.
+                        <p class="section-kicker">Componentă cartografică</p>
+                        <h1>Hartă interactivă pentru distribuția teritorială a parcului auto</h1>
+                        <p class="map-lead">
+                            Explorează distribuția geografică a indicatorilor disponibili la nivel de județ și
+                            evidențiază diferențele teritoriale prin filtrare după an, tip de combustibil și categorie
+                            națională. Harta funcționează ca punct principal de explorare spațială a datelor.
                         </p>
+
+                        <div class="map-hero-actions">
+                            <a class="btn btn-primary" href="dashboard.php">Acces către dashboard</a>
+                            <a class="btn btn-secondary" href="search-view.php">Acces către căutare avansată</a>
+                        </div>
                     </div>
 
                     <aside class="map-hero-panel">
-                        <div class="hero-mini-card">
-                            <span class="mini-label">An Implicit</span>
-                            <span class="mini-value"
-                                style="font-size: 1.4rem; color: var(--color-accent);"><?php echo htmlspecialchars((string) $defaultYear); ?></span>
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-label">An implicit</span>
+                            <span class="hero-stat-value"><?php echo htmlspecialchars((string) $defaultYear); ?></span>
                         </div>
-                        <div class="hero-mini-card">
-                            <span class="mini-label">Orizont Temporal</span>
-                            <span class="mini-value"
-                                style="font-size: 1.4rem; color: var(--color-accent);"><?php echo htmlspecialchars((string) $minYear); ?>-<?php echo htmlspecialchars((string) $maxYear); ?></span>
+
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-label">Interval analizat</span>
+                            <span class="hero-stat-value"><?php echo htmlspecialchars((string) $minYear); ?> -
+                                <?php echo htmlspecialchars((string) $maxYear); ?></span>
+                        </div>
+
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-label">Mod principal</span>
+                            <span class="hero-stat-value">Poligoane județe + hover/click contextual</span>
                         </div>
                     </aside>
                 </div>
             </section>
 
-            <section class="section map-section">
+            <section class="map-section">
                 <div class="container">
-                    <div class="section-heading">
-                        <p class="section-kicker">Panou de Control</p>
-                        <h2>Configurează Straturile de Date</h2>
+                    <div class="section-heading section-heading-left">
+                        <p class="section-kicker">Panou de filtrare</p>
+                        <h2>Configurarea stratului de analiză</h2>
                         <p class="section-lead">
-                            Modificarea criteriilor interoghează automat API-ul REST în fundal și recalculează
-                            dimensiunile markerilor de pe hartă.
+                            Selectarea criteriilor actualizează asincron valorile agregate de pe hartă și informațiile
+                            detaliate pentru județul selectat.
                         </p>
                     </div>
 
-                    <form id="map-filters-form" class="hero-panel-card" style="margin-bottom: 40px;" autocomplete="off">
-                        <div class="hero-panel-grid"
-                            style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <form id="map-filters-form" class="filters-panel" autocomplete="off">
+                        <div class="filters-grid map-filters-grid">
                             <div class="form-field">
-                                <label
-                                    style="display: block; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">An
-                                    Analiză</label>
-                                <select id="map-filter-year" name="year" class="select-custom">
+                                <label for="map-filter-year">An</label>
+                                <select id="map-filter-year" name="year">
                                     <option value="">Selectare an</option>
                                 </select>
                             </div>
 
                             <div class="form-field">
-                                <label
-                                    style="display: block; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Tip
-                                    Combustibil</label>
-                                <select id="map-filter-fuel-type" name="fuel_type" class="select-custom">
+                                <label for="map-filter-fuel-type">Combustibil</label>
+                                <select id="map-filter-fuel-type" name="fuel_type">
                                     <option value="">Toate tipurile de combustibil</option>
                                 </select>
                             </div>
 
                             <div class="form-field">
-                                <label
-                                    style="display: block; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Categorie
-                                    Națională</label>
-                                <select id="map-filter-national-category" name="national_category"
-                                    class="select-custom">
+                                <label for="map-filter-national-category">Categorie națională</label>
+                                <select id="map-filter-national-category" name="national_category">
                                     <option value="">Toate categoriile</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div style="display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end;">
-                            <button type="button" class="btn btn-secondary" id="reset-map-filters">Resetare</button>
-                            <button type="submit" class="btn btn-primary">Aplică Filtrele</button>
+                        <div class="filters-actions">
+                            <button type="submit" class="btn btn-primary">Aplicare filtre</button>
+                            <button type="button" class="btn btn-secondary" id="reset-map-filters">Resetare filtre</button>
+                            <a
+                                href="api/export.php?resource=map&format=csv&year=<?php echo urlencode((string) $defaultYear); ?>"
+                                class="btn btn-secondary"
+                                id="map-export-csv">
+                                Export CSV
+                            </a>
                         </div>
                     </form>
+
+                    <div class="dashboard-status-bar map-status-bar">
+                        <div class="status-pill">
+                            <span class="status-label">Context curent</span>
+                            <span class="status-value" id="map-selection-summary">Se încarcă sumarul selecției...</span>
+                        </div>
+
+                        <div class="status-pill">
+                            <span class="status-label">Stare hartă</span>
+                            <span class="status-value" id="map-loading-state">Pregătire încărcare hartă</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <section class="section" style="padding-top: 0;">
+            <section class="map-section">
                 <div class="container map-layout">
-                    <div class="hero-panel-card"
-                        style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                    <section class="map-main-card">
+                        <div class="map-card-header">
                             <div>
-                                <p class="panel-eyebrow">Reprezentare Spațială</p>
-                                <h3 style="font-size: 1.3rem;">Hartă Proporțională pe Județe</h3>
+                                <p class="chart-kicker">Vizualizare cartografică</p>
+                                <h2>Distribuție pe județe</h2>
+                                <p class="chart-caption">
+                                    Exportul CSV descarcă datele teritoriale pentru selecția activă: an, combustibil și categorie națională.
+                                </p>
                             </div>
-                            <span class="hero-kicker" style="margin-bottom: 0;">Leaflet Engine</span>
+                            <div class="chart-card-actions">
+                                <span class="chart-badge">GeoJSON + Leaflet</span>
+                                <a href="api/export.php?resource=map&format=csv&year=<?php echo urlencode((string) $defaultYear); ?>" class="btn btn-secondary btn-sm" id="map-export-inline">
+                                    Export CSV
+                                </a>
+                            </div>
                         </div>
 
-                        <div id="map-canvas" class="map-canvas-container">
-                            <div class="map-loader">Se inițializează motorul cartografic...</div>
-                        </div>
+                        <div class="map-card-body">
+                            <div id="map-canvas" class="map-canvas-container">
+                                <div class="map-loader" id="map-loader">Se inițializează componenta cartografică...</div>
+                            </div>
 
-                        <div class="map-legend-box">
-                            <p
-                                style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">
-                                💡 Culoarea cercului reprezintă <strong>marca predominantă</strong> din acel județ.
-                                Dimensiunea cercului reflectă <strong>volumul total</strong> al parcului auto.
-                            </p>
+                            <div class="map-legend-box">
+                                <div class="map-legend-header">
+                                    <h3>Legendă</h3>
+                                    <p>
+                                        Intensitatea culorii reflectă valoarea agregată pentru selecția activă.
+                                        Hover-ul și click-ul pe județ actualizează panoul contextual din dreapta.
+                                    </p>
+                                </div>
+
+                                <div class="legend-scale">
+                                    <span class="legend-step legend-step-1"></span>
+                                    <span class="legend-step legend-step-2"></span>
+                                    <span class="legend-step legend-step-3"></span>
+                                    <span class="legend-step legend-step-4"></span>
+                                    <span class="legend-step legend-step-5"></span>
+                                </div>
+
+                                <div class="legend-labels">
+                                    <span>valoare scăzută</span>
+                                    <span>valoare ridicată</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </section>
 
                     <aside class="map-sidebar">
-                        <article class="hero-panel-card" style="padding: 24px;">
-                            <p class="panel-eyebrow">Filtre Active</p>
-                            <h3 style="font-size: 1.1rem; margin-bottom: 12px;">Rezumat Selecție</h3>
-                            <div id="map-selection-summary" class="meta-pill"
-                                style="width: 100%; justify-content: center; font-weight: 600; color: var(--color-accent);">
-                                Se încarcă...
+                        <article class="map-info-card">
+                            <div class="map-card-header">
+                                <div>
+                                    <p class="chart-kicker">Județ selectat</p>
+                                    <h2>Panou contextual</h2>
+                                </div>
                             </div>
-                        </article>
 
-                        <article class="hero-panel-card" style="padding: 24px;">
-                            <p class="panel-eyebrow" style="color: var(--color-gradient-end);">Focus Regional</p>
-                            <h3 style="font-size: 1.2rem; margin-bottom: 16px;" id="selected-county-name">Niciun județ
-                                selectat</h3>
+                            <div class="selected-county-box">
+                                <p class="selected-county-name" id="selected-county-name">Niciun județ selectat</p>
+                                <p class="selected-county-code" id="selected-county-code">Cod județ: -</p>
+                            </div>
 
-                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                <div
-                                    style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;">
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Cod administrativ:</span>
-                                    <span id="selected-county-code" style="font-weight: 600;">-</span>
+                            <div class="selected-metrics">
+                                <div class="selected-metric">
+                                    <span class="selected-metric-label">Total vehicule</span>
+                                    <strong class="selected-metric-value" id="selected-county-total">-</strong>
                                 </div>
-                                <div
-                                    style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;">
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">An raportare:</span>
-                                    <span id="selected-county-year"
-                                        style="font-weight: 600; color: var(--color-accent);"><?php echo htmlspecialchars((string) $defaultYear); ?></span>
+
+                                <div class="selected-metric">
+                                    <span class="selected-metric-label">An activ</span>
+                                    <strong class="selected-metric-value" id="selected-county-year"><?php echo htmlspecialchars((string) $defaultYear); ?></strong>
                                 </div>
-                                <div
-                                    style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;">
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Total
-                                        Autovehicule:</span>
-                                    <span id="selected-county-total" style="font-weight: 700; color: #fff;">-</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; padding-bottom: 4px;">
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Marcă
-                                        Predominantă:</span>
-                                    <span id="selected-county-brand" class="brand-badge-inline">-</span>
+
+                                <div class="selected-metric">
+                                    <span class="selected-metric-label">Marcă predominantă</span>
+                                    <strong class="selected-metric-value" id="selected-county-brand">-</strong>
                                 </div>
                             </div>
                         </article>
 
-                        <div class="hero-panel-grid" style="grid-template-columns: 1fr; gap: 12px;">
-                            <a class="btn btn-secondary" style="font-size: 0.9rem; padding: 12px;"
-                                href="dashboard.php">📊 Mergi la Dashboard</a>
-                            <a class="btn btn-secondary" style="font-size: 0.9rem; padding: 12px;"
-                                href="search-view.php">🔍 Deschide Filtrare Avansată</a>
-                        </div>
+                        <article class="map-info-card">
+                            <div class="map-card-header">
+                                <div>
+                                    <p class="chart-kicker">Interpretare</p>
+                                    <h2>Rezumat curent</h2>
+                                </div>
+                            </div>
+
+                            <p id="map-context-summary" class="map-summary-text">
+                                Selectarea filtrelor și a unui județ va actualiza această zonă cu un rezumat clar al
+                                contextului activ și al valorilor afișate.
+                            </p>
+
+                            <ul class="info-list compact-info-list">
+                                <li>an activ</li>
+                                <li>filtru combustibil</li>
+                                <li>filtru categorie națională</li>
+                                <li>valoare agregată pe județ</li>
+                                <li>brand predominant pe județ</li>
+                            </ul>
+                        </article>
+
+                        <article class="map-info-card">
+                            <div class="map-card-header">
+                                <div>
+                                    <p class="chart-kicker">Navigare</p>
+                                    <h2>Acțiuni rapide</h2>
+                                </div>
+                            </div>
+
+                            <div class="insight-actions">
+                                <a class="btn btn-primary" href="dashboard.php">Înapoi la dashboard</a>
+                                <a class="btn btn-secondary" href="search-view.php">Acces către căutare</a>
+                            </div>
+                        </article>
                     </aside>
                 </div>
             </section>
@@ -230,26 +293,31 @@ if (isset($config['app']['max_year'])) {
         <footer class="site-footer">
             <div class="container footer-content">
                 <div>
-                    <p class="footer-brand"><?php echo htmlspecialchars($appName); ?> <span>Map Engine</span></p>
-                    <p class="footer-text">Modul cartografic asincron bazat pe hărți tematice OpenStreetMap comerciale.
-                    </p>
+                    <p class="footer-brand"><?php echo htmlspecialchars($appName); ?> <span>Map Explorer</span></p>
+                    <p class="footer-text">Modul cartografic pentru explorarea distribuției teritoriale a datelor despre parcul auto din România.</p>
                 </div>
+
                 <div class="footer-meta">
-                    <span>Orizont: <?php echo htmlspecialchars((string) $minYear); ?> -
+                    <span>Perioadă analizată: <?php echo htmlspecialchars((string) $minYear); ?> -
                         <?php echo htmlspecialchars((string) $maxYear); ?></span>
+                    <span>Filtrare asincronă + poligoane GeoJSON + panou contextual</span>
                 </div>
             </div>
         </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js?cachebust=1"></script>
+    <script>
+        window.APP_API_BASE_URL = 'api';
+        window.APP_EXPORT_BASE_URL = 'api/export.php';
+        window.APP_DEFAULT_YEAR = <?php echo json_encode((int) $defaultYear); ?>;
+        window.APP_MIN_YEAR = <?php echo json_encode((int) $minYear); ?>;
+        window.APP_MAX_YEAR = <?php echo json_encode((int) $maxYear); ?>;
+        window.APP_GEOJSON_URL = 'assets/data/romania-counties.geojson';
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="assets/js/api.js"></script>
     <script src="assets/js/utils.js"></script>
-    <script>
-        window.APP_DEFAULT_YEAR = <?php echo (int) $defaultYear; ?>;
-        window.APP_MIN_YEAR = <?php echo (int) $minYear; ?>;
-        window.APP_MAX_YEAR = <?php echo (int) $maxYear; ?>;
-    </script>
     <script src="assets/js/filters.js"></script>
     <script src="assets/js/map.js"></script>
 </body>

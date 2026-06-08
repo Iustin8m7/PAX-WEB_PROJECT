@@ -26,7 +26,7 @@ function getOptionalStringParam(string $key)
         return null;
     }
 
-    $value = trim((string)$value);
+    $value = trim((string) $value);
 
     if ($value === '') {
         return null;
@@ -55,17 +55,17 @@ function getIntParam(string $key, $default = null)
     }
 
     if (filter_var($value, FILTER_VALIDATE_INT) === false) {
-        Response::error("Parametrul '{$key}' trebuie sa fie un numar intreg valid.", 400);
+        Response::error("Parametrul '{$key}' trebuie să fie un număr întreg valid.", 400);
     }
 
-    return (int)$value;
+    return (int) $value;
 }
 
 function validateYear($year, bool $required = false)
 {
     $config = getConfig();
-    $minYear = (int)$config['app']['min_year'];
-    $maxYear = (int)$config['app']['max_year'];
+    $minYear = (int) $config['app']['min_year'];
+    $maxYear = (int) $config['app']['max_year'];
 
     if ($year === null) {
         if ($required) {
@@ -76,7 +76,7 @@ function validateYear($year, bool $required = false)
     }
 
     if ($year < $minYear || $year > $maxYear) {
-        Response::error("Parametrul year trebuie sa fie intre {$minYear} si {$maxYear}.", 400);
+        Response::error("Parametrul year trebuie să fie între {$minYear} și {$maxYear}.", 400);
     }
 
     return $year;
@@ -91,15 +91,15 @@ function getYearParam(string $key = 'year', bool $required = false)
 function validateLimit($limit): int
 {
     $config = getConfig();
-    $defaultPageSize = (int)$config['app']['default_page_size'];
-    $maxPageSize = (int)$config['app']['max_page_size'];
+    $defaultPageSize = (int) $config['app']['default_page_size'];
+    $maxPageSize = (int) $config['app']['max_page_size'];
 
     if ($limit === null) {
         return $defaultPageSize;
     }
 
     if ($limit < 1 || $limit > $maxPageSize) {
-        Response::error("Parametrul limit trebuie sa fie intre 1 si {$maxPageSize}.", 400);
+        Response::error("Parametrul limit trebuie să fie între 1 și {$maxPageSize}.", 400);
     }
 
     return $limit;
@@ -118,7 +118,7 @@ function validatePage($page): int
     }
 
     if ($page < 1) {
-        Response::error('Parametrul page trebuie sa fie mai mare sau egal cu 1.', 400);
+        Response::error('Parametrul page trebuie să fie mai mare sau egal cu 1.', 400);
     }
 
     return $page;
@@ -130,14 +130,14 @@ function getPageParam(string $key = 'page'): int
     return validatePage($page);
 }
 
-function validateSortField($sort, array $allowedFields, string $default): string
+function validateSortField($sort, array $allowedFields, string $default, string $paramName = 'sort'): string
 {
     if ($sort === null) {
         return $default;
     }
 
     if (!in_array($sort, $allowedFields, true)) {
-        Response::error('Parametrul sort nu are o valoare permisa.', 400, [
+        Response::error("Parametrul '{$paramName}' nu are o valoare permisă.", 400, [
             'allowed' => $allowedFields,
         ]);
     }
@@ -148,10 +148,10 @@ function validateSortField($sort, array $allowedFields, string $default): string
 function getSortFieldParam(array $allowedFields, string $default, string $key = 'sort'): string
 {
     $sort = getOptionalStringParam($key);
-    return validateSortField($sort, $allowedFields, $default);
+    return validateSortField($sort, $allowedFields, $default, $key);
 }
 
-function validateSortOrder($order, string $default = 'asc'): string
+function validateSortOrder($order, string $default = 'asc', string $paramName = 'order'): string
 {
     if ($order === null) {
         return $default;
@@ -160,7 +160,7 @@ function validateSortOrder($order, string $default = 'asc'): string
     $normalized = strtolower(trim($order));
 
     if (!in_array($normalized, ['asc', 'desc'], true)) {
-        Response::error("Parametrul order trebuie sa fie 'asc' sau 'desc'.", 400);
+        Response::error("Parametrul '{$paramName}' trebuie să fie 'asc' sau 'desc'.", 400);
     }
 
     return $normalized;
@@ -169,7 +169,7 @@ function validateSortOrder($order, string $default = 'asc'): string
 function getSortOrderParam(string $key = 'order', string $default = 'asc'): string
 {
     $order = getOptionalStringParam($key);
-    return validateSortOrder($order, $default);
+    return validateSortOrder($order, $default, $key);
 }
 
 function validateAllowedValue($value, array $allowedValues, string $paramName)
@@ -179,7 +179,7 @@ function validateAllowedValue($value, array $allowedValues, string $paramName)
     }
 
     if (!in_array($value, $allowedValues, true)) {
-        Response::error("Parametrul '{$paramName}' nu are o valoare permisa.", 400, [
+        Response::error("Parametrul '{$paramName}' nu are o valoare permisă.", 400, [
             'allowed' => $allowedValues,
         ]);
     }

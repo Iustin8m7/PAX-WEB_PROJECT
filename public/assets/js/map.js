@@ -1,321 +1,572 @@
-const mapCenter = [45.9432, 24.9668];
-const mapZoom = 7;
+(function () {
+    'use strict';
 
-const countyCoordinates = {
-    AB: [46.1866, 21.3123],
-    AG: [45.1369, 24.7925],
-    AR: [46.1860, 21.3123],
-    BC: [46.5670, 26.9138],
-    BH: [47.0746, 21.9189],
-    BN: [47.1333, 24.4833],
-    BT: [47.7466, 26.6691],
-    BV: [45.6428, 25.5880],
-    BR: [45.2697, 27.9576],
-    B: [44.4268, 26.1025],
-    BZ: [45.1504, 26.8060],
-    CJ: [46.7712, 23.6236],
-    CL: [44.2197, 27.3288],
-    CS: [45.3872, 21.9034],
-    CT: [44.1733, 28.6383],
-    CV: [45.8623, 25.7990],
-    DB: [44.9163, 25.4586],
-    DJ: [44.1737, 23.6000],
-    GJ: [45.0660, 23.2653],
-    GL: [45.4359, 28.0074],
-    GR: [43.9035, 25.9690],
-    HD: [45.7489, 22.8886],
-    HR: [46.3569, 25.7969],
-    IF: [44.5716, 26.0863],
-    IS: [47.1585, 27.6014],
-    MH: [44.9035, 22.6667],
-    MM: [47.6592, 23.5880],
-    MS: [46.5421, 24.5573],
-    NT: [46.9759, 26.3819],
-    OT: [44.4422, 24.3690],
-    PH: [45.9422, 25.9540],
-    SB: [45.7983, 24.1256],
-    SJ: [47.1667, 23.2667],
-    SM: [47.7927, 22.8850],
-    SV: [47.6510, 26.2550],
-    TL: [45.1719, 28.7954],
-    TM: [45.7489, 21.2087],
-    TR: [43.6313, 25.3672],
-    VL: [45.1000, 24.3667],
-    VN: [45.6990, 27.1916],
-    VS: [46.6403, 27.7300],
-};
+    const mapCenter = [45.9432, 24.9668];
+    const mapZoom = 7;
+    const geoJsonUrl = window.APP_GEOJSON_URL || 'assets/data/romania-counties.geojson';
+    const exportBaseUrl = window.APP_EXPORT_BASE_URL || 'api/export.php';
 
-const brandColors = {
-    DACIA: '#1D4ED8',
-    VOLKSWAGEN: '#0EA5E9',
-    MERCEDES: '#10B981',
-    BMW: '#8B5CF6',
-    FORD: '#F97316',
-    RENAULT: '#F59E0B',
-    OPEL: '#EF4444',
-    AUDI: '#9333EA',
-    TOYOTA: '#14B8A6',
-    NISSAN: '#F43F5E',
-    IVECO: '#0F766E',
-};
+    const elements = {
+        form: document.getElementById('map-filters-form'),
+        year: document.getElementById('map-filter-year'),
+        fuelType: document.getElementById('map-filter-fuel-type'),
+        nationalCategory: document.getElementById('map-filter-national-category'),
+        reset: document.getElementById('reset-map-filters'),
 
-const elements = {
-    form: document.getElementById('map-filters-form'),
-    year: document.getElementById('map-filter-year'),
-    fuelType: document.getElementById('map-filter-fuel-type'),
-    nationalCategory: document.getElementById('map-filter-national-category'),
-    reset: document.getElementById('reset-map-filters'),
-    selectedCountyName: document.getElementById('selected-county-name'),
-    selectedCountyCode: document.getElementById('selected-county-code'),
-    selectedCountyTotal: document.getElementById('selected-county-total'),
-    selectedCountyYear: document.getElementById('selected-county-year'),
-    selectedCountyBrand: document.getElementById('selected-county-brand'),
-    selectionSummary: document.getElementById('map-selection-summary'),
-};
+        exportButton: document.getElementById('map-export-csv'),
+        exportInlineButton: document.getElementById('map-export-inline'),
 
-const missingElements = Object.entries(elements).filter(([, element]) => !element);
-if (missingElements.length > 0) {
-    console.error('Map init failed: missing DOM elements', missingElements.map(([key]) => key));
-}
+        selectionSummary: document.getElementById('map-selection-summary'),
+        loadingState: document.getElementById('map-loading-state'),
+        contextSummary: document.getElementById('map-context-summary'),
 
-if (typeof L === 'undefined') {
-    console.error('Leaflet library not found. Ensure Leaflet JS is loaded before map.js');
-}
-
-let mapInstance;
-try {
-    mapInstance = L.map('map-canvas', {
-        minZoom: 6,
-        maxZoom: 12,
-        zoomControl: true,
-    }).setView(mapCenter, mapZoom);
-} catch (err) {
-    console.error('Failed to initialize Leaflet map:', err);
-    // Fallback: create a minimal stub so later calls won't throw further errors
-    mapInstance = {
-        addLayer() { },
-        on() { },
-        setView() { },
+        selectedCountyName: document.getElementById('selected-county-name'),
+        selectedCountyCode: document.getElementById('selected-county-code'),
+        selectedCountyTotal: document.getElementById('selected-county-total'),
+        selectedCountyYear: document.getElementById('selected-county-year'),
+        selectedCountyBrand: document.getElementById('selected-county-brand'),
     };
-}
 
-const mapLoader = document.querySelector('.map-loader');
-const defaultYear = window.APP_DEFAULT_YEAR || new Date().getFullYear();
-const apiBase = window.APP_API_BASE_URL || 'api';
+    const state = {
+        filters: {
+            year: String(window.APP_DEFAULT_YEAR || new Date().getFullYear()),
+            fuel_type: '',
+            national_category: '',
+        },
+        filtersData: null,
+        counties: [],
+        geoJson: null,
+        map: null,
+        tileLayer: null,
+        geoJsonLayer: null,
+        selectedCountyCode: null,
+        isLoading: false,
+    };
 
-function buildApiUrl(path) {
-    return `${apiBase}/${path}`;
-}
-
-let markerLayer;
-
-if (typeof L !== 'undefined' && mapInstance && typeof mapInstance.addLayer === 'function') {
-    const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        subdomains: 'abcd',
-        maxZoom: 19,
-    }).addTo(mapInstance);
-
-    tileLayer.on('load', () => {
-        if (mapLoader) {
-            mapLoader.style.display = 'none';
+    function ensureDependencies() {
+        if (typeof window.L === 'undefined') {
+            throw new Error('Leaflet nu este disponibil.');
         }
-    });
 
-    markerLayer = L.layerGroup().addTo(mapInstance);
-} else {
-    console.warn('Leaflet is unavailable; skipping tile and marker layer creation.');
-    markerLayer = {
-        clearLayers() { },
-        addLayer() { },
-    };
-}
+        if (!window.appApi) {
+            throw new Error('appApi nu este disponibil.');
+        }
 
-function getBrandColor(brand) {
-    if (!brand) {
-        return '#6B7280';
+        if (!window.appUtils) {
+            throw new Error('appUtils nu este disponibil.');
+        }
+
+        if (!window.appFilters) {
+            throw new Error('appFilters nu este disponibil.');
+        }
     }
 
-    const normalized = brand.toString().trim().toUpperCase();
-
-    if (brandColors[normalized]) {
-        return brandColors[normalized];
+    function setLoadingState(message) {
+        if (elements.loadingState) {
+            elements.loadingState.textContent = message;
+        }
     }
 
-    let hash = 0;
-    for (let i = 0; i < normalized.length; i += 1) {
-        hash = normalized.charCodeAt(i) + ((hash << 5) - hash);
+    function setSelectionSummary() {
+        const summary = window.appFilters.getSelectedFilterSummary({
+            year: state.filters.year,
+            fuel_type: state.filters.fuel_type,
+            national_category: state.filters.national_category,
+        });
+
+        if (elements.selectionSummary) {
+            elements.selectionSummary.textContent = summary;
+        }
     }
 
-    const hue = Math.abs(hash) % 360;
-    return `hsl(${hue}, 70%, 45%)`;
-}
-
-function getMarkerRadius(total) {
-    if (total <= 0) {
-        return 8;
+    function setContextSummary(message) {
+        if (elements.contextSummary) {
+            elements.contextSummary.textContent = message;
+        }
     }
 
-    return Math.min(40, Math.max(10, Math.sqrt(total) * 0.06));
-}
-
-function getSummaryText(year, fuelType, nationalCategory) {
-    const parts = [`An: ${year}`];
-
-    if (fuelType) {
-        parts.push(`Combustibil: ${fuelType}`);
-    }
-    if (nationalCategory) {
-        parts.push(`Categorie: ${nationalCategory}`);
+    function updateUrlFromFilters() {
+        window.appUtils.updateUrlQuery({
+            year: state.filters.year,
+            fuel_type: state.filters.fuel_type,
+            national_category: state.filters.national_category,
+        });
     }
 
-    return parts.join(' · ');
-}
+    function buildExportHref() {
+        const queryString = window.appUtils.buildQueryString({
+            resource: 'map',
+            format: 'csv',
+            year: state.filters.year,
+            fuel_type: state.filters.fuel_type,
+            national_category: state.filters.national_category,
+        });
 
-function renderCountyMarkers(counties) {
-    markerLayer.clearLayers();
+        return `${exportBaseUrl}${queryString}`;
+    }
 
-    counties.forEach((county) => {
-        const coords = countyCoordinates[county.county_code];
-        if (!coords) {
+    function updateExportLinks() {
+        const href = buildExportHref();
+
+        if (elements.exportButton) {
+            elements.exportButton.href = href;
+        }
+
+        if (elements.exportInlineButton) {
+            elements.exportInlineButton.href = href;
+        }
+    }
+
+    function resetSelectedCountyPanel(message = 'Niciun județ selectat') {
+        window.appUtils.setText(elements.selectedCountyName, message, 'Niciun județ selectat');
+        window.appUtils.setText(elements.selectedCountyCode, 'Cod județ: -');
+        window.appUtils.setText(elements.selectedCountyTotal, '-');
+        window.appUtils.setText(elements.selectedCountyYear, state.filters.year || '-');
+        window.appUtils.setText(elements.selectedCountyBrand, '-');
+    }
+
+    function getCurrentFiltersFromForm() {
+        if (!elements.form) {
+            return { ...state.filters };
+        }
+
+        const values = window.appUtils.normalizeFilters(window.appUtils.getFormValues(elements.form));
+
+        return {
+            year: values.year || String(window.APP_DEFAULT_YEAR || new Date().getFullYear()),
+            fuel_type: values.fuel_type || '',
+            national_category: values.national_category || '',
+        };
+    }
+
+    function getCountyBrand(county) {
+        return county.top_brand || county.brand_name || county.brand || 'Necunoscut';
+    }
+
+    function getCountyCodeFromFeature(feature) {
+        const props = feature?.properties || {};
+        return props.mnemonic || props.code || props.countyCodeAlpha || props.abbr || null;
+    }
+
+    function getCountyNameFromFeature(feature) {
+        const props = feature?.properties || {};
+        return props.name || props.countyName || 'Județ';
+    }
+
+    function getCountyDataMap() {
+        const map = new Map();
+
+        state.counties.forEach((county) => {
+            if (county && county.county_code) {
+                map.set(String(county.county_code).toUpperCase(), county);
+            }
+        });
+
+        return map;
+    }
+
+    function getMaxVehicles() {
+        if (!Array.isArray(state.counties) || state.counties.length === 0) {
+            return 0;
+        }
+
+        return Math.max(...state.counties.map((county) => Number(county.total_vehicles || 0)));
+    }
+
+    function getFillColorByValue(value, maxValue) {
+        const safeValue = Number(value || 0);
+
+        if (safeValue <= 0 || maxValue <= 0) {
+            return 'rgba(148, 163, 184, 0.18)';
+        }
+
+        const ratio = safeValue / maxValue;
+
+        if (ratio >= 0.8) {
+            return 'rgba(96, 165, 250, 0.90)';
+        }
+        if (ratio >= 0.6) {
+            return 'rgba(96, 165, 250, 0.72)';
+        }
+        if (ratio >= 0.4) {
+            return 'rgba(96, 165, 250, 0.54)';
+        }
+        if (ratio >= 0.2) {
+            return 'rgba(96, 165, 250, 0.34)';
+        }
+
+        return 'rgba(96, 165, 250, 0.18)';
+    }
+
+    function getFeatureStyle(feature) {
+        const countyCode = getCountyCodeFromFeature(feature);
+        const countyDataMap = getCountyDataMap();
+        const county = countyCode ? countyDataMap.get(String(countyCode).toUpperCase()) : null;
+        const maxValue = getMaxVehicles();
+        const isSelected = state.selectedCountyCode && countyCode && String(countyCode).toUpperCase() === state.selectedCountyCode;
+
+        return {
+            color: isSelected ? '#f8fafc' : 'rgba(255,255,255,0.18)',
+            weight: isSelected ? 2.5 : 1.2,
+            fillColor: getFillColorByValue(county ? county.total_vehicles : 0, maxValue),
+            fillOpacity: county ? 0.92 : 0.45,
+        };
+    }
+
+    function updateSelectedCounty(county) {
+        if (!county) {
+            resetSelectedCountyPanel();
+            state.selectedCountyCode = null;
             return;
         }
 
-        const brand = getCountyBrand(county);
-        const color = getBrandColor(brand);
-        const radius = getMarkerRadius(county.total_vehicles);
+        state.selectedCountyCode = String(county.county_code || '').toUpperCase();
 
-        const marker = L.circleMarker(coords, {
-            radius,
-            color,
-            fillColor: color,
-            weight: 2,
-            opacity: 0.9,
-            fillOpacity: 0.45,
-        });
+        window.appUtils.setText(elements.selectedCountyName, county.county_name, 'Județ necunoscut');
+        window.appUtils.setText(elements.selectedCountyCode, `Cod județ: ${window.appUtils.safeText(county.county_code, '-')}`);
+        window.appUtils.setText(elements.selectedCountyTotal, window.appUtils.formatNumber(county.total_vehicles));
+        window.appUtils.setText(elements.selectedCountyYear, state.filters.year || '-');
+        window.appUtils.setText(elements.selectedCountyBrand, getCountyBrand(county), '-');
 
-        marker.addTo(markerLayer);
-
-        const popupHtml = `
-            <div style="font-family: Inter, system-ui, sans-serif; font-size: 0.95rem;">
-                <strong>${county.county_name}</strong><br/>
-                Total vehicule: <strong>${window.appUtils.formatNumber(county.total_vehicles)}</strong><br/>
-                Marcă predominantă: <strong>${brand}</strong>
-            </div>
-        `;
-
-        marker.bindPopup(popupHtml);
-        marker.on('click', () => updateSelectedCounty(county));
-    });
-}
-
-function updateSelectedCounty(county) {
-    elements.selectedCountyName.textContent = county.county_name;
-    elements.selectedCountyCode.textContent = `Cod județ: ${county.county_code}`;
-    elements.selectedCountyTotal.textContent = window.appUtils.formatNumber(county.total_vehicles);
-    elements.selectedCountyBrand.textContent = getCountyBrand(county);
-}
-
-async function loadFilters() {
-    try {
-        const filters = await window.appApi.getJson(buildApiUrl('filters.php'));
-
-        console.log('filters payload', filters);
-
-        // Ensure structure even if API returns empty/missing keys
-        if (!filters || typeof filters !== 'object') {
-            throw new Error('Payload filters invalid');
-        }
-
-        if (!Array.isArray(filters.years) || filters.years.length === 0) {
-            // Fallback: generate years from APP_MIN_YEAR..APP_MAX_YEAR
-            const min = Number(window.APP_MIN_YEAR) || (new Date().getFullYear() - 4);
-            const max = Number(window.APP_MAX_YEAR) || new Date().getFullYear();
-            const generated = [];
-            for (let y = min; y <= max; y += 1) generated.push(y);
-            filters.years = generated;
-            console.warn('Filters: years missing from API, generated fallback', filters.years);
-        }
-
-        elements.year.innerHTML = '<option value="">Selectare an</option>';
-        filters.years.forEach((year) => {
-            elements.year.appendChild(window.appUtils.createOption(year, year));
-        });
-
-        let selectedYear = String(defaultYear);
-        if (!filters.years.some((year) => String(year) === selectedYear)) {
-            selectedYear = filters.years.length > 0 ? String(filters.years[filters.years.length - 1]) : selectedYear;
-            console.warn('Anul implicit nu este disponibil în date. Setez anul existent cel mai recent:', selectedYear);
-        }
-
-        elements.year.value = selectedYear;
-
-        elements.fuelType.innerHTML = '<option value="">Toate tipurile de combustibil</option>';
-        (Array.isArray(filters.fuel_types) ? filters.fuel_types : []).forEach((fuel) => {
-            elements.fuelType.appendChild(window.appUtils.createOption(fuel.name, fuel.name));
-        });
-
-        elements.nationalCategory.innerHTML = '<option value="">Toate categoriile</option>';
-        (Array.isArray(filters.national_categories) ? filters.national_categories : []).forEach((category) => {
-            elements.nationalCategory.appendChild(window.appUtils.createOption(category.name, category.name));
-        });
-    } catch (error) {
-        console.error(error);
-        elements.selectionSummary.textContent = 'Nu am putut încărca filtrele. Încearcă să reîmprospătezi pagina.';
-    }
-}
-
-function getCountyBrand(county) {
-    return county.top_brand || county.brand_name || county.brand || 'Necunoscut';
-}
-
-async function refreshMap() {
-    const year = elements.year.value || String(defaultYear);
-    const fuelType = elements.fuelType.value || null;
-    const nationalCategory = elements.nationalCategory.value || null;
-
-    elements.selectedCountyName.textContent = 'Se încarcă date...';
-    elements.selectedCountyCode.textContent = 'Cod județ: -';
-    elements.selectedCountyTotal.textContent = '-';
-    elements.selectedCountyBrand.textContent = '-';
-    elements.selectionSummary.textContent = getSummaryText(year, fuelType, nationalCategory);
-    elements.selectedCountyYear.textContent = year;
-
-    try {
-        const data = await window.appApi.getJson(
-            buildApiUrl(`brand-map-data.php?year=${encodeURIComponent(year)}${fuelType ? `&fuel_type=${encodeURIComponent(fuelType)}` : ''}${nationalCategory ? `&national_category=${encodeURIComponent(nationalCategory)}` : ''}`)
+        setContextSummary(
+            `Județul selectat este ${window.appUtils.safeText(county.county_name, 'necunoscut')}. În contextul activ, acesta înregistrează ${window.appUtils.formatNumber(county.total_vehicles)} vehicule, iar marca predominantă este ${getCountyBrand(county)}.`
         );
 
-        if (!Array.isArray(data.result) || data.result.length === 0) {
-            elements.selectionSummary.textContent = 'Nu există date pentru selecția actuală.';
-            markerLayer.clearLayers();
+        refreshGeoJsonStyles();
+    }
+
+    function getPopupHtml(feature, county) {
+        const countyName = county?.county_name || getCountyNameFromFeature(feature);
+        const countyCode = county?.county_code || getCountyCodeFromFeature(feature) || '-';
+        const totalVehicles = county ? window.appUtils.formatNumber(county.total_vehicles) : '-';
+        const brand = county ? getCountyBrand(county) : '-';
+
+        return `
+            <div>
+                <strong>${window.appUtils.safeText(countyName, 'Județ')}</strong><br>
+                Cod: <strong>${window.appUtils.safeText(countyCode, '-')}</strong><br>
+                Total vehicule: <strong>${totalVehicles}</strong><br>
+                Marcă predominantă: <strong>${window.appUtils.safeText(brand, '-')}</strong>
+            </div>
+        `;
+    }
+
+    function handleFeatureHover(event) {
+        const layer = event.target;
+        layer.setStyle({
+            weight: 2.5,
+            color: '#f8fafc',
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+    }
+
+    function handleFeatureMouseOut() {
+        refreshGeoJsonStyles();
+    }
+
+    function handleFeatureClick(feature, county, layer) {
+        if (county) {
+            updateSelectedCounty(county);
+        } else {
+            const fallbackCounty = {
+                county_code: getCountyCodeFromFeature(feature),
+                county_name: getCountyNameFromFeature(feature),
+                total_vehicles: 0,
+                top_brand: 'Necunoscut',
+            };
+            updateSelectedCounty(fallbackCounty);
+        }
+
+        if (layer && typeof layer.openPopup === 'function') {
+            layer.openPopup();
+        }
+    }
+
+    function onEachCountyFeature(feature, layer) {
+        const countyCode = getCountyCodeFromFeature(feature);
+        const countyDataMap = getCountyDataMap();
+        const county = countyCode ? countyDataMap.get(String(countyCode).toUpperCase()) : null;
+
+        layer.bindPopup(getPopupHtml(feature, county));
+
+        layer.on({
+            mouseover: handleFeatureHover,
+            mouseout: handleFeatureMouseOut,
+            click() {
+                handleFeatureClick(feature, county, layer);
+            },
+        });
+    }
+
+    function refreshGeoJsonStyles() {
+        if (!state.geoJsonLayer) {
             return;
         }
 
-        renderCountyMarkers(data.result);
-        elements.selectionSummary.textContent = getSummaryText(year, fuelType, nationalCategory);
-        updateSelectedCounty(data.result[0]);
-    } catch (error) {
-        console.error(error);
-        elements.selectionSummary.textContent = 'Eroare la încărcarea datelor de pe hartă.';
+        state.geoJsonLayer.setStyle((feature) => getFeatureStyle(feature));
     }
-}
 
-if (elements.form) {
-    elements.form.addEventListener('submit', (event) => {
-        event.preventDefault();
+    function renderGeoJsonLayer() {
+        if (!state.map || !state.geoJson) {
+            return;
+        }
+
+        if (state.geoJsonLayer) {
+            state.map.removeLayer(state.geoJsonLayer);
+            state.geoJsonLayer = null;
+        }
+
+        state.geoJsonLayer = L.geoJSON(state.geoJson, {
+            style: getFeatureStyle,
+            onEachFeature: onEachCountyFeature,
+        });
+
+        state.geoJsonLayer.addTo(state.map);
+    }
+
+    function fitMapToGeoJson() {
+        if (!state.map || !state.geoJsonLayer) {
+            return;
+        }
+
+        try {
+            const bounds = state.geoJsonLayer.getBounds();
+            if (bounds && bounds.isValid()) {
+                state.map.fitBounds(bounds, { padding: [20, 20] });
+            }
+        } catch (error) {
+            console.warn('Nu s-a putut ajusta automat harta:', error);
+        }
+    }
+
+    async function loadGeoJson() {
+        const response = await fetch(geoJsonUrl, { credentials: 'same-origin' });
+
+        if (!response.ok) {
+            throw new Error('Nu s-a putut încărca fișierul GeoJSON.');
+        }
+
+        const geoJson = await response.json();
+
+        if (!geoJson || geoJson.type !== 'FeatureCollection' || !Array.isArray(geoJson.features)) {
+            throw new Error('Fișierul GeoJSON este invalid.');
+        }
+
+        state.geoJson = geoJson;
+    }
+
+    async function loadFilters() {
+        state.filtersData = await window.appFilters.loadFilters();
+
+        if (!elements.form) {
+            return;
+        }
+
+        const queryValues = window.appUtils.getQueryParams();
+        const selectedValues = {
+            year: queryValues.year || state.filters.year,
+            fuel_type: queryValues.fuel_type || '',
+            national_category: queryValues.national_category || '',
+        };
+
+        window.appFilters.applyFiltersToForm(elements.form, state.filtersData, {
+            selectedValues,
+            yearDefaultLabel: 'Selectare an',
+            fuelTypeDefaultLabel: 'Toate tipurile de combustibil',
+            nationalCategoryDefaultLabel: 'Toate categoriile',
+        });
+
+        state.filters = getCurrentFiltersFromForm();
+        setSelectionSummary();
+        updateExportLinks();
+    }
+
+    async function fetchMapData() {
+        return window.appApi.getJson('map.php', {
+            year: state.filters.year,
+            fuel_type: state.filters.fuel_type,
+            national_category: state.filters.national_category,
+        });
+    }
+
+    function extractCountyRows(payload) {
+        if (Array.isArray(payload)) {
+            return payload;
+        }
+
+        if (payload && Array.isArray(payload.result)) {
+            return payload.result;
+        }
+
+        if (payload && Array.isArray(payload.rows)) {
+            return payload.rows;
+        }
+
+        return [];
+    }
+
+    function selectInitialCounty() {
+        if (!Array.isArray(state.counties) || state.counties.length === 0) {
+            resetSelectedCountyPanel('Niciun județ disponibil');
+            return;
+        }
+
+        const firstCounty = state.counties[0];
+        updateSelectedCounty(firstCounty);
+    }
+
+    function renderNoDataState() {
+        state.counties = [];
+        state.selectedCountyCode = null;
+        refreshGeoJsonStyles();
+        resetSelectedCountyPanel('Niciun județ disponibil');
+        setContextSummary('Nu există date pentru selecția curentă.');
+    }
+
+    async function refreshMap(event) {
+        if (event && typeof event.preventDefault === 'function') {
+            event.preventDefault();
+        }
+
+        state.filters = getCurrentFiltersFromForm();
+        state.isLoading = true;
+
+        setSelectionSummary();
+        setLoadingState('Se încarcă datele hărții...');
+        resetSelectedCountyPanel('Se încarcă date...');
+        updateUrlFromFilters();
+        updateExportLinks();
+
+        try {
+            const payload = await fetchMapData();
+            const rows = extractCountyRows(payload);
+
+            state.counties = rows
+                .map((item) => ({
+                    county_code: window.appUtils.safeText(item.county_code, ''),
+                    county_name: window.appUtils.safeText(item.county_name, 'Județ'),
+                    total_vehicles: Number(item.total_vehicles || 0),
+                    top_brand: window.appUtils.safeText(getCountyBrand(item), 'Necunoscut'),
+                }))
+                .filter((item) => item.county_code !== '');
+
+            renderGeoJsonLayer();
+
+            if (state.counties.length === 0) {
+                renderNoDataState();
+                setLoadingState('Nu există date pentru selecția activă.');
+                return;
+            }
+
+            selectInitialCounty();
+            fitMapToGeoJson();
+            setLoadingState('Hartă actualizată.');
+        } catch (error) {
+            console.error('Eroare la încărcarea hărții:', error);
+            state.counties = [];
+            state.selectedCountyCode = null;
+            refreshGeoJsonStyles();
+            resetSelectedCountyPanel('Eroare la încărcare');
+            setContextSummary(error instanceof Error ? error.message : 'A apărut o eroare la încărcarea hărții.');
+            setLoadingState('A apărut o eroare.');
+        } finally {
+            state.isLoading = false;
+        }
+    }
+
+    function resetFilters() {
+        if (!elements.form) {
+            return;
+        }
+
+        window.appFilters.resetFormFilters(elements.form);
+
+        if (elements.year) {
+            elements.year.value = String(window.APP_DEFAULT_YEAR || new Date().getFullYear());
+        }
+
+        state.filters = getCurrentFiltersFromForm();
+        setSelectionSummary();
+        updateUrlFromFilters();
+        updateExportLinks();
         refreshMap();
-    });
-}
+    }
 
-if (elements.reset) {
-    elements.reset.addEventListener('click', () => {
-        if (elements.form) elements.form.reset();
-        refreshMap();
-    });
-}
+    function initMap() {
+        state.map = L.map('map-canvas', {
+            minZoom: 6,
+            maxZoom: 12,
+            zoomControl: true,
+        }).setView(mapCenter, mapZoom);
 
-window.addEventListener('DOMContentLoaded', async () => {
-    await loadFilters();
-    refreshMap();
-});
+        state.tileLayer = L.tileLayer(
+            'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+            {
+                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+                subdomains: 'abcd',
+                maxZoom: 19,
+            }
+        );
+
+        state.tileLayer.addTo(state.map);
+    }
+
+    function bindEvents() {
+        if (elements.form) {
+            elements.form.addEventListener('submit', refreshMap);
+        }
+
+        if (elements.reset) {
+            elements.reset.addEventListener('click', resetFilters);
+        }
+
+        const autoSubmitHandler = window.appUtils.debounce(() => {
+            if (elements.form) {
+                if (typeof elements.form.requestSubmit === 'function') {
+                    elements.form.requestSubmit();
+                } else {
+                    refreshMap();
+                }
+            }
+        }, 220);
+
+        [elements.year, elements.fuelType, elements.nationalCategory].forEach((element) => {
+            if (element) {
+                element.addEventListener('change', autoSubmitHandler);
+                element.addEventListener('input', () => {
+                    state.filters = getCurrentFiltersFromForm();
+                    updateExportLinks();
+                });
+            }
+        });
+    }
+
+    async function init() {
+        ensureDependencies();
+
+        if (!elements.form) {
+            return;
+        }
+
+        setLoadingState('Se inițializează componenta cartografică...');
+        setSelectionSummary();
+        resetSelectedCountyPanel();
+
+        try {
+            initMap();
+            await Promise.all([loadGeoJson(), loadFilters()]);
+            bindEvents();
+            await refreshMap();
+        } catch (error) {
+            console.error('Nu s-a putut inițializa pagina de hartă:', error);
+            setLoadingState('Inițializare eșuată.');
+            setContextSummary(error instanceof Error ? error.message : 'Nu s-a putut inițializa componenta cartografică.');
+            resetSelectedCountyPanel('Inițializare eșuată');
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+})();

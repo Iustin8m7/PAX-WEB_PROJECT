@@ -13,7 +13,5 @@ try {
 
     Response::success($filters);
 } catch (Throwable $e) {
-    Response::error('Nu s-au putut incarca filtrele.', 500, [
-        'exception' => $e->getMessage(),
-    ]);
+    Response::error('Nu s-au putut încărca filtrele.', 500);
 }

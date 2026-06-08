@@ -25,7 +25,7 @@ class FilterRepository
         $rows = $stmt->fetchAll();
 
         return array_map(
-            static fn(array $row): int => (int)$row['year'],
+            static fn(array $row): int => (int) $row['year'],
             $rows
         );
     }
@@ -115,9 +115,9 @@ class FilterRepository
         return [
             'years' => $this->getAvailableYears(),
             'counties' => $this->getAvailableCounties(),
-            'national_categories' => $this->getAvailableNationalCategories(),
-            'community_categories' => $this->getAvailableCommunityCategories(),
-            'fuel_types' => $this->getAvailableFuelTypes(),
+            'nationalCategories' => $this->getAvailableNationalCategories(),
+            'communityCategories' => $this->getAvailableCommunityCategories(),
+            'fuelTypes' => $this->getAvailableFuelTypes(),
             'brands' => $this->getAvailableBrands(),
         ];
     }

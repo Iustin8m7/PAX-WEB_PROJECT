@@ -1,90 +1,529 @@
 /* ==========================================================================
-   LAYOUT MAP EXPLORER
+   MAP PAGE LAYOUT
    ========================================================================== */
+
+.map-main {
+    background:
+        radial-gradient(circle at 84% 16%, rgba(59, 130, 246, 0.08), transparent 24%),
+        radial-gradient(circle at 14% 86%, rgba(217, 70, 239, 0.08), transparent 26%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
+}
+
+.map-hero-section {
+    padding-bottom: 58px;
+}
+
+.map-hero-content h1 {
+    max-width: 860px;
+    font-size: clamp(2.35rem, 4vw, 3.45rem);
+    margin-bottom: 20px;
+}
+
+.map-hero-content .map-lead {
+    max-width: 780px;
+}
+
+.map-hero-panel {
+    display: grid;
+    gap: 18px;
+}
+
+.map-hero-panel .hero-stat-card {
+    min-height: 118px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   MAP FILTERS / STATUS
+   ========================================================================== */
+
+.map-section:first-of-type {
+    padding-top: 28px;
+}
+
+.map-page-shell .filters-panel {
+    display: grid;
+    gap: 22px;
+    background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(30, 41, 59, 0.76));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 28px;
+    border-radius: 24px;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+}
+
+.map-page-shell .map-filters-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.map-page-shell .form-field label {
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.map-page-shell .form-field select,
+.map-page-shell .form-field input,
+.map-page-shell .select-custom {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: var(--transition-smooth);
+}
+
+.map-page-shell .form-field select:focus,
+.map-page-shell .form-field input:focus,
+.map-page-shell .select-custom:focus {
+    outline: none;
+    border-color: rgba(96, 165, 250, 0.5);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+.map-page-shell .filters-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.map-status-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.map-status-bar .status-pill {
+    min-height: 88px;
+    justify-content: center;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+}
+
+.map-status-bar .status-value {
+    font-size: 0.98rem;
+    color: var(--text-soft);
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   MAIN MAP LAYOUT
+   ========================================================================== */
+
 .map-layout {
     display: grid;
-    grid-template-columns: 1.3fr 0.7fr;
-    gap: 32px;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 28px;
     align-items: start;
 }
 
-@media (max-width: 992px) {
-    .map-layout {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
+.map-main-card {
+    padding: 26px;
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.24);
 }
 
-/* CONTAINERUL HĂRȚII LEAFLET */
-.map-canvas-container {
+.map-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.map-card-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.map-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.map-sidebar {
+    display: grid;
+    gap: 18px;
+}
+
+.map-info-card {
+    padding: 24px;
+    border-radius: 22px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.map-info-card .map-card-header {
+    margin-bottom: 18px;
+}
+
+.map-info-card .map-card-header h2 {
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   LEAFLET MAP CANVAS
+   ========================================================================== */
+
+.map-canvas-container,
+#map-canvas {
     width: 100%;
-    height: 550px;
-    background-color: #1e293b;
-    border-radius: 12px;
+    min-height: 560px;
+    height: 560px;
+    border-radius: 18px;
     overflow: hidden;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background:
+        radial-gradient(circle at center, rgba(59, 130, 246, 0.04), transparent 55%),
+        #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.06);
     z-index: 1;
-    /* Previne suprapunerea peste header-ul sticky */
 }
 
 .map-loader {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--text-muted);
     font-weight: 500;
+    font-size: 0.96rem;
+    background: rgba(15, 23, 42, 0.58);
+    z-index: 20;
+    text-align: center;
+    padding: 20px;
 }
 
-/* CUSTOM STYLES PENTRU POPUP-URILE LEAFLET (Să se potrivească cu Dark Mode) */
+.leaflet-container {
+    width: 100%;
+    height: 100%;
+    background: #172033;
+    border-radius: 18px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.leaflet-control-zoom a {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: #273449 !important;
+}
+
+.leaflet-control-attribution {
+    background: rgba(15, 23, 42, 0.8) !important;
+    color: var(--text-muted) !important;
+    border-radius: 8px 0 0 0;
+}
+
+.leaflet-control-attribution a {
+    color: var(--color-accent) !important;
+}
+
+/* ==========================================================================
+   LEAFLET POPUPS / TOOLTIPS
+   ========================================================================== */
+
 .leaflet-popup-content-wrapper {
     background: #1e293b !important;
     color: #f8fafc !important;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45) !important;
     font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.leaflet-popup-content {
+    margin: 14px 16px !important;
+    line-height: 1.55 !important;
+    color: var(--text-soft) !important;
 }
 
 .leaflet-popup-tip {
     background: #1e293b !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* SELECT-URI CUSTOM */
-.select-custom {
-    width: 100%;
-    padding: 12px 16px;
-    background-color: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #f8fafc;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 0.95rem;
-    outline: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.leaflet-tooltip {
+    background: rgba(15, 23, 42, 0.92) !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    padding: 8px 12px !important;
 }
 
-.select-custom:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+/* ==========================================================================
+   MAP LEGEND
+   ========================================================================== */
+
+.map-legend-box {
+    padding: 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.select-custom option {
-    background-color: #1e293b;
-    color: #f8fafc;
+.map-legend-header h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-weight: 700;
 }
 
-/* METRICILE JUDEȚULUI SELECTAT */
+.map-legend-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+}
+
+.legend-scale {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+}
+
+.legend-step {
+    display: block;
+    height: 14px;
+    flex: 1;
+    border-radius: 999px;
+}
+
+.legend-step-1 {
+    background: rgba(96, 165, 250, 0.16);
+}
+
+.legend-step-2 {
+    background: rgba(96, 165, 250, 0.32);
+}
+
+.legend-step-3 {
+    background: rgba(96, 165, 250, 0.5);
+}
+
+.legend-step-4 {
+    background: rgba(96, 165, 250, 0.68);
+}
+
+.legend-step-5 {
+    background: rgba(96, 165, 250, 0.9);
+}
+
+.legend-labels {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: var(--text-muted);
+    font-size: 0.84rem;
+}
+
+/* ==========================================================================
+   SELECTED COUNTY PANEL
+   ========================================================================== */
+
+.selected-county-box {
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.selected-county-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.selected-county-code {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+}
+
+.selected-metrics {
+    display: grid;
+    gap: 14px;
+}
+
+.selected-metric {
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.selected-metric-label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+}
+
+.selected-metric-value {
+    display: block;
+    font-size: 1.18rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+#selected-county-brand {
+    color: var(--color-accent);
+}
+
 .brand-badge-inline {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 4px 12px;
+    border-radius: 999px;
     background-color: rgba(59, 130, 246, 0.15);
     color: #60a5fa;
-    padding: 2px 10px;
-    border-radius: 6px;
     font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
+}
+
+/* ==========================================================================
+   MAP SUMMARY / QUICK ACTIONS
+   ========================================================================== */
+
+.map-summary-text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.quick-action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ==========================================================================
+   MAP STATES / HELPERS
+   ========================================================================== */
+
+.map-empty-state,
+.map-error-state {
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    border: 1px dashed rgba(148, 163, 184, 0.22);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.map-selection-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   FINAL INSIGHT SECTION
+   ========================================================================== */
+
+.map-section-final {
+    padding-bottom: 110px;
+}
+
+.map-section-final .insight-box {
+    background:
+        linear-gradient(135deg, rgba(29, 78, 216, 0.10), rgba(217, 70, 239, 0.08)),
+        rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(96, 165, 250, 0.16);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+    .map-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .map-page-shell .map-filters-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .map-main-card,
+    .map-info-card,
+    .map-page-shell .filters-panel {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .map-page-shell .map-filters-grid,
+    .map-status-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .map-canvas-container,
+    #map-canvas {
+        min-height: 420px;
+        height: 420px;
+    }
+
+    .map-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .map-page-shell .filters-actions,
+    .quick-action-list,
+    .map-section-final .insight-actions {
+        width: 100%;
+    }
+
+    .map-page-shell .filters-actions .btn,
+    .quick-action-list .btn,
+    .map-section-final .insight-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 560px) {
+    .selected-metric {
+        padding: 14px;
+    }
+
+    .legend-labels {
+        flex-direction: column;
+        gap: 6px;
+    }
 }

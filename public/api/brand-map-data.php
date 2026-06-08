@@ -25,7 +25,5 @@ try {
         'result' => $rows,
     ]);
 } catch (Throwable $e) {
-    Response::error('Nu s-au putut încărca datele pentru harta brandurilor.', 500, [
-        'exception' => $e->getMessage(),
-    ]);
+    Response::error('Nu s-au putut încărca datele pentru componenta cartografică.', 500);
 }

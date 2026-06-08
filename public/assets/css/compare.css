@@ -1,0 +1,450 @@
+/* ==========================================================================
+   COMPARE PAGE LAYOUT
+   ========================================================================== */
+
+.compare-main {
+    background:
+        radial-gradient(circle at 84% 14%, rgba(59, 130, 246, 0.08), transparent 24%),
+        radial-gradient(circle at 16% 86%, rgba(217, 70, 239, 0.08), transparent 26%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
+}
+
+.compare-hero-section {
+    padding-bottom: 58px;
+}
+
+.compare-hero-content h1 {
+    max-width: 900px;
+    font-size: clamp(2.35rem, 4vw, 3.45rem);
+    margin-bottom: 20px;
+}
+
+.compare-hero-content .compare-lead {
+    max-width: 800px;
+}
+
+.compare-hero-panel {
+    display: grid;
+    gap: 18px;
+}
+
+.compare-hero-panel .hero-stat-card {
+    min-height: 118px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   COMPARE FILTERS / STATUS
+   ========================================================================== */
+
+.compare-section:first-of-type {
+    padding-top: 28px;
+}
+
+.compare-filters-layout {
+    display: grid;
+    gap: 22px;
+}
+
+.compare-filter-card {
+    padding: 26px;
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(30, 41, 59, 0.76));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+}
+
+.compare-filter-card-header {
+    margin-bottom: 18px;
+}
+
+.compare-filter-card-header h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.compare-filters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.compare-page-shell .form-field label {
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.compare-page-shell .form-field select,
+.compare-page-shell .form-field input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: var(--transition-smooth);
+}
+
+.compare-page-shell .form-field input::placeholder {
+    color: rgba(148, 163, 184, 0.72);
+}
+
+.compare-page-shell .form-field select:focus,
+.compare-page-shell .form-field input:focus {
+    outline: none;
+    border-color: rgba(96, 165, 250, 0.5);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+.compare-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.compare-status-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.compare-status-bar .status-pill {
+    min-height: 88px;
+    justify-content: center;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+}
+
+.compare-status-bar .status-value {
+    font-size: 0.98rem;
+    color: var(--text-soft);
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   OVERVIEW COMPARISON CARDS
+   ========================================================================== */
+
+.compare-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.compare-overview-card {
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
+    transition: var(--transition-smooth);
+}
+
+.compare-overview-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(96, 165, 250, 0.22);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.24);
+}
+
+.compare-overview-card .overview-label {
+    margin-bottom: 12px;
+}
+
+.compare-overview-card .overview-value {
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-main);
+}
+
+.compare-overview-card .overview-meta {
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+/* Variante vizuale ușor distincte pentru A și B */
+#compare-total-a {
+    color: var(--color-accent);
+}
+
+#compare-total-b {
+    color: #c084fc;
+}
+
+#compare-difference-absolute {
+    color: var(--text-main);
+}
+
+#compare-difference-percent {
+    color: #f9a8d4;
+}
+
+/* ==========================================================================
+   MAIN COMPARE CHART
+   ========================================================================== */
+
+.compare-chart-card {
+    padding: 26px;
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.24);
+}
+
+.compare-chart-card .chart-card-header {
+    margin-bottom: 18px;
+}
+
+.compare-chart-card .chart-card-header h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.compare-chart-card .chart-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.compare-chart-card .chart-canvas {
+    min-height: 360px;
+    border-radius: 18px;
+    border: 1px dashed rgba(148, 163, 184, 0.18);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    padding: 20px;
+}
+
+.compare-chart-card .chart-caption {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+/* ==========================================================================
+   DETAIL TABLES / COMPARATIVE LISTS
+   ========================================================================== */
+
+.compare-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.compare-detail-grid .data-card {
+    padding: 24px;
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.compare-detail-grid .data-card-header {
+    margin-bottom: 18px;
+}
+
+.compare-detail-grid .data-card-header h3 {
+    font-size: 1.16rem;
+    font-weight: 700;
+}
+
+.compare-detail-grid .table-shell {
+    border-radius: 18px;
+    overflow: auto;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.compare-detail-grid .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 520px;
+}
+
+.compare-detail-grid .summary-table th,
+.compare-detail-grid .summary-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.compare-detail-grid .summary-table th {
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+}
+
+.compare-detail-grid .summary-table td {
+    color: var(--text-soft);
+    font-size: 0.94rem;
+    line-height: 1.5;
+}
+
+.compare-detail-grid .summary-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.compare-detail-grid .summary-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================================================================
+   VISUAL ACCENTS FOR A / B TABLES
+   ========================================================================== */
+
+#compare-top-counties-a-table thead,
+#compare-top-models-a-table thead {
+    background: rgba(59, 130, 246, 0.08);
+}
+
+#compare-top-counties-b-table thead,
+#compare-top-models-b-table thead {
+    background: rgba(168, 85, 247, 0.10);
+}
+
+/* ==========================================================================
+   COMPARE SUMMARY / FINAL INSIGHT
+   ========================================================================== */
+
+.compare-section-final {
+    padding-bottom: 110px;
+}
+
+.compare-section-final .insight-box {
+    background:
+        linear-gradient(135deg, rgba(29, 78, 216, 0.10), rgba(217, 70, 239, 0.08)),
+        rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(96, 165, 250, 0.16);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.compare-section-final .insight-content h2 {
+    font-size: 1.7rem;
+    margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   SPECIAL HELPERS
+   ========================================================================== */
+
+.compare-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--color-accent);
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.compare-chip-alt {
+    background: rgba(168, 85, 247, 0.14);
+    color: #d8b4fe;
+}
+
+.compare-positive {
+    color: #4ade80;
+    font-weight: 700;
+}
+
+.compare-negative {
+    color: #fb7185;
+    font-weight: 700;
+}
+
+.compare-neutral {
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+.compare-empty-state,
+.compare-loading-state,
+.compare-error-state {
+    padding: 22px;
+    border-radius: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    border: 1px dashed rgba(148, 163, 184, 0.22);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+    .compare-filters-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .compare-overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .compare-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .compare-filter-card,
+    .compare-chart-card,
+    .compare-detail-grid .data-card,
+    .compare-overview-card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .compare-filters-grid,
+    .compare-status-bar,
+    .compare-overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .compare-chart-card .chart-canvas {
+        min-height: 260px;
+    }
+
+    .compare-actions,
+    .compare-section-final .insight-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .compare-actions .btn,
+    .compare-section-final .insight-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 560px) {
+    .compare-chart-card .chart-card-header,
+    .compare-detail-grid .data-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

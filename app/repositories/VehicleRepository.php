@@ -22,10 +22,12 @@ class VehicleRepository
     ): array {
         $allowedSortFields = [
             'year' => 'vr.year',
-            'county' => 'c.name',
+            'county_code' => 'c.code',
+            'county_name' => 'c.name',
             'national_category' => 'vc.name',
             'community_category' => 'cc.name',
-            'brand' => 'b.name',
+            'brand_name' => 'b.name',
+            'model_description' => 'vr.model_description',
             'fuel_type' => 'ft.name',
             'vehicle_count' => 'vr.vehicle_count',
         ];
@@ -69,7 +71,7 @@ class VehicleRepository
 
         if (!empty($filters['year'])) {
             $sql .= ' AND vr.year = :year ';
-            $params[':year'] = (int)$filters['year'];
+            $params[':year'] = (int) $filters['year'];
         }
 
         if (!empty($filters['county_code'])) {
@@ -140,7 +142,7 @@ class VehicleRepository
 
         if (!empty($filters['year'])) {
             $sql .= ' AND vr.year = :year ';
-            $params[':year'] = (int)$filters['year'];
+            $params[':year'] = (int) $filters['year'];
         }
 
         if (!empty($filters['county_code'])) {
@@ -188,7 +190,7 @@ class VehicleRepository
         $row = $stmt->fetch();
 
         if (isset($row['total'])) {
-            return (int)$row['total'];
+            return (int) $row['total'];
         }
 
         return 0;

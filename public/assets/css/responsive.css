@@ -1,0 +1,484 @@
+/* ==========================================================================
+   RESPONSIVE GLOBAL LAYER
+   Acest fișier completează stilurile existente și rafinează comportamentul
+   pe tabletă și mobil pentru toate paginile publice ale aplicației.
+   ========================================================================== */
+
+/* ==========================================================================
+   <= 1200px
+   ========================================================================== */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .hero-grid,
+    .dashboard-hero-grid,
+    .map-hero-grid,
+    .search-hero-grid,
+    .compare-hero-grid,
+    .about-hero-grid {
+        gap: 36px;
+    }
+
+    .showcase-grid,
+    .about-two-column-grid {
+        gap: 24px;
+    }
+
+    .dashboard-grid,
+    .compare-detail-grid,
+    .dashboard-lower-grid,
+    .map-layout {
+        gap: 22px;
+    }
+}
+
+/* ==========================================================================
+   <= 1100px
+   ========================================================================== */
+@media (max-width: 1100px) {
+    .hero-grid,
+    .dashboard-hero-grid,
+    .map-hero-grid,
+    .search-hero-grid,
+    .compare-hero-grid,
+    .about-hero-grid,
+    .showcase-grid,
+    .about-two-column-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-lower-grid,
+    .map-layout,
+    .compare-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .chart-card,
+    .chart-card-large,
+    .chart-card-wide {
+        grid-column: span 6;
+    }
+
+    .compare-overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .search-filters-grid,
+    .compare-filters-grid,
+    .map-filters-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .form-field-wide {
+        grid-column: span 2;
+    }
+
+    .main-nav {
+        gap: 6px;
+    }
+
+    .main-nav a,
+    .nav-link {
+        padding: 8px 12px;
+        font-size: 0.92rem;
+    }
+}
+
+/* ==========================================================================
+   <= 900px
+   ========================================================================== */
+@media (max-width: 900px) {
+    .header-inner {
+        gap: 18px;
+    }
+
+    .brand-mark {
+        font-size: 1.1rem;
+    }
+
+    .dashboard-status-bar,
+    .map-status-bar,
+    .search-status-bar,
+    .compare-status-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .overview-grid,
+    .compare-overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .results-meta {
+        gap: 12px;
+    }
+
+    .bar-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .bar-value {
+        text-align: left;
+    }
+
+    .map-canvas-container,
+    #map-canvas,
+    .map-preview {
+        min-height: 420px;
+        height: 420px;
+    }
+
+    .chart-canvas,
+    .chart-card-large .chart-canvas,
+    .chart-card-wide .chart-canvas,
+    .compare-chart-card .chart-canvas {
+        min-height: 280px;
+    }
+}
+
+/* ==========================================================================
+   <= 768px
+   ========================================================================== */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .site-header {
+        position: sticky;
+    }
+
+    .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+        min-height: auto;
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    .brand-mark {
+        justify-content: center;
+    }
+
+    .main-nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .main-nav a,
+    .nav-link {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 140px;
+        text-align: center;
+    }
+
+    .hero-section,
+    .dashboard-hero-section,
+    .map-hero-section,
+    .search-hero-section,
+    .compare-hero-section,
+    .about-hero-section,
+    .section,
+    .dashboard-section,
+    .map-section,
+    .search-section,
+    .compare-section,
+    .about-section {
+        padding-top: 64px;
+        padding-bottom: 64px;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-title-accent {
+        font-size: 1.8rem;
+    }
+
+    .hero-description,
+    .dashboard-lead,
+    .map-lead,
+    .search-lead,
+    .compare-lead,
+    .about-lead,
+    .section-lead {
+        font-size: 1rem;
+    }
+
+    .hero-panel-grid,
+    .filters-grid,
+    .search-filters-grid,
+    .compare-filters-grid,
+    .map-filters-grid,
+    .dashboard-grid,
+    .dashboard-status-bar,
+    .map-status-bar,
+    .search-status-bar,
+    .compare-status-bar,
+    .overview-grid,
+    .compare-overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card,
+    .chart-card-large,
+    .chart-card-wide {
+        grid-column: auto;
+    }
+
+    .filters-panel,
+    .compare-filter-card,
+    .chart-card,
+    .data-card,
+    .map-main-card,
+    .map-info-card,
+    .search-results-card,
+    .compare-chart-card,
+    .overview-card,
+    .compare-overview-card,
+    .about-card,
+    .showcase-card,
+    .insight-box,
+    .cta-box {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .form-field-wide {
+        grid-column: span 1;
+    }
+
+    .results-table th,
+    .results-table td,
+    .summary-table th,
+    .summary-table td {
+        padding: 12px 10px;
+    }
+
+    .search-results-header,
+    .chart-card-header,
+    .data-card-header,
+    .map-card-header,
+    .compare-filter-card-header,
+    .footer-content,
+    .insight-box,
+    .cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-actions,
+    .dashboard-hero-actions,
+    .map-hero-actions,
+    .search-hero-actions,
+    .compare-hero-actions,
+    .about-hero-actions,
+    .filters-actions,
+    .compare-actions,
+    .cta-actions,
+    .insight-actions,
+    .quick-action-list,
+    .pagination-bar {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .hero-actions .btn,
+    .dashboard-hero-actions .btn,
+    .map-hero-actions .btn,
+    .search-hero-actions .btn,
+    .compare-hero-actions .btn,
+    .about-hero-actions .btn,
+    .filters-actions .btn,
+    .compare-actions .btn,
+    .cta-actions .btn,
+    .insight-actions .btn,
+    .quick-action-list .btn,
+    .pagination-bar .btn {
+        width: 100%;
+    }
+
+    .results-meta {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .meta-stat {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .table-shell {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .results-table {
+        min-width: 980px;
+    }
+
+    .summary-table {
+        min-width: 560px;
+    }
+
+    .footer-meta {
+        align-items: flex-start;
+    }
+}
+
+/* ==========================================================================
+   <= 560px
+   ========================================================================== */
+@media (max-width: 560px) {
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .brand-badge {
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
+    }
+
+    .brand-text {
+        font-size: 1rem;
+    }
+
+    .main-nav a,
+    .nav-link {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+
+    .hero-kicker,
+    .section-kicker {
+        font-size: 0.76rem;
+        padding: 6px 12px;
+    }
+
+    .hero-title {
+        font-size: 1.95rem;
+    }
+
+    .hero-title-accent {
+        font-size: 1.55rem;
+    }
+
+    .hero-meta {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .meta-pill {
+        justify-content: space-between;
+        border-radius: 14px;
+    }
+
+    .chart-canvas,
+    .chart-card-large .chart-canvas,
+    .chart-card-wide .chart-canvas,
+    .compare-chart-card .chart-canvas {
+        min-height: 240px;
+    }
+
+    .map-canvas-container,
+    #map-canvas,
+    .map-preview {
+        min-height: 360px;
+        height: 360px;
+    }
+
+    .legend-labels {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .selected-metric {
+        padding: 14px;
+    }
+
+    .pagination-info {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+/* ==========================================================================
+   <= 420px
+   ========================================================================== */
+@media (max-width: 420px) {
+    .hero-section,
+    .dashboard-hero-section,
+    .map-hero-section,
+    .search-hero-section,
+    .compare-hero-section,
+    .about-hero-section,
+    .section,
+    .dashboard-section,
+    .map-section,
+    .search-section,
+    .compare-section,
+    .about-section {
+        padding-top: 54px;
+        padding-bottom: 54px;
+    }
+
+    .filters-panel,
+    .compare-filter-card,
+    .chart-card,
+    .data-card,
+    .map-main-card,
+    .map-info-card,
+    .search-results-card,
+    .compare-chart-card,
+    .overview-card,
+    .compare-overview-card,
+    .about-card,
+    .showcase-card,
+    .insight-box,
+    .cta-box {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .hero-title {
+        font-size: 1.78rem;
+    }
+
+    .hero-title-accent {
+        font-size: 1.4rem;
+    }
+
+    .overview-card .overview-value,
+    .compare-overview-card .overview-value {
+        font-size: 1.55rem;
+    }
+
+    .results-table th,
+    .results-table td,
+    .summary-table th,
+    .summary-table td {
+        padding: 10px 8px;
+        font-size: 0.88rem;
+    }
+
+    .map-canvas-container,
+    #map-canvas,
+    .map-preview {
+        min-height: 320px;
+        height: 320px;
+    }
+}

@@ -26,71 +26,94 @@ try {
         $view = 'overview';
     }
 
+    $filters = [
+        'year' => getYearParam('year', false),
+        'county_code' => getOptionalStringParam('county_code'),
+        'national_category' => getOptionalStringParam('national_category'),
+        'community_category' => getOptionalStringParam('community_category'),
+        'fuel_type' => getOptionalStringParam('fuel_type'),
+        'brand' => getOptionalStringParam('brand'),
+    ];
+
     if ($view === 'overview') {
-        $year = getYearParam('year', true);
-        $data = $repository->getOverviewByYear($year);
+        if ($filters['year'] === null) {
+            Response::error('Parametrul year este obligatoriu pentru view=overview.', 400);
+        }
+
+        $data = $repository->getOverview($filters);
         $data = normalizeUtf8Value($data);
 
         Response::success([
             'view' => $view,
-            'year' => $year,
+            'filters' => $filters,
             'result' => $data,
         ]);
-    } else if ($view === 'yearly-totals') {
-        $data = $repository->getYearlyTotals();
+    } elseif ($view === 'yearly-totals') {
+        $data = $repository->getYearlyTotals($filters);
         $data = normalizeUtf8Value($data);
 
         Response::success([
             'view' => $view,
+            'filters' => $filters,
             'result' => $data,
         ]);
-    } else if ($view === 'top-brands') {
-        $year = getYearParam('year', true);
+    } elseif ($view === 'top-brands') {
+        if ($filters['year'] === null) {
+            Response::error('Parametrul year este obligatoriu pentru view=top-brands.', 400);
+        }
+
         $limit = getLimitParam('limit');
-        $data = $repository->getTopBrandsByYear($year, $limit);
+        $data = $repository->getTopBrands($filters, $limit);
         $data = normalizeUtf8Value($data);
 
         Response::success([
             'view' => $view,
-            'year' => $year,
+            'filters' => $filters,
             'limit' => $limit,
             'result' => $data,
         ]);
-    } else if ($view === 'fuel-distribution') {
-        $year = getYearParam('year', true);
-        $data = $repository->getFuelDistributionByYear($year);
+    } elseif ($view === 'fuel-distribution') {
+        if ($filters['year'] === null) {
+            Response::error('Parametrul year este obligatoriu pentru view=fuel-distribution.', 400);
+        }
+
+        $data = $repository->getFuelDistribution($filters);
         $data = normalizeUtf8Value($data);
 
         Response::success([
             'view' => $view,
-            'year' => $year,
+            'filters' => $filters,
             'result' => $data,
         ]);
-    } else if ($view === 'county-ranking') {
-        $year = getYearParam('year', true);
-        $data = $repository->getCountyRankingByYear($year);
+    } elseif ($view === 'county-ranking') {
+        if ($filters['year'] === null) {
+            Response::error('Parametrul year este obligatoriu pentru view=county-ranking.', 400);
+        }
+
+        $data = $repository->getCountyRanking($filters);
         $data = normalizeUtf8Value($data);
 
         Response::success([
             'view' => $view,
-            'year' => $year,
+            'filters' => $filters,
             'result' => $data,
         ]);
-    } else if ($view === 'category-distribution') {
-        $year = getYearParam('year', true);
-        $data = $repository->getNationalCategoryDistributionByYear($year);
+    } elseif ($view === 'category-distribution') {
+        if ($filters['year'] === null) {
+            Response::error('Parametrul year este obligatoriu pentru view=category-distribution.', 400);
+        }
+
+        $data = $repository->getNationalCategoryDistribution($filters);
         $data = normalizeUtf8Value($data);
-        
+
         Response::success([
             'view' => $view,
-            'year' => $year,
+            'filters' => $filters,
             'result' => $data,
         ]);
     } else {
-        Response::error('Valoarea parametrului view nu este suportata.', 400);
+        Response::error('Valoarea parametrului view nu este suportată.', 400);
     }
 } catch (Throwable $e) {
-    Response::error('Nu s-au putut incarca statisticile.', 500, [
-        'exception' => $e->getMessage(),
-    ]);
+    Response::error('Nu s-au putut încărca statisticile.', 500);
 }

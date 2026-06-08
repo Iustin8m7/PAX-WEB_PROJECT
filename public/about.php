@@ -10,7 +10,6 @@ if (isset($config['app_name'])) {
     $appName = 'Pax';
 }
 
-// Extragerea dinamică a limitelor de ani din fișierul global de configurare
 if (isset($config['app']['min_year'])) {
     $minYear = $config['app']['min_year'];
 } else {
@@ -30,71 +29,21 @@ if (isset($config['app']['max_year'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($appName); ?> - Despre</title>
+    <title><?php echo htmlspecialchars($appName); ?> - Despre aplicație</title>
+    <meta name="description"
+        content="Pagină informativă despre proiectul Pax, sursa datelor, tehnologiile utilizate și funcționalitățile principale.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="assets/css/main.css">
-
-    <style>
-        /* Ajustări de layout specifice pentru pagina Despre */
-        .about-content-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 28px;
-            margin-top: 24px;
-        }
-
-        @media (max-width: 992px) {
-            .about-content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .tech-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .tech-item {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(148, 163, 184, 0.12);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: #f8fafc;
-        }
-
-        .tech-item.highlight {
-            border-color: rgba(56, 189, 248, 0.3);
-            color: var(--accent, #38bdf8);
-        }
-
-        .features-bullet-list {
-            list-style: none;
-            padding: 0;
-            margin: 14px 0 0 0;
-        }
-
-        .features-bullet-list li {
-            position: relative;
-            padding-left: 24px;
-            margin-bottom: 10px;
-            color: #94a3b8;
-            font-size: 0.95rem;
-        }
-
-        .features-bullet-list li::before {
-            content: "✦";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--accent, #38bdf8);
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
 
 <body>
-    <div class="page-shell">
+    <div class="page-shell about-page-shell">
         <header class="site-header">
             <div class="container header-inner">
                 <a href="index.php" class="brand-mark">
@@ -113,104 +62,236 @@ if (isset($config['app']['max_year'])) {
             </div>
         </header>
 
-        <main class="section">
-            <div class="container">
-                <div class="section-heading">
-                    <p class="section-kicker">Informații Proiect</p>
-                    <h2>Despre Documentație</h2>
-                    <p class="section-lead">Aici găsești detaliile legate de scopul aplicației și tehnologiile
-                        implementate.</p>
-                </div>
+        <main class="about-main">
+            <section class="about-hero-section">
+                <div class="container about-hero-grid">
+                    <div class="about-hero-content">
+                        <p class="section-kicker">Despre proiect</p>
+                        <h1>Platformă Web pentru analiza parcului auto din România</h1>
+                        <p class="about-lead">
+                            <?php echo htmlspecialchars($appName); ?> este o aplicație Web orientată pe analiză de date,
+                            concepută pentru explorarea, compararea și vizualizarea informațiilor publice privind
+                            parcul auto din România, pentru perioada
+                            <strong><?php echo htmlspecialchars((string) $minYear); ?> -
+                                <?php echo htmlspecialchars((string) $maxYear); ?></strong>.
+                        </p>
 
-                <div class="about-content-grid">
-
-                    <div style="display: flex; flex-direction: column; gap: 24px;">
-
-                        <div class="hero-panel-card" style="padding: 24px;">
-                            <h3 style="font-size: 1.25rem; margin-bottom: 12px; color: #f8fafc;">Scopul aplicației</h3>
-                            <p style="color: #94a3b8; line-height: 1.6; margin: 0;">
-                                Această platformă a fost creată pentru a oferi o interfață intuitivă și modernă de
-                                explorare a datelor statistice privind parcul auto din România. Proiectul permite
-                                vizualizarea distribuției autovehiculelor pe județe, mărci și tipuri de combustibil în
-                                intervalul de timp <strong><?php echo $minYear; ?> - <?php echo $maxYear; ?></strong>,
-                                transformând fișiere brute de date în grafice și hărți tematice interactive.
-                            </p>
-                        </div>
-
-                        <div class="hero-panel-card" style="padding: 24px;">
-                            <h3 style="font-size: 1.25rem; margin-bottom: 12px; color: #f8fafc;">Funcționalități cheie
-                            </h3>
-                            <ul class="features-bullet-list">
-                                <li>Dashboard analitic cu topuri de mărci și distribuția tipurilor de combustibili.</li>
-                                <li>Hartă tematică interactivă bazată pe marcaje geografice pentru fiecare județ.</li>
-                                <li>Căutare avansată cu filtre multiple și paginare eficientă a seturilor de date.</li>
-                                <li>Comparație în timp real între performanțele și volumele a două mărci auto diferite.
-                                </li>
-                                <li>Statistici și topuri optimizate generate asincron direct la nivelul clientului.</li>
-                            </ul>
-                        </div>
-
-                        <div class="hero-panel-card" style="padding: 24px;">
-                            <h3 style="font-size: 1.25rem; margin-bottom: 12px; color: #f8fafc;">Tehnologii utilizate
-                            </h3>
-                            <p style="color: #94a3b8; line-height: 1.6; margin: 0;">
-                                Proiectul este construit pe o arhitectură modernă de tip **decoupled** (separată), unde
-                                interfața grafică comunică exclusiv prin servicii web asincrone cu serverul de date:
-                            </p>
-                            <div class="tech-list">
-                                <span class="tech-item highlight">PHP 8 (Strict Types)</span>
-                                <span class="tech-item highlight">REST API (JSON Architecture)</span>
-                                <span class="tech-item">Vanilla JavaScript (ES6+)</span>
-                                <span class="tech-item">Asynchronous Fetch API</span>
-                                <span class="tech-item">Leaflet.js (Hărți)</span>
-                                <span class="tech-item">CSS Custom Variables</span>
-                                <span class="tech-item">SQLite Database Layer</span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div>
-                        <div class="hero-panel-card" style="padding: 20px; position: sticky; top: 24px;">
-                            <h3
-                                style="font-size: 1rem; margin-bottom: 16px; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(148,163,184,0.12); padding-bottom: 8px;">
-                                🖥️ Status Mediu</h3>
-
-                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                    <span style="color: #94a3b8;">Aplicație:</span>
-                                    <span
-                                        style="color: var(--accent); font-weight: 600;"><?php echo htmlspecialchars($appName); ?></span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                    <span style="color: #94a3b8;">Mediu rulare:</span>
-                                    <span style="color: #22c55e; font-weight: 600;">Localhost</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                    <span style="color: #94a3b8;">Interval Date:</span>
-                                    <span style="color: #f8fafc; font-weight: 600;"><?php echo $minYear; ?> -
-                                        <?php echo $maxYear; ?></span>
-                                </div>
-                            </div>
-
-                            <div
-                                style="margin-top: 20px; padding: 10px; background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 8px; text-align: center;">
-                                <p style="font-size: 0.8rem; color: #94a3b8; margin: 0;">Toate modulele platformei sunt
-                                    acum complet configurate și active.</p>
-                            </div>
+                        <div class="about-hero-actions">
+                            <a class="btn btn-primary" href="dashboard.php">Acces către dashboard</a>
+                            <a class="btn btn-secondary" href="index.php">Înapoi la pagina principală</a>
                         </div>
                     </div>
 
+                    <aside class="about-hero-panel">
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-label">Tip aplicație</span>
+                            <span class="hero-stat-value">Data exploration platform</span>
+                        </div>
+
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-label">Perioadă analizată</span>
+                            <span class="hero-stat-value"><?php echo htmlspecialchars((string) $minYear); ?> -
+                                <?php echo htmlspecialchars((string) $maxYear); ?></span>
+                        </div>
+
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-label">Arhitectură</span>
+                            <span class="hero-stat-value">PHP + SQLite + Ajax + servicii Web REST</span>
+                        </div>
+                    </aside>
                 </div>
-            </div>
+            </section>
+
+            <section class="about-section">
+                <div class="container">
+                    <div class="section-heading section-heading-left">
+                        <p class="section-kicker">Scopul aplicației</p>
+                        <h2>De ce a fost dezvoltat proiectul</h2>
+                    </div>
+
+                    <div class="about-content-grid">
+                        <article class="about-card">
+                            <h3>Obiectiv principal</h3>
+                            <p>
+                                Aplicația oferă un mod coerent și interactiv de explorare a datelor publice privind
+                                parcul auto din România, într-o formă mai accesibilă decât tabelele brute sau fișierele
+                                CSV individuale.
+                            </p>
+                        </article>
+
+                        <article class="about-card">
+                            <h3>Valoare practică</h3>
+                            <p>
+                                Platforma transformă datele brute în indicatori sintetici, grafice, tabele filtrabile și
+                                reprezentări cartografice, permițând analiza rapidă a evoluției, distribuției și
+                                diferențelor teritoriale.
+                            </p>
+                        </article>
+
+                        <article class="about-card">
+                            <h3>Direcție funcțională</h3>
+                            <p>
+                                Proiectul este orientat pe vizualizare, căutare adecvată, comparație multi-criterială,
+                                explorare geografică și integrarea datelor prin servicii Web asincrone.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-section">
+                <div class="container">
+                    <div class="section-heading section-heading-left">
+                        <p class="section-kicker">Funcționalități principale</p>
+                        <h2>Modulele publice ale aplicației</h2>
+                        <p class="section-lead">
+                            Aplicația este structurată în module complementare, fiecare adresând un mod diferit de
+                            explorare și interpretare a datelor.
+                        </p>
+                    </div>
+
+                    <div class="feature-grid">
+                        <article class="feature-card feature-card-accent">
+                            <div class="feature-icon">01</div>
+                            <h3>Dashboard analitic</h3>
+                            <p>
+                                Explorează indicatorii principali, evoluția pe ani, structura pe combustibil și
+                                clasamentele relevante pentru contextul activ.
+                            </p>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-icon">02</div>
+                            <h3>Hartă interactivă</h3>
+                            <p>
+                                Explorează distribuția geografică la nivel de județ și evidențiază diferențele
+                                teritoriale prin filtre și reprezentare cartografică.
+                            </p>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-icon">03</div>
+                            <h3>Căutare multi-criterială</h3>
+                            <p>
+                                Filtrează înregistrările după an, județ, categorie, combustibil, marcă sau model
+                                comercial și analizează rezultatele în mod detaliat.
+                            </p>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-icon">04</div>
+                            <h3>Comparații dedicate</h3>
+                            <p>
+                                Compară două selecții de date și evidențiază diferențele prin indicatori sintetici,
+                                grafice comparative și clasamente paralele.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-section">
+                <div class="container about-two-column-grid">
+                    <article class="about-card">
+                        <p class="section-kicker">Tehnologii utilizate</p>
+                        <h2>Stack tehnic</h2>
+                        <ul class="info-list">
+                            <li>PHP pentru logica de server și endpoint-uri API</li>
+                            <li>SQLite pentru stocarea și interogarea datelor</li>
+                            <li>HTML și CSS pentru interfața publică responsive</li>
+                            <li>JavaScript pentru interacțiuni asincrone și consumul API-ului</li>
+                            <li>Leaflet pentru componenta cartografică</li>
+                            <li>JSON și CSV pentru import/export și schimb de date</li>
+                        </ul>
+                    </article>
+
+                    <article class="about-card">
+                        <p class="section-kicker">Arhitectură</p>
+                        <h2>Organizarea aplicației</h2>
+                        <p>
+                            Aplicația este construită în jurul unei arhitecturi bazate pe servicii Web. Partea de server
+                            expune endpoint-uri REST, iar interfața publică consumă datele prin apeluri Ajax, fără
+                            reîncărcarea completă a paginilor.
+                        </p>
+                        <p>
+                            Structura proiectului separă configurarea, accesul la baza de date, repository-urile,
+                            endpoint-urile API și componentele publice ale interfeței.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="about-section">
+                <div class="container about-two-column-grid">
+                    <article class="about-card">
+                        <p class="section-kicker">Sursa datelor</p>
+                        <h2>Date publice utilizate în proiect</h2>
+                        <p>
+                            Datele procesate provin din seturi publice referitoare la parcul auto din România și au fost
+                            importate, curățate, normalizate parțial și organizate într-o bază de date relațională.
+                        </p>
+                        <p>
+                            Structura internă a datelor permite analiza pe:
+                        </p>
+                        <ul class="info-list">
+                            <li>ani și evoluție temporală</li>
+                            <li>județe și distribuție geografică</li>
+                            <li>categorii naționale și comunitare</li>
+                            <li>tipuri de combustibil</li>
+                            <li>mărci și modele comerciale</li>
+                        </ul>
+                    </article>
+
+                    <article class="about-card">
+                        <p class="section-kicker">Prelucrare date</p>
+                        <h2>Fluxul de integrare</h2>
+                        <p>
+                            Fișierele sursă au fost analizate, validate și importate într-o structură internă adaptată
+                            cerințelor aplicației. Importul păstrează trasabilitatea fișierelor, anul de proveniență și
+                            loturile de încărcare, facilitând verificarea și depanarea datelor.
+                        </p>
+                        <p>
+                            La nivelul aplicației, datele sunt accesate prin repository-uri specializate și sunt expuse
+                            prin endpoint-uri API dedicate filtrării, statisticilor, căutării și reprezentării pe hartă.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="about-section about-section-final">
+                <div class="container">
+                    <div class="insight-box">
+                        <div class="insight-content">
+                            <p class="section-kicker">Concluzie</p>
+                            <h2>O aplicație orientată pe explorare, comparație și vizualizare</h2>
+                            <p class="section-lead">
+                                <?php echo htmlspecialchars($appName); ?> urmărește să transforme un set de date publice
+                                complex într-o experiență Web clară, interactivă și utilă pentru analiză. Proiectul
+                                combină date structurate, servicii Web, filtrare asincronă și componente vizuale moderne
+                                într-o platformă coerentă de explorare a parcului auto din România.
+                            </p>
+                        </div>
+
+                        <div class="insight-actions">
+                            <a class="btn btn-primary" href="dashboard.php">Acces către dashboard</a>
+                            <a class="btn btn-secondary" href="map-view.php">Acces către hartă</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
-        <footer class="site-footer" style="margin-top: 4rem;">
+        <footer class="site-footer">
             <div class="container footer-content">
                 <div>
-                    <p class="footer-brand"><?php echo htmlspecialchars($appName); ?> <span>Info</span></p>
-                    <p class="footer-text">Pagina Despre oferă context asupra funcțiilor și a tehnologiilor folosite în
-                        proiect.</p>
+                    <p class="footer-brand"><?php echo htmlspecialchars($appName); ?> <span>About</span></p>
+                    <p class="footer-text">Pagină informativă dedicată proiectului, arhitecturii și sursei datelor.</p>
+                </div>
+
+                <div class="footer-meta">
+                    <span>Perioadă analizată: <?php echo htmlspecialchars((string) $minYear); ?> -
+                        <?php echo htmlspecialchars((string) $maxYear); ?></span>
+                    <span>Proiect Web bazat pe date publice și servicii REST</span>
                 </div>
             </div>
         </footer>

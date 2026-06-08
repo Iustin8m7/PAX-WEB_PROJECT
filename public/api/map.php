@@ -14,7 +14,7 @@ try {
     $fuelType = getOptionalStringParam('fuel_type');
     $nationalCategory = getOptionalStringParam('national_category');
 
-    $result = $repository->getCountyTotalsFiltered($year, $fuelType, $nationalCategory);
+    $result = $repository->getCountyTopBrandsByYear($year, $fuelType, $nationalCategory);
     $result = normalizeUtf8Value($result);
 
     Response::success([
@@ -26,7 +26,5 @@ try {
         'result' => $result,
     ]);
 } catch (Throwable $e) {
-    Response::error('Nu s-au putut incarca datele pentru harta.', 500, [
-        'exception' => $e->getMessage(),
-    ]);
+    Response::error('Nu s-au putut încărca datele pentru hartă.', 500);
 }

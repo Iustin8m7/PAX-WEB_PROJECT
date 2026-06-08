@@ -36,35 +36,21 @@ if (isset($config['app']['max_year'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($appName); ?> - Comparații</title>
+    <meta name="description"
+        content="Pagină de comparații pentru analiza diferențelor dintre două selecții de date privind parcul auto din România.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="assets/css/main.css">
-
-    <style>
-        /* Fix critic pentru textul invizibil din meniurile derulante */
-        select option {
-            background-color: #1e293b !important;
-            color: #f8fafc !important;
-        }
-
-        /* Ajustare stil pentru listele de rezultate */
-        .compare-summary ul {
-            list-style-type: none;
-            padding-left: 0 !important;
-        }
-
-        .compare-summary li {
-            padding: 6px 10px;
-            background: rgba(255, 255, 255, 0.03);
-            margin-bottom: 4px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/compare.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
 
 <body>
-    <div class="page-shell">
+    <div class="page-shell compare-page-shell">
         <header class="site-header">
             <div class="container header-inner">
                 <a href="index.php" class="brand-mark">
@@ -83,248 +69,413 @@ if (isset($config['app']['max_year'])) {
             </div>
         </header>
 
-        <main class="section">
-            <div class="container">
-                <div class="section-heading">
-                    <p class="section-kicker">Analiză comparativă</p>
-                    <h2>Compară două mărci</h2>
-                    <p class="section-lead">Alege două branduri și un an pentru a vedea ce producător a avut mai multă
-                        prezență în parcul auto.</p>
+        <main class="compare-main">
+            <section class="compare-hero-section">
+                <div class="container compare-hero-grid">
+                    <div class="compare-hero-content">
+                        <p class="section-kicker">Analiză comparativă</p>
+                        <h1>Compararea a două selecții de date în același context vizual</h1>
+                        <p class="compare-lead">
+                            Explorează diferențele dintre două seturi de criterii și evidențiază variațiile dintre perioade, județe,
+                            categorii, combustibili sau mărci prin indicatori sintetici, grafice comparative și
+                            clasamente paralele.
+                        </p>
+
+                        <div class="compare-hero-actions">
+                            <a class="btn btn-primary" href="dashboard.php">Acces către dashboard</a>
+                            <a class="btn btn-secondary" href="search-view.php">Acces către căutare</a>
+                        </div>
+                    </div>
+
+                    <aside class="compare-hero-panel">
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-label">An implicit</span>
+                            <span class="hero-stat-value"><?php echo htmlspecialchars((string) $defaultYear); ?></span>
+                        </div>
+
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-label">Interval analizat</span>
+                            <span class="hero-stat-value"><?php echo htmlspecialchars((string) $minYear); ?> -
+                                <?php echo htmlspecialchars((string) $maxYear); ?></span>
+                        </div>
+
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-label">Format comparație</span>
+                            <span class="hero-stat-value">Selecția A vs Selecția B</span>
+                        </div>
+                    </aside>
                 </div>
+            </section>
 
-                <form id="compare-form" class="hero-panel-card" autocomplete="off">
-                    <div class="hero-panel-grid"
-                        style="grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:18px;">
-                        <div class="form-field">
-                            <label class="form-label">An</label>
-                            <select id="compare-year" name="year" class="select-custom">
-                                <option value="">Toți anii</option>
-                            </select>
+            <section class="compare-section">
+                <div class="container">
+                    <div class="section-heading section-heading-left">
+                        <p class="section-kicker">Configurarea comparației</p>
+                        <h2>Definirea selecțiilor A și B</h2>
+                        <p class="section-lead">
+                            Fiecare selecție este definită prin propriul set de filtre. Aplicarea comparației
+                            actualizează asincron indicatorii, diferențele și vizualizările comparative.
+                        </p>
+                    </div>
+
+                    <form id="compare-form" class="compare-filters-layout" autocomplete="off">
+                        <section class="compare-filter-card">
+                            <div class="compare-filter-card-header">
+                                <p class="chart-kicker">Selecția A</p>
+                                <h3>Context de referință</h3>
+                            </div>
+
+                            <div class="filters-grid compare-filters-grid">
+                                <div class="form-field">
+                                    <label for="compare-a-year">An</label>
+                                    <select id="compare-a-year" name="a_year">
+                                        <option value="">Toți anii disponibili</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-a-county">Județ</label>
+                                    <select id="compare-a-county" name="a_county_code">
+                                        <option value="">Toate județele</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-a-national-category">Categorie națională</label>
+                                    <select id="compare-a-national-category" name="a_national_category">
+                                        <option value="">Toate categoriile</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-a-fuel-type">Combustibil</label>
+                                    <select id="compare-a-fuel-type" name="a_fuel_type">
+                                        <option value="">Toate tipurile de combustibil</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-a-brand">Marcă</label>
+                                    <select id="compare-a-brand" name="a_brand">
+                                        <option value="">Toate mărcile</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-a-model">Model</label>
+                                    <input type="text" id="compare-a-model" name="a_model" placeholder="Exemplu: LOGAN, SPRINTER">
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="compare-filter-card">
+                            <div class="compare-filter-card-header">
+                                <p class="chart-kicker">Selecția B</p>
+                                <h3>Context comparat</h3>
+                            </div>
+
+                            <div class="filters-grid compare-filters-grid">
+                                <div class="form-field">
+                                    <label for="compare-b-year">An</label>
+                                    <select id="compare-b-year" name="b_year">
+                                        <option value="">Toți anii disponibili</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-b-county">Județ</label>
+                                    <select id="compare-b-county" name="b_county_code">
+                                        <option value="">Toate județele</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-b-national-category">Categorie națională</label>
+                                    <select id="compare-b-national-category" name="b_national_category">
+                                        <option value="">Toate categoriile</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-b-fuel-type">Combustibil</label>
+                                    <select id="compare-b-fuel-type" name="b_fuel_type">
+                                        <option value="">Toate tipurile de combustibil</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-b-brand">Marcă</label>
+                                    <select id="compare-b-brand" name="b_brand">
+                                        <option value="">Toate mărcile</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="compare-b-model">Model</label>
+                                    <input type="text" id="compare-b-model" name="b_model" placeholder="Exemplu: DUSTER, DAILY">
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="filters-actions compare-actions">
+                            <button type="submit" class="btn btn-primary">Aplicare comparație</button>
+                            <button type="button" class="btn btn-secondary" id="reset-compare-filters">Resetare comparație</button>
+                        </div>
+                    </form>
+
+                    <div class="dashboard-status-bar compare-status-bar">
+                        <div class="status-pill">
+                            <span class="status-label">Context comparație</span>
+                            <span class="status-value" id="compare-summary">Se pregătește comparația...</span>
                         </div>
 
-                        <div class="form-field">
-                            <label class="form-label">Brand A</label>
-                            <select id="compare-brand-a" name="brand_a" class="select-custom">
-                                <option value="">Alege marca A</option>
-                            </select>
-                        </div>
-
-                        <div class="form-field">
-                            <label class="form-label">Brand B</label>
-                            <select id="compare-brand-b" name="brand_b" class="select-custom">
-                                <option value="">Alege marca B</option>
-                            </select>
-                        </div>
-
-                        <div style="display:flex; align-items:end; gap:12px;">
-                            <button type="submit" class="btn btn-primary">Compară</button>
-                            <button type="button" id="compare-reset" class="btn btn-secondary">Resetare</button>
+                        <div class="status-pill">
+                            <span class="status-label">Stare</span>
+                            <span class="status-value" id="compare-loading-state">Pregătit pentru încărcare</span>
                         </div>
                     </div>
-                </form>
+                </div>
+            </section>
 
-                <section id="compare-results" style="margin-top:24px;">
-                    <div class="hero-panel-card">
-                        <div id="compare-summary" class="compare-summary">
-                            <p>Selectează două mărci pentru a vedea comparația.</p>
+            <section class="compare-section">
+                <div class="container">
+                    <div class="section-heading section-heading-left">
+                        <p class="section-kicker">Indicatori sintetici</p>
+                        <h2>Rezumat comparativ</h2>
+                    </div>
+
+                    <div class="compare-overview-grid">
+                        <article class="overview-card compare-overview-card">
+                            <span class="overview-label">Total vehicule A</span>
+                            <strong class="overview-value" id="compare-total-a">-</strong>
+                            <span class="overview-meta">valoare agregată pentru selecția A</span>
+                        </article>
+
+                        <article class="overview-card compare-overview-card">
+                            <span class="overview-label">Total vehicule B</span>
+                            <strong class="overview-value" id="compare-total-b">-</strong>
+                            <span class="overview-meta">valoare agregată pentru selecția B</span>
+                        </article>
+
+                        <article class="overview-card compare-overview-card">
+                            <span class="overview-label">Diferență absolută</span>
+                            <strong class="overview-value" id="compare-difference-absolute">-</strong>
+                            <span class="overview-meta">diferența dintre A și B</span>
+                        </article>
+
+                        <article class="overview-card compare-overview-card">
+                            <span class="overview-label">Diferență procentuală</span>
+                            <strong class="overview-value" id="compare-difference-percent">-</strong>
+                            <span class="overview-meta">raport procentual între selecții</span>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="compare-section">
+                <div class="container">
+                    <div class="section-heading section-heading-left">
+                        <p class="section-kicker">Vizualizare comparativă</p>
+                        <h2>Comparație vizuală între selecții</h2>
+                        <p class="section-lead">
+                            Reprezentarea grafică oferă o vedere rapidă asupra diferențelor dintre volumele agregate
+                            și asupra raportului dintre cele două selecții.
+                        </p>
+                    </div>
+
+                    <div class="compare-chart-card">
+                        <div class="chart-card-header">
+                            <div>
+                                <p class="chart-kicker">Bar chart comparativ</p>
+                                <h3>Selecția A versus Selecția B</h3>
+                            </div>
+                            <span class="chart-badge">Grafic comparativ</span>
+                        </div>
+
+                        <div class="chart-card-body">
+                            <div class="chart-canvas" id="compare-main-chart"></div>
+                            <div class="chart-caption" id="compare-main-chart-caption">
+                                Comparația vizuală principală va fi afișată aici.
+                            </div>
                         </div>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
+
+            <section class="compare-section">
+                <div class="container compare-detail-grid">
+                    <article class="data-card">
+                        <div class="data-card-header">
+                            <div>
+                                <p class="chart-kicker">Clasament A</p>
+                                <h3>Top județe pentru selecția A</h3>
+                            </div>
+                        </div>
+
+                        <div class="data-card-body">
+                            <div class="table-shell">
+                                <table class="summary-table" id="compare-top-counties-a-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Cod</th>
+                                            <th>Județ</th>
+                                            <th>Total vehicule</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4">Clasamentul pentru selecția A va fi afișat aici.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="data-card">
+                        <div class="data-card-header">
+                            <div>
+                                <p class="chart-kicker">Clasament B</p>
+                                <h3>Top județe pentru selecția B</h3>
+                            </div>
+                        </div>
+
+                        <div class="data-card-body">
+                            <div class="table-shell">
+                                <table class="summary-table" id="compare-top-counties-b-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Cod</th>
+                                            <th>Județ</th>
+                                            <th>Total vehicule</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4">Clasamentul pentru selecția B va fi afișat aici.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="compare-section">
+                <div class="container compare-detail-grid">
+                    <article class="data-card">
+                        <div class="data-card-header">
+                            <div>
+                                <p class="chart-kicker">Modele dominante</p>
+                                <h3>Top modele pentru selecția A</h3>
+                            </div>
+                        </div>
+
+                        <div class="data-card-body">
+                            <div class="table-shell">
+                                <table class="summary-table" id="compare-top-models-a-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Marcă</th>
+                                            <th>Model</th>
+                                            <th>Total vehicule</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4">Topul modelelor pentru selecția A va fi afișat aici.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="data-card">
+                        <div class="data-card-header">
+                            <div>
+                                <p class="chart-kicker">Modele dominante</p>
+                                <h3>Top modele pentru selecția B</h3>
+                            </div>
+                        </div>
+
+                        <div class="data-card-body">
+                            <div class="table-shell">
+                                <table class="summary-table" id="compare-top-models-b-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Marcă</th>
+                                            <th>Model</th>
+                                            <th>Total vehicule</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4">Topul modelelor pentru selecția B va fi afișat aici.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="compare-section compare-section-final">
+                <div class="container">
+                    <div class="insight-box">
+                        <div class="insight-content">
+                            <p class="section-kicker">Interpretare</p>
+                            <h2>Rezumatul comparației active</h2>
+                            <p id="compare-context-summary" class="section-lead">
+                                Comparația va actualiza această zonă cu un rezumat al diferențelor dintre selecția A și
+                                selecția B, inclusiv variațiile de volum și repartiție.
+                            </p>
+                        </div>
+
+                        <div class="insight-actions">
+                            <a class="btn btn-primary" href="dashboard.php">Înapoi la dashboard</a>
+                            <a class="btn btn-secondary" href="map-view.php">Acces către hartă</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <footer class="site-footer">
             <div class="container footer-content">
                 <div>
-                    <p class="footer-brand"><?php echo htmlspecialchars($appName); ?> <span>Compare</span></p>
+                    <p class="footer-brand"><?php echo htmlspecialchars($appName); ?> <span>Compare Explorer</span></p>
+                    <p class="footer-text">Modul comparativ pentru analiza diferențelor dintre două selecții de date privind parcul auto din România.</p>
+                </div>
+
+                <div class="footer-meta">
+                    <span>Perioadă analizată: <?php echo htmlspecialchars((string) $minYear); ?> -
+                        <?php echo htmlspecialchars((string) $maxYear); ?></span>
+                    <span>Comparație asincronă + diferențe absolute și procentuale</span>
                 </div>
             </div>
         </footer>
     </div>
 
+    <script>
+        window.APP_API_BASE_URL = 'api';
+        window.APP_DEFAULT_YEAR = <?php echo json_encode((int) $defaultYear); ?>;
+        window.APP_MIN_YEAR = <?php echo json_encode((int) $minYear); ?>;
+        window.APP_MAX_YEAR = <?php echo json_encode((int) $maxYear); ?>;
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/api.js"></script>
     <script src="assets/js/utils.js"></script>
-    <script>
-        (async function () {
-            const form = document.getElementById('compare-form');
-            const yearSelect = document.getElementById('compare-year');
-            const brandASelect = document.getElementById('compare-brand-a');
-            const brandBSelect = document.getElementById('compare-brand-b');
-            const resetButton = document.getElementById('compare-reset');
-            const compareSummary = document.getElementById('compare-summary');
-
-            function aggregateData(records) {
-                const totals = {
-                    totalVehicles: 0,
-                    counties: new Set(),
-                    models: new Set(),
-                    byCounty: {},
-                    byModel: {},
-                };
-
-                records.forEach((record) => {
-                    const count = Number(record.vehicle_count) || Number(record.total_vehicles) || 0;
-                    totals.totalVehicles += count;
-                    if (record.county_name) totals.counties.add(record.county_name);
-                    if (record.model_description || record.model) totals.models.add(record.model_description || record.model);
-
-                    if (record.county_name) {
-                        totals.byCounty[record.county_name] = (totals.byCounty[record.county_name] || 0) + count;
-                    }
-                    if (record.model_description || record.model) {
-                        const modelKey = record.model_description || record.model;
-                        totals.byModel[modelKey] = (totals.byModel[modelKey] || 0) + count;
-                    }
-                });
-
-                const topCounties = Object.entries(totals.byCounty)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 5)
-                    .map(([name, count]) => ({ name, count }));
-
-                const topModels = Object.entries(totals.byModel)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 5)
-                    .map(([name, count]) => ({ name, count }));
-
-                return {
-                    totalVehicles: totals.totalVehicles,
-                    countiesCount: totals.counties.size,
-                    modelsCount: totals.models.size,
-                    topCounties,
-                    topModels,
-                };
-            }
-
-            function createCard(title, value, subtitle) {
-                return `
-                    <div class="hero-mini-card" style="padding:18px; text-align:center; background: rgba(255,255,255,0.02); border: 1px solid rgba(148,163,184,0.08); border-radius: 12px;">
-                        <p class="mini-label" style="margin-bottom:8px; color: var(--accent, #38bdf8); font-weight: 600;">${title}</p>
-                        <p class="mini-value" style="margin-bottom:6px; font-size: 1.4rem; font-weight:700;">${value}</p>
-                        <p class="form-label" style="color:#94a3b8; font-size:0.85rem; margin:0;">${subtitle}</p>
-                    </div>
-                `;
-            }
-
-            function renderCompare({ brandA, brandB, year, summaryA, summaryB }) {
-                const diff = summaryA.totalVehicles - summaryB.totalVehicles;
-                const winner = diff === 0 ? 'Egalitate' : diff > 0 ? brandA : brandB;
-                const diffText = diff === 0 ? 'Același volum total' : `${window.appUtils.formatNumber(Math.abs(diff))} vehicule în plus`;
-
-                const topCountiesA = summaryA.topCounties.map((item) => `<li><span>${item.name}</span> <strong>${window.appUtils.formatNumber(item.count)}</strong></li>`).join('');
-                const topCountiesB = summaryB.topCounties.map((item) => `<li><span>${item.name}</span> <strong>${window.appUtils.formatNumber(item.count)}</strong></li>`).join('');
-
-                const topModelsA = summaryA.topModels.map((item) => `<li><span>${item.name}</span> <strong>${window.appUtils.formatNumber(item.count)}</strong></li>`).join('');
-                const topModelsB = summaryB.topModels.map((item) => `<li><span>${item.name}</span> <strong>${window.appUtils.formatNumber(item.count)}</strong></li>`).join('');
-
-                compareSummary.innerHTML = `
-                    <div class="hero-panel-grid" style="display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:20px; margin-bottom:24px;">
-                        ${createCard(brandA, window.appUtils.formatNumber(summaryA.totalVehicles), `${summaryA.countiesCount} județe, ${summaryA.modelsCount} modele`)}
-                        ${createCard(brandB, window.appUtils.formatNumber(summaryB.totalVehicles), `${summaryB.countiesCount} județe, ${summaryB.modelsCount} modele`)}
-                    </div>
-                    <div class="hero-panel-card" style="margin-bottom:24px; padding: 20px; background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px;">
-                        <p class="panel-eyebrow" style="color: var(--accent, #38bdf8); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; font-weight: 600;">Rezumat comparație</p>
-                        <h2 style="font-size:1.5rem; margin-top: 4px; margin-bottom:8px;">${diff === 0 ? 'Egalitate perfectă' : winner + ' domină selecția'}</h2>
-                        <p style="color:#94a3b8; margin: 0;">${diffText} în intervalul analizat (${year || 'toți anii'}). <strong>${winner}</strong> deține avantajul numeric de volum.</p>
-                    </div>
-                    <div class="hero-panel-grid" style="display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:18px;">
-                        <div class="hero-panel-card" style="padding: 16px; background: rgba(30, 41, 59, 0.2); border: 1px solid rgba(148, 163, 184, 0.08); border-radius: 12px;">
-                            <p class="panel-eyebrow" style="color: #94a3b8; font-weight: 600;">Top județe pentru ${brandA}</p>
-                            <ul style="margin-top:12px; color:var(--text-main);">${topCountiesA || '<li>Fără date</li>'}</ul>
-                        </div>
-                        <div class="hero-panel-card" style="padding: 16px; background: rgba(30, 41, 59, 0.2); border: 1px solid rgba(148, 163, 184, 0.08); border-radius: 12px;">
-                            <p class="panel-eyebrow" style="color: #94a3b8; font-weight: 600;">Top județe pentru ${brandB}</p>
-                            <ul style="margin-top:12px; color:var(--text-main);">${topCountiesB || '<li>Fără date</li>'}</ul>
-                        </div>
-                    </div>
-                    <div class="hero-panel-grid" style="display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:18px; margin-top: 18px;">
-                        <div class="hero-panel-card" style="padding: 16px; background: rgba(30, 41, 59, 0.2); border: 1px solid rgba(148, 163, 184, 0.08); border-radius: 12px;">
-                            <p class="panel-eyebrow" style="color: #94a3b8; font-weight: 600;">Modele principale ${brandA}</p>
-                            <ul style="margin-top:12px; color:var(--text-main);">${topModelsA || '<li>Fără date</li>'}</ul>
-                        </div>
-                        <div class="hero-panel-card" style="padding: 16px; background: rgba(30, 41, 59, 0.2); border: 1px solid rgba(148, 163, 184, 0.08); border-radius: 12px;">
-                            <p class="panel-eyebrow" style="color: #94a3b8; font-weight: 600;">Modele principale ${brandB}</p>
-                            <ul style="margin-top:12px; color:var(--text-main);">${topModelsB || '<li>Fără date</li>'}</ul>
-                        </div>
-                    </div>
-                `;
-            }
-
-            async function loadFilters() {
-                try {
-                    // CORECTAT: Eliminat / din fața URL-ului pentru funcționare corectă în subfoldere locale
-                    const filters = await window.appApi.getJson('api/filters.php');
-                    yearSelect.innerHTML = '<option value="">Toți anii</option>';
-                    (Array.isArray(filters.years) ? filters.years : []).forEach((year) => {
-                        yearSelect.appendChild(window.appUtils.createOption(year, year));
-                    });
-
-                    brandASelect.innerHTML = '<option value="">Alege marca A</option>';
-                    brandBSelect.innerHTML = '<option value="">Alege marca B</option>';
-                    (Array.isArray(filters.brands) ? filters.brands : []).forEach((brand) => {
-                        const option = window.appUtils.createOption(brand.name, brand.name);
-                        brandASelect.appendChild(option.cloneNode(true));
-                        brandBSelect.appendChild(option.cloneNode(true));
-                    });
-                } catch (err) {
-                    console.error('compare filters error', err);
-                    compareSummary.innerHTML = '<p>Nu am putut încărca filtrele de comparație.</p>';
-                }
-            }
-
-            async function fetchCompareData(brand, year) {
-                const params = new URLSearchParams();
-                if (brand) params.set('brand', brand);
-                if (year) params.set('year', year);
-                params.set('limit', '5000');
-
-                // CORECTAT: Eliminat / din fața URL-ului pentru interogare locală corectă
-                const data = await window.appApi.getJson('api/search.php?' + params.toString());
-                return data.result || data || [];
-            }
-
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                const brandA = brandASelect.value;
-                const brandB = brandBSelect.value;
-                const year = yearSelect.value;
-
-                if (!brandA || !brandB) {
-                    compareSummary.innerHTML = '<p style="color:#ef4444; text-align:center;">Completează ambele mărci pentru comparație.</p>';
-                    return;
-                }
-
-                if (brandA === brandB) {
-                    compareSummary.innerHTML = '<p style="color:#ef4444; text-align:center;">Alege două mărci diferite.</p>';
-                    return;
-                }
-
-                compareSummary.innerHTML = '<p style="text-align:center; color:#94a3b8;">Se compară datele parcului auto...</p>';
-
-                try {
-                    const [recordsA, recordsB] = await Promise.all([
-                        fetchCompareData(brandA, year),
-                        fetchCompareData(brandB, year),
-                    ]);
-
-                    const summaryA = aggregateData(recordsA);
-                    const summaryB = aggregateData(recordsB);
-
-                    renderCompare({ brandA, brandB, year, summaryA, summaryB });
-                } catch (err) {
-                    console.error('compare fetch error', err);
-                    compareSummary.innerHTML = '<p style="color:#ef4444; text-align:center;">Eroare la încărcarea datelor de comparație.</p>';
-                }
-            });
-
-            resetButton.addEventListener('click', () => {
-                form.reset();
-                compareSummary.innerHTML = '<p>Selectează două mărci pentru a vedea comparația.</p>';
-            });
-
-            await loadFilters();
-        })();
-    </script>
+    <script src="assets/js/filters.js"></script>
+    <script src="assets/js/charts.js"></script>
+    <script src="assets/js/compare.js"></script>
 </body>
 
 </html>

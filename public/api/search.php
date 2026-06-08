@@ -24,12 +24,22 @@ try {
     $limit = getLimitParam('limit');
 
     $sort = getSortFieldParam(
-        ['year', 'county', 'national_category', 'community_category', 'brand', 'fuel_type', 'vehicle_count'],
+        [
+            'year',
+            'county_code',
+            'county_name',
+            'national_category',
+            'community_category',
+            'brand_name',
+            'model_description',
+            'fuel_type',
+            'vehicle_count',
+        ],
         'vehicle_count',
-        'sort'
+        'sort_by'
     );
 
-    $order = getSortOrderParam('order', 'desc');
+    $order = getSortOrderParam('sort_order', 'desc');
 
     $total = $repository->countSearchResults($filters);
     $results = $repository->search($filters, $page, $limit, $sort, $order);
@@ -37,24 +47,18 @@ try {
     $filters = normalizeUtf8Value($filters);
     $results = normalizeUtf8Value($results);
 
-    $totalPages = $limit > 0 ? (int)ceil($total / $limit) : 1;
+    $totalPages = $limit > 0 ? (int) ceil($total / $limit) : 1;
 
     Response::success([
         'filters' => $filters,
-        'pagination' => [
-            'page' => $page,
-            'limit' => $limit,
-            'total_results' => $total,
-            'total_pages' => $totalPages,
-        ],
-        'sorting' => [
-            'sort' => $sort,
-            'order' => $order,
-        ],
-        'result' => $results,
+        'rows' => $results,
+        'total' => $total,
+        'page' => $page,
+        'pages' => $totalPages,
+        'limit' => $limit,
+        'sort_by' => $sort,
+        'sort_order' => $order,
     ]);
 } catch (Throwable $e) {
-    Response::error('Nu s-au putut incarca rezultatele cautarii.', 500, [
-        'exception' => $e->getMessage(),
-    ]);
+    Response::error('Nu s-au putut încărca rezultatele căutării.', 500);
 }

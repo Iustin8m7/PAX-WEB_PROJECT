@@ -64,4 +64,9 @@ return [
         'default_page_size' => 25,
         'max_page_size' => 100,
     ],
+
+     'admin' => [
+        'username' => 'admin',
+        'password' => 'admin123',
+    ],
 ];

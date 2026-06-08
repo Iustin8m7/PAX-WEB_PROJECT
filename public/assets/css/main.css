@@ -1221,4 +1221,17 @@ select option {
         flex-direction: column;
         align-items: flex-start;
     }
+    
+    .nav-link-admin {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.admin-lock-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    flex: 0 0 auto;
+    display: inline-block;
+}
 }

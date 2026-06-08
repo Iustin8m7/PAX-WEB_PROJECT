@@ -61,6 +61,14 @@ if (isset($config['app']['max_year'])) {
                     <a href="search-view.php" class="nav-link">Căutare</a>
                     <a href="compare.php" class="nav-link">Comparații</a>
                     <a href="about.php" class="nav-link">Despre</a>
+                    <a href="/admin/login.php" class="nav-link nav-link-admin">
+    <svg class="admin-lock-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M17 10V8a5 5 0 0 0-10 0v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="5" y="10" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <circle cx="12" cy="15" r="1.2" fill="currentColor"/>
+    </svg>
+    <span>ADMIN</span>
+</a>
                 </nav>
             </div>
         </header>

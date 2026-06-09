@@ -1,0 +1,81 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam linetype ortho
+skinparam ArrowColor #334155
+title PAX - Modelul bazei de date
+
+entity "counties" as counties {
+  * id : INTEGER <<PK>>
+  --
+  code : TEXT <<UNIQUE>>
+  name : TEXT <<UNIQUE>>
+}
+
+entity "vehicle_categories" as vehicle_categories {
+  * id : INTEGER <<PK>>
+  --
+  name : TEXT <<UNIQUE>>
+}
+
+entity "community_categories" as community_categories {
+  * id : INTEGER <<PK>>
+  --
+  name : TEXT <<UNIQUE>>
+}
+
+entity "fuel_types" as fuel_types {
+  * id : INTEGER <<PK>>
+  --
+  name : TEXT <<UNIQUE>>
+}
+
+entity "brands" as brands {
+  * id : INTEGER <<PK>>
+  --
+  name : TEXT <<UNIQUE>>
+}
+
+entity "import_batches" as import_batches {
+  * id : INTEGER <<PK>>
+  --
+  source_year : INTEGER
+  source_file : TEXT
+  imported_at : TEXT
+  rows_inserted : INTEGER
+  rows_rejected : INTEGER
+  notes : TEXT
+}
+
+entity "admins" as admins {
+  * id : INTEGER <<PK>>
+  --
+  username : TEXT <<UNIQUE>>
+  password_hash : TEXT
+  created_at : TEXT
+}
+
+entity "vehicle_records" as vehicle_records {
+  * id : INTEGER <<PK>>
+  --
+  year : INTEGER
+  county_id : INTEGER <<FK>>
+  national_category_id : INTEGER <<FK>>
+  community_category_id : INTEGER <<FK nullable>>
+  brand_id : INTEGER <<FK nullable>>
+  model_description : TEXT
+  fuel_type_id : INTEGER <<FK>>
+  vehicle_count : INTEGER
+  import_batch_id : INTEGER <<FK nullable>>
+}
+
+counties ||--o{ vehicle_records : county_id
+vehicle_categories ||--o{ vehicle_records : national_category_id
+community_categories ||--o{ vehicle_records : community_category_id
+brands ||--o{ vehicle_records : brand_id
+fuel_types ||--o{ vehicle_records : fuel_type_id
+import_batches ||--o{ vehicle_records : import_batch_id
+admins .. vehicle_records : separat în schema curentă
+
+@enduml

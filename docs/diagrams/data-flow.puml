@@ -1,0 +1,34 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+title PAX - Fluxul datelor
+
+actor "Utilizator" as User
+folder "raw_data/csv\n2020-2024" as CSV
+component "scripts/import/import_csv_to_sqlite.php" as Import
+component "Curățare și normalizare\njudețe, lookup-uri,\nvalidare numerică" as Normalize
+database "SQLite\n db/pax.db" as DB
+component "Repository-uri PHP" as Repo
+component "Endpointuri API JSON\nfilters/statistics/search/map" as API
+component "JavaScript frontend\nfetch + randare DOM" as JS
+component "UI PAX\nDashboard, Hartă,\nCăutare, Comparații" as UI
+file "GeoJSON județe" as GeoJSON
+folder "logs/import_errors.log" as Logs
+
+CSV --> Import : fișiere CSV brute
+Import --> Normalize : interpretare header,\ndelimitatori, câmpuri
+Normalize --> DB : inserare date normalizate
+Normalize --> Logs : rânduri respinse / erori
+DB --> Repo : date persistente
+Repo --> API : rezultate SQL
+API --> JS : JSON standardizat
+GeoJSON --> JS : geometrie județe
+JS --> UI : actualizare carduri,\ngrafice, hartă, tabele
+User --> UI : filtre, click, sortare,\npaginare, comparații
+UI --> JS : evenimente utilizator
+
+@enduml

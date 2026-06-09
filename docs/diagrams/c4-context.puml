@@ -1,0 +1,42 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+skinparam RectangleBorderColor #334155
+skinparam RectangleBackgroundColor #F8FAFC
+title PAX - C4 simplificat
+
+actor "Utilizator public" as PublicUser
+actor "Administrator" as AdminUser
+
+rectangle "PAX Web Application" as Pax {
+  rectangle "Container Frontend\nPagini PHP publice + JavaScript" as Frontend
+  rectangle "Container API\nEndpointuri PHP JSON/CSV" as ApiContainer
+  rectangle "Container Admin\nPagini admin + sesiune PHP" as AdminContainer
+  database "Container Persistență\nSQLite db/pax.db" as Persistence
+}
+
+rectangle "Biblioteci externe" as External {
+  component "Chart.js" as Chart
+  component "Leaflet" as Leaflet
+}
+
+file "GeoJSON județe" as GeoJSON
+folder "CSV 2020-2024" as RawData
+component "Script import CLI" as Import
+
+PublicUser --> Frontend : folosește interfața publică
+AdminUser --> AdminContainer : autentificare și monitorizare
+Frontend --> ApiContainer : cereri asincrone
+Frontend --> Chart : grafice
+Frontend --> Leaflet : hartă
+Frontend --> GeoJSON : contururi județe
+ApiContainer --> Persistence : citire date
+AdminContainer --> Persistence : rezumate admin/importuri
+RawData --> Import : surse CSV
+Import --> Persistence : populare și normalizare
+
+@enduml

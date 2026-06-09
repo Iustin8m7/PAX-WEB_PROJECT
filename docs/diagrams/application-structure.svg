@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="856px" preserveAspectRatio="none" style="width:3520px;height:856px;" version="1.1" viewBox="0 0 3520 856" width="3520px" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="Arial" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="211" x="1660.5" y="19.2419">PAX - Structura aplicației</text><!--MD5=[6c8e6faca8731ff7a4801b57a53797a7]
+cluster pax/--><polygon fill="#FFFFFF" points="22,96.0158,59,96.0158,66,121.0838,3498,121.0838,3498,844.5158,22,844.5158,22,96.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="22" x2="66" y1="121.0838" y2="121.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="31" x="26" y="112.9818">pax/</text><!--MD5=[50f28613fb26628d332a89d6e761c1c6]
+cluster app/--><polygon fill="#FFFFFF" points="2273,142.0158,2311,142.0158,2318,167.0838,3474,167.0838,3474,698.0158,2273,698.0158,2273,142.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="2273" x2="2318" y1="167.0838" y2="167.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="32" x="2277" y="158.9818">app/</text><!--MD5=[87f58a209636eb9ed90e0b55da4681d5]
+cluster config/--><polygon fill="#FFFFFF" points="3254,188.0158,3309,188.0158,3316,213.0838,3378,213.0838,3378,281.0158,3254,281.0158,3254,188.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="3254" x2="3316" y1="213.0838" y2="213.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="49" x="3258" y="204.9818">config/</text><!--MD5=[6ce2d1e06b078cdfbcd6909862920af5]
+cluster core/--><polygon fill="#FFFFFF" points="2861,188.0158,2903,188.0158,2910,213.0838,3158,213.0838,3158,410.0158,2861,410.0158,2861,188.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="2861" x2="2910" y1="213.0838" y2="213.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="36" x="2865" y="204.9818">core/</text><!--MD5=[21d49bec77432a114ba8fc154dfbd5a2]
+cluster helpers/--><polygon fill="#FFFFFF" points="2521,188.0158,2584,188.0158,2591,213.0838,2837,213.0838,2837,400.5158,2521,400.5158,2521,188.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="2521" x2="2591" y1="213.0838" y2="213.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="57" x="2525" y="204.9818">helpers/</text><!--MD5=[1f02144d11bd834d52ff2d16d126df95]
+cluster repositories/--><polygon fill="#FFFFFF" points="2840,434.0158,2935,434.0158,2942,459.0838,3450,459.0838,3450,664.5158,2840,664.5158,2840,434.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="2840" x2="2942" y1="459.0838" y2="459.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="89" x="2844" y="450.9818">repositories/</text><!--MD5=[91189d4d9ac2be181fe778d26a83b569]
+cluster services/--><polygon fill="#FFFFFF" points="2297,434.0158,2364,434.0158,2371,459.0838,2816,459.0838,2816,674.0158,2297,674.0158,2297,434.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="2297" x2="2371" y1="459.0838" y2="459.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="61" x="2301" y="450.9818">services/</text><!--MD5=[1cde7c564aa63857e492bd6c7736dfc2]
+cluster public/--><polygon fill="#FFFFFF" points="1073,142.0158,1127,142.0158,1134,167.0838,2249,167.0838,2249,820.5158,1073,820.5158,1073,142.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="1073" x2="1134" y1="167.0838" y2="167.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="48" x="1077" y="158.9818">public/</text><!--MD5=[225664b4ac4888137dc613893b940d26]
+cluster api/--><polygon fill="#FFFFFF" points="1785,188.0158,1818,188.0158,1825,213.0838,2225,213.0838,2225,536.5158,1785,536.5158,1785,188.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="1785" x2="1825" y1="213.0838" y2="213.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="27" x="1789" y="204.9818">api/</text><!--MD5=[546f660f86ff4f5ef4f7b5d73dfbaabc]
+cluster admin/--><polygon fill="#FFFFFF" points="1510,188.0158,1566,188.0158,1573,213.0838,1761,213.0838,1761,400.5158,1510,400.5158,1510,188.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="1510" x2="1573" y1="213.0838" y2="213.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="50" x="1514" y="204.9818">admin/</text><!--MD5=[0f1139f48ebc31e6fb7c2c30cbfea2ee]
+cluster assets/--><polygon fill="#FFFFFF" points="1821,560.5158,1876,560.5158,1883,585.5838,1990,585.5838,1990,796.5158,1821,796.5158,1821,560.5158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="1821" x2="1883" y1="585.5838" y2="585.5838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="49" x="1825" y="577.4818">assets/</text><!--MD5=[47d0546a0b48530e792fa166ce05e5c3]
+cluster db/--><polygon fill="#FFFFFF" points="746,188.0158,776,188.0158,783,213.0838,1049,213.0838,1049,405.0158,746,405.0158,746,188.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="746" x2="783" y1="213.0838" y2="213.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="24" x="750" y="204.9818">db/</text><!--MD5=[4af1e3d747ec013ad64d1873ad8d0a4c]
+cluster raw_data/--><polygon fill="#FFFFFF" points="511,177.0158,586,177.0158,593,202.0838,722,202.0838,722,292.0158,511,292.0158,511,177.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="511" x2="593" y1="202.0838" y2="202.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="69" x="515" y="193.9818">raw_data/</text><!--MD5=[f2ee25fd5a4c511c548e5c0d4bfc8227]
+cluster scripts/--><polygon fill="#FFFFFF" points="222,177.0158,280,177.0158,287,202.0838,487,202.0838,487,292.0158,222,292.0158,222,177.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="222" x2="287" y1="202.0838" y2="202.0838"/><text fill="#000000" font-family="Arial" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="52" x="226" y="193.9818">scripts/</text><!--MD5=[230cee44874f46b59af3b280e7e88187]
+entity logs/--><polygon fill="#FEFECE" points="139.5,215.0158,185.5,215.0158,192.5,236.0158,202.5,236.0158,202.5,276.1517,139.5,276.1517,139.5,215.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="139.5" x2="192.5" y1="236.0158" y2="236.0158"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="33" x="149.5" y="257.9818">logs/</text><!--MD5=[f2fc29b6ce38fb1731cf05881dd16f9c]
+entity docs/--><polygon fill="#FEFECE" points="38,215.0158,84,215.0158,91,236.0158,104,236.0158,104,276.1517,38,276.1517,38,215.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="38" x2="91" y1="236.0158" y2="236.0158"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="36" x="48" y="257.9818">docs/</text><!--MD5=[92e6fb601c598448a1254fb11da008ce]
+entity config.php--><polygon fill="#FEFECE" points="3269.5,226.0158,3269.5,265.0838,3362.5,265.0838,3362.5,236.0158,3352.5,226.0158,3269.5,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M3352.5,226.0158 L3352.5,236.0158 L3362.5,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="73" x="3279.5" y="250.9818">config.php</text><!--MD5=[ebac46b9a8b2dc078106d76073a0a127]
+entity Database.php--><polygon fill="#FEFECE" points="2877,226.0158,2877,265.0838,2991,265.0838,2991,236.0158,2981,226.0158,2877,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2981,226.0158 L2981,236.0158 L2991,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="94" x="2887" y="250.9818">Database.php</text><!--MD5=[4300ca09ccde159f3eaa4e8425177b93]
+entity Response.php--><polygon fill="#FEFECE" points="3026,226.0158,3026,265.0838,3142,265.0838,3142,236.0158,3132,226.0158,3026,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M3132,226.0158 L3132,236.0158 L3142,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="96" x="3036" y="250.9818">Response.php</text><!--MD5=[3eb3fb8ed5b4e96efa3db840b4d38b4e]
+entity Router.php\n(gol)--><polygon fill="#FEFECE" points="2886,336.0158,2886,394.1517,2982,394.1517,2982,346.0158,2972,336.0158,2886,336.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2972,336.0158 L2972,346.0158 L2982,346.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="76" x="2896" y="360.9818">Router.php</text><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="29" x="2896" y="380.0497">(gol)</text><!--MD5=[b3ca78733765680865c97b2be5586fba]
+entity validators.php--><polygon fill="#FEFECE" points="2537.5,226.0158,2537.5,265.0838,2654.5,265.0838,2654.5,236.0158,2644.5,226.0158,2537.5,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2644.5,226.0158 L2644.5,236.0158 L2654.5,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="97" x="2547.5" y="250.9818">validators.php</text><!--MD5=[0eaeda21c339c77f3e4dbab36ab8fe43]
+entity normalizers.php--><polygon fill="#FEFECE" points="2689.5,226.0158,2689.5,265.0838,2820.5,265.0838,2820.5,236.0158,2810.5,226.0158,2689.5,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2810.5,226.0158 L2810.5,236.0158 L2820.5,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="111" x="2699.5" y="250.9818">normalizers.php</text><!--MD5=[c053ab9b3241cca6d4e0ac9d830d9f9d]
+entity auth.php--><polygon fill="#FEFECE" points="2555,345.5158,2555,384.5838,2637,384.5838,2637,355.5158,2627,345.5158,2555,345.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2627,345.5158 L2627,355.5158 L2637,355.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="62" x="2565" y="370.4818">auth.php</text><!--MD5=[19bc15447b07514f477c225684380179]
+entity FilterRepository.php--><polygon fill="#FEFECE" points="2856,472.0158,2856,511.0838,3012,511.0838,3012,482.0158,3002,472.0158,2856,472.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M3002,472.0158 L3002,482.0158 L3012,482.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="136" x="2866" y="496.9818">FilterRepository.php</text><!--MD5=[fee609d36a3baa9348643792d87358b1]
+entity StatisticsRepository.php--><polygon fill="#FEFECE" points="3047,472.0158,3047,511.0838,3229,511.0838,3229,482.0158,3219,472.0158,3047,472.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M3219,472.0158 L3219,482.0158 L3229,482.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="162" x="3057" y="496.9818">StatisticsRepository.php</text><!--MD5=[79bb629f4083d2ac1604b9e00ea7db48]
+entity VehicleRepository.php--><polygon fill="#FEFECE" points="3264,472.0158,3264,511.0838,3434,511.0838,3434,482.0158,3424,472.0158,3264,472.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M3424,472.0158 L3424,482.0158 L3434,482.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="150" x="3274" y="496.9818">VehicleRepository.php</text><!--MD5=[cc105e8b9f7758b9711423bcd565959a]
+entity MapRepository.php--><polygon fill="#FEFECE" points="2858,609.5158,2858,648.5838,3010,648.5838,3010,619.5158,3000,609.5158,2858,609.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M3000,609.5158 L3000,619.5158 L3010,619.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="132" x="2868" y="634.4818">MapRepository.php</text><!--MD5=[bc5fb9231cfbfeb09d01949aae67c46d]
+entity AdminRepository.php--><polygon fill="#FEFECE" points="3045,609.5158,3045,648.5838,3211,648.5838,3211,619.5158,3201,609.5158,3045,609.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M3201,609.5158 L3201,619.5158 L3211,619.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="146" x="3055" y="634.4818">AdminRepository.php</text><!--MD5=[42101d0533714d27f469a2019e69f052]
+entity AuthService.php--><polygon fill="#FEFECE" points="2313.5,472.0158,2313.5,511.0838,2444.5,511.0838,2444.5,482.0158,2434.5,472.0158,2313.5,472.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2434.5,472.0158 L2434.5,482.0158 L2444.5,482.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="111" x="2323.5" y="496.9818">AuthService.php</text><!--MD5=[387e21e6815aac2bbf0bedf47637c789]
+entity AdminService.php--><polygon fill="#FEFECE" points="2479.5,472.0158,2479.5,511.0838,2622.5,511.0838,2622.5,482.0158,2612.5,472.0158,2479.5,472.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2612.5,472.0158 L2612.5,482.0158 L2622.5,482.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="123" x="2489.5" y="496.9818">AdminService.php</text><!--MD5=[876bf7c0099d17dadb16c2d4d9764e91]
+entity ExportService.php--><polygon fill="#FEFECE" points="2658,472.0158,2658,511.0838,2800,511.0838,2800,482.0158,2790,472.0158,2658,472.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2790,472.0158 L2790,482.0158 L2800,482.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="122" x="2668" y="496.9818">ExportService.php</text><!--MD5=[eb5e30e6798f358dc683fbedc4f98fee]
+entity VehicleService.php\n(gol)--><polygon fill="#FEFECE" points="2313.5,600.0158,2313.5,658.1517,2460.5,658.1517,2460.5,610.0158,2450.5,600.0158,2313.5,600.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2450.5,600.0158 L2450.5,610.0158 L2460.5,610.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="127" x="2323.5" y="624.9818">VehicleService.php</text><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="29" x="2323.5" y="644.0497">(gol)</text><!--MD5=[1092a56d8528abb1e4f234c03ac56674]
+entity StatisticsService.php\n(gol)--><polygon fill="#FEFECE" points="2495.5,600.0158,2495.5,658.1517,2654.5,658.1517,2654.5,610.0158,2644.5,600.0158,2495.5,600.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2644.5,600.0158 L2644.5,610.0158 L2654.5,610.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="139" x="2505.5" y="624.9818">StatisticsService.php</text><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="29" x="2505.5" y="644.0497">(gol)</text><!--MD5=[c0cbf94cb1d8fbc9e8f71ddcffbd8c79]
+entity index.php--><polygon fill="#FEFECE" points="1095,226.0158,1095,265.0838,1183,265.0838,1183,236.0158,1173,226.0158,1095,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1173,226.0158 L1173,236.0158 L1183,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="68" x="1105" y="250.9818">index.php</text><!--MD5=[6e299e93e0db255ca9227c37d29c66c5]
+entity dashboard.php--><polygon fill="#FEFECE" points="1218,226.0158,1218,265.0838,1342,265.0838,1342,236.0158,1332,226.0158,1218,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1332,226.0158 L1332,236.0158 L1342,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="104" x="1228" y="250.9818">dashboard.php</text><!--MD5=[102a0cc31d9b1a6e0f57b8d0d5bac4a9]
+entity map-view.php--><polygon fill="#FEFECE" points="1377,226.0158,1377,265.0838,1493,265.0838,1493,236.0158,1483,226.0158,1377,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1483,226.0158 L1483,236.0158 L1493,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="96" x="1387" y="250.9818">map-view.php</text><!--MD5=[df3335770cd914f62a11554b214809aa]
+entity search-view.php--><polygon fill="#FEFECE" points="1089.5,345.5158,1089.5,384.5838,1220.5,384.5838,1220.5,355.5158,1210.5,345.5158,1089.5,345.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1210.5,345.5158 L1210.5,355.5158 L1220.5,355.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="111" x="1099.5" y="370.4818">search-view.php</text><!--MD5=[02bd34e17baac50bc5c1441661ff9f7b]
+entity compare.php--><polygon fill="#FEFECE" points="1256,345.5158,1256,384.5838,1366,384.5838,1366,355.5158,1356,345.5158,1256,345.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1356,345.5158 L1356,355.5158 L1366,355.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="90" x="1266" y="370.4818">compare.php</text><!--MD5=[a874c61f7fb941a6e886a3e456333b21]
+entity about.php--><polygon fill="#FEFECE" points="1401,345.5158,1401,384.5838,1491,384.5838,1491,355.5158,1481,345.5158,1401,345.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1481,345.5158 L1481,355.5158 L1491,355.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="1411" y="370.4818">about.php</text><!--MD5=[5e9d54d84fed9d0d6a500b000c994215]
+entity filters.php--><polygon fill="#FEFECE" points="1801,226.0158,1801,265.0838,1891,265.0838,1891,236.0158,1881,226.0158,1801,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1881,226.0158 L1881,236.0158 L1891,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="1811" y="250.9818">filters.php</text><!--MD5=[8925cb36e8502986fadf3a56a2646256]
+entity statistics.php--><polygon fill="#FEFECE" points="1926,226.0158,1926,265.0838,2036,265.0838,2036,236.0158,2026,226.0158,1926,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2026,226.0158 L2026,236.0158 L2036,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="90" x="1936" y="250.9818">statistics.php</text><!--MD5=[64966f609decf88174818a46022b7de2]
+entity search.php--><polygon fill="#FEFECE" points="2071,226.0158,2071,265.0838,2167,265.0838,2167,236.0158,2157,226.0158,2071,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2157,226.0158 L2157,236.0158 L2167,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="76" x="2081" y="250.9818">search.php</text><!--MD5=[0676b1e9820bd80afcebecebae33ae25]
+entity map.php--><polygon fill="#FEFECE" points="1801.5,345.5158,1801.5,384.5838,1882.5,384.5838,1882.5,355.5158,1872.5,345.5158,1801.5,345.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1872.5,345.5158 L1872.5,355.5158 L1882.5,355.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="61" x="1811.5" y="370.4818">map.php</text><!--MD5=[9ec4ec9b1a19dbe6508305ba8da14ae5]
+entity brand-map-data.php--><polygon fill="#FEFECE" points="1918,345.5158,1918,384.5838,2080,384.5838,2080,355.5158,2070,345.5158,1918,345.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2070,345.5158 L2070,355.5158 L2080,355.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="142" x="1928" y="370.4818">brand-map-data.php</text><!--MD5=[55df208d0c85a779dc64d319b756f44f]
+entity export.php--><polygon fill="#FEFECE" points="2115,345.5158,2115,384.5838,2209,384.5838,2209,355.5158,2199,345.5158,2115,345.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M2199,345.5158 L2199,355.5158 L2209,355.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="74" x="2125" y="370.4818">export.php</text><!--MD5=[240ac186d6ff6ec7d6a4ebe6c3327e19]
+entity brand-map.php\n(gol)--><polygon fill="#FEFECE" points="1801.5,462.5158,1801.5,520.6517,1928.5,520.6517,1928.5,472.5158,1918.5,462.5158,1801.5,462.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1918.5,462.5158 L1918.5,472.5158 L1928.5,472.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="107" x="1811.5" y="487.4818">brand-map.php</text><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="29" x="1811.5" y="506.5497">(gol)</text><!--MD5=[1e1e5372a1fb751e9f26cb0f0c962dc2]
+entity login.php--><polygon fill="#FEFECE" points="1528.5,226.0158,1528.5,265.0838,1613.5,265.0838,1613.5,236.0158,1603.5,226.0158,1528.5,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1603.5,226.0158 L1603.5,236.0158 L1613.5,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="65" x="1538.5" y="250.9818">login.php</text><!--MD5=[6a8d6614f1a075b51e867690baab6910]
+entity import.php--><polygon fill="#FEFECE" points="1649,226.0158,1649,265.0838,1745,265.0838,1745,236.0158,1735,226.0158,1649,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1735,226.0158 L1735,236.0158 L1745,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="76" x="1659" y="250.9818">import.php</text><!--MD5=[24c66ec0d1cda2e471a9f653ad826c78]
+entity settings.php--><polygon fill="#FEFECE" points="1526.5,345.5158,1526.5,384.5838,1631.5,384.5838,1631.5,355.5158,1621.5,345.5158,1526.5,345.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1621.5,345.5158 L1621.5,355.5158 L1631.5,355.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="85" x="1536.5" y="370.4818">settings.php</text><!--MD5=[1128c7435c58d436b2cb0e6fa3d59970]
+entity logs.php--><polygon fill="#FEFECE" points="1666.5,345.5158,1666.5,384.5838,1745.5,384.5838,1745.5,355.5158,1735.5,345.5158,1666.5,345.5158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1735.5,345.5158 L1735.5,355.5158 L1745.5,355.5158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="59" x="1676.5" y="370.4818">logs.php</text><!--MD5=[d0564d11c07b80c96fb8a9e246cc4b7a]
+entity css/--><polygon fill="#FEFECE" points="1837,598.5158,1883,598.5158,1890,619.5158,1893,619.5158,1893,659.6517,1837,659.6517,1837,598.5158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="1837" x2="1890" y1="619.5158" y2="619.5158"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="26" x="1847" y="641.4818">css/</text><!--MD5=[f2ed680441e46f036378b5604c2363ce]
+entity js/--><polygon fill="#FEFECE" points="1928,598.5158,1974,598.5158,1981,619.5158,1974,619.5158,1974,659.6517,1928,659.6517,1928,598.5158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="1928" x2="1981" y1="619.5158" y2="619.5158"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="16" x="1938" y="641.4818">js/</text><!--MD5=[7335774b9bada00c142d9563e5f629a5]
+entity data/--><polygon fill="#FEFECE" points="1837.5,719.5158,1883.5,719.5158,1890.5,740.5158,1902.5,740.5158,1902.5,780.6517,1837.5,780.6517,1837.5,719.5158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="1837.5" x2="1890.5" y1="740.5158" y2="740.5158"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="35" x="1847.5" y="762.4818">data/</text><!--MD5=[a072fba26ed72a449688c8b52e00010c]
+entity schema.sql--><polygon fill="#FEFECE" points="762,226.0158,762,265.0838,858,265.0838,858,236.0158,848,226.0158,762,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M848,226.0158 L848,236.0158 L858,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="76" x="772" y="250.9818">schema.sql</text><!--MD5=[d2fc4347bfc7af50100724e4d2bcaf7e]
+entity seed_counties.sql--><polygon fill="#FEFECE" points="893.5,226.0158,893.5,265.0838,1032.5,265.0838,1032.5,236.0158,1022.5,226.0158,893.5,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M1022.5,226.0158 L1022.5,236.0158 L1032.5,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="119" x="903.5" y="250.9818">seed_counties.sql</text><!--MD5=[36a778d15941b86484580d41f75ddec0]
+entity pax.db--><path d="M777,351.0158 C777,341.0158 810,341.0158 810,341.0158 C810,341.0158 843,341.0158 843,351.0158 L843,379.0838 C843,389.0838 810,389.0838 810,389.0838 C810,389.0838 777,389.0838 777,379.0838 L777,351.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><path d="M777,351.0158 C777,361.0158 810,361.0158 810,361.0158 C810,361.0158 843,361.0158 843,351.0158 " fill="none" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="787" y="379.9818">pax.db</text><!--MD5=[8c019c0d3e1d6a16554e41e488bd0f2a]
+entity csv/--><polygon fill="#FEFECE" points="650,215.0158,696,215.0158,703,236.0158,706,236.0158,706,276.1517,650,276.1517,650,215.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="650" x2="703" y1="236.0158" y2="236.0158"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="26" x="660" y="257.9818">csv/</text><!--MD5=[9775de9aabc009bc947d08a2c66de5b7]
+entity geojson/--><polygon fill="#FEFECE" points="527,215.0158,573,215.0158,580,236.0158,615,236.0158,615,276.1517,527,276.1517,527,215.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="527" x2="580" y1="236.0158" y2="236.0158"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="58" x="537" y="257.9818">geojson/</text><!--MD5=[c6544174100d70a1aa06ef4e633468e3]
+entity create_db.php--><polygon fill="#FEFECE" points="353.5,226.0158,353.5,265.0838,470.5,265.0838,470.5,236.0158,460.5,226.0158,353.5,226.0158" style="stroke: #000000; stroke-width: 1.5;"/><path d="M460.5,226.0158 L460.5,236.0158 L470.5,236.0158 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="97" x="363.5" y="250.9818">create_db.php</text><!--MD5=[910ce19e7d00f9aef5aea90678f4beb7]
+entity import/--><polygon fill="#FEFECE" points="238,215.0158,284,215.0158,291,236.0158,318,236.0158,318,276.1517,238,276.1517,238,215.0158" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="238" x2="291" y1="236.0158" y2="236.0158"/><text fill="#000000" font-family="Arial" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="50" x="248" y="257.9818">import/</text><!--MD5=[16b0a9af17fa241b21013b59b47c26ad]
+link Database.php to Response.php--><!--MD5=[2e7ecbfc0969de6500984a7d7baf62d9]
+link Database.php to Router.php\n(gol)--><!--MD5=[c49b8fefd53ffe5ce3a5369f68f36977]
+link validators.php to normalizers.php--><!--MD5=[ef91d4201967796fc710bf5df844158c]
+link validators.php to auth.php--><!--MD5=[7ebe08996e95f602b81100324c22f083]
+link FilterRepository.php to StatisticsRepository.php--><!--MD5=[fda1c8c623d1704394d5eb63a389f368]
+link StatisticsRepository.php to VehicleRepository.php--><!--MD5=[5a7061ff4bde78d5cc1040f984ccf0a3]
+link FilterRepository.php to MapRepository.php--><!--MD5=[14ac3c21981d1fdc284cd010b4a3b93a]
+link MapRepository.php to AdminRepository.php--><!--MD5=[95a64423000b20ca1ec05fc981d0462d]
+link AuthService.php to AdminService.php--><!--MD5=[bd84c0a76fdd37c0f9d64e6c5ded4ba6]
+link AdminService.php to ExportService.php--><!--MD5=[8962a1dbacd459445ec20f08e8c55ffe]
+link AuthService.php to VehicleService.php\n(gol)--><!--MD5=[11162c1fb2825356b104284e23b101eb]
+link VehicleService.php\n(gol) to StatisticsService.php\n(gol)--><!--MD5=[c5d9d63a4e65404d41cae4e2a375678a]
+link index.php to dashboard.php--><!--MD5=[f47d424e936c51b63420d46303dc2542]
+link dashboard.php to map-view.php--><!--MD5=[9e65692cbbeac15cd10ca6e0fd9f506d]
+link index.php to search-view.php--><!--MD5=[70b2e50b2e9ccf039b5e0387d441e1f6]
+link search-view.php to compare.php--><!--MD5=[70b2b7103145a9d8c35dcfb4deb8d569]
+link compare.php to about.php--><!--MD5=[eb7141e2fb81e58bb7ea5bfc726a7d30]
+link filters.php to statistics.php--><!--MD5=[f0418afd95ce03be1d30c43de436a8ae]
+link statistics.php to search.php--><!--MD5=[803a39247379bc07d0ba3ce64f30c0d0]
+link filters.php to map.php--><!--MD5=[01c68e6db6d01001ce4b2bea485df99a]
+link map.php to brand-map-data.php--><!--MD5=[2aee83f64d1ed7439227380bef5fa48c]
+link brand-map-data.php to export.php--><!--MD5=[501053e92e5b5784749cc835fb59676b]
+link map.php to brand-map.php\n(gol)--><!--MD5=[eb0ffc6d05c602ecc705fde9e4c1ab08]
+link login.php to import.php--><!--MD5=[59f9f35de582ae5901bd31ab49470c9f]
+link login.php to settings.php--><!--MD5=[3d782a523da1f33cb8d809d13a5778cb]
+link settings.php to logs.php--><!--MD5=[67b608eef3a59178bbf9e06979f0ec7e]
+link css/ to js/--><!--MD5=[7797794ab8d3f3110d09184e4f1b741e]
+link css/ to data/--><!--MD5=[c5346dcbd63bec995fc0b4d015b25969]
+link schema.sql to seed_counties.sql--><!--MD5=[d4682ede265294ccc5448c62a80992cf]
+link schema.sql to pax.db--><!--MD5=[6fcf6b88229ea72d3b69a37f0bae170f]
+link Response.php to validators.php--><!--MD5=[953e72d798253ffa321cb8b163385b5c]
+link Router.php\n(gol) to FilterRepository.php--><!--MD5=[06ee868156bdeeddd845e964ab0511d7]
+link VehicleRepository.php to AuthService.php--><!--MD5=[12e35a91a0c51a6cb176ebaf640eff40]
+link search.php to login.php--><!--MD5=[d2d00a3f65dd3dc651d38b699523c2d1]
+link brand-map.php\n(gol) to css/--><!--MD5=[40246c7489072725ba4cf5a0d59e9722]
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+title PAX - Structura aplicației
+
+folder "pax/" {
+  folder "app/" {
+    folder "config/" {
+      file "config.php"
+    }
+    folder "core/" {
+      file "Database.php"
+      file "Response.php"
+      file "Router.php\n(gol)"
+    }
+    folder "helpers/" {
+      file "validators.php"
+      file "normalizers.php"
+      file "auth.php"
+    }
+    folder "repositories/" {
+      file "FilterRepository.php"
+      file "StatisticsRepository.php"
+      file "VehicleRepository.php"
+      file "MapRepository.php"
+      file "AdminRepository.php"
+    }
+    folder "services/" {
+      file "AuthService.php"
+      file "AdminService.php"
+      file "ExportService.php"
+      file "VehicleService.php\n(gol)"
+      file "StatisticsService.php\n(gol)"
+    }
+  }
+  folder "public/" {
+    file "index.php"
+    file "dashboard.php"
+    file "map-view.php"
+    file "search-view.php"
+    file "compare.php"
+    file "about.php"
+    folder "api/" {
+      file "filters.php"
+      file "statistics.php"
+      file "search.php"
+      file "map.php"
+      file "brand-map-data.php"
+      file "export.php"
+      file "brand-map.php\n(gol)"
+    }
+    folder "admin/" {
+      file "login.php"
+      file "index.php"
+      file "import.php"
+      file "settings.php"
+      file "logs.php"
+    }
+    folder "assets/" {
+      folder "css/"
+      folder "js/"
+      folder "data/"
+    }
+  }
+  folder "db/" {
+    file "schema.sql"
+    file "seed_counties.sql"
+    database "pax.db"
+  }
+  folder "raw_data/" {
+    folder "csv/"
+    folder "geojson/"
+  }
+  folder "scripts/" {
+    file "create_db.php"
+    folder "import/"
+  }
+  folder "logs/"
+  folder "docs/"
+}
+
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 12:22:07 EET 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 21.0.10+7-LTS
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

@@ -1,0 +1,86 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+title PAX - Structura aplicației
+
+folder "pax/" {
+  folder "app/" {
+    folder "config/" {
+      file "config.php"
+    }
+    folder "core/" {
+      file "Database.php"
+      file "Response.php"
+      file "Router.php\n(gol)"
+    }
+    folder "helpers/" {
+      file "validators.php"
+      file "normalizers.php"
+      file "auth.php"
+    }
+    folder "repositories/" {
+      file "FilterRepository.php"
+      file "StatisticsRepository.php"
+      file "VehicleRepository.php"
+      file "MapRepository.php"
+      file "AdminRepository.php"
+    }
+    folder "services/" {
+      file "AuthService.php"
+      file "AdminService.php"
+      file "ExportService.php"
+      file "VehicleService.php\n(gol)"
+      file "StatisticsService.php\n(gol)"
+    }
+  }
+  folder "public/" {
+    file "index.php"
+    file "dashboard.php"
+    file "map-view.php"
+    file "search-view.php"
+    file "compare.php"
+    file "about.php"
+    folder "api/" {
+      file "filters.php"
+      file "statistics.php"
+      file "search.php"
+      file "map.php"
+      file "brand-map-data.php"
+      file "export.php"
+      file "brand-map.php\n(gol)"
+    }
+    folder "admin/" {
+      file "login.php"
+      file "index.php"
+      file "import.php"
+      file "settings.php"
+      file "logs.php"
+    }
+    folder "assets/" {
+      folder "css/"
+      folder "js/"
+      folder "data/"
+    }
+  }
+  folder "db/" {
+    file "schema.sql"
+    file "seed_counties.sql"
+    database "pax.db"
+  }
+  folder "raw_data/" {
+    folder "csv/"
+    folder "geojson/"
+  }
+  folder "scripts/" {
+    file "create_db.php"
+    folder "import/"
+  }
+  folder "logs/"
+  folder "docs/"
+}
+
+@enduml

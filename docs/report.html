@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PAX - Platformă web pentru analiza parcului auto din România</title>
+  <style>
+    :root {
+      --text: #1f2937;
+      --muted: #64748b;
+      --border: #d9e2ec;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --accent: #1d4ed8;
+      --accent-soft: #eff6ff;
+      --code-bg: #0f172a;
+      --code-text: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #eef2f7;
+      color: var(--text);
+      font: 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    article {
+      width: min(1120px, calc(100% - 32px));
+      margin: 32px auto;
+      padding: 48px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+    }
+
+    header[role="doc-pageheader"] {
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+    }
+
+    h1, h2, h3, h4 {
+      color: #0f172a;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: 2.35rem;
+      margin: 0 0 12px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 44px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 1.65rem;
+    }
+
+    h3 {
+      margin-top: 28px;
+      font-size: 1.22rem;
+    }
+
+    h4 {
+      margin: 20px 0 8px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    .subtitle,
+    .meta {
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 22px;
+      text-align: left;
+    }
+
+    .meta div,
+    .note,
+    .warning {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      border-radius: 10px;
+    }
+
+    .note {
+      border-left: 4px solid var(--accent);
+      margin: 16px 0;
+    }
+
+    .warning {
+      border-left: 4px solid #f59e0b;
+      background: #fffbeb;
+    }
+
+    nav[role="doc-toc"] {
+      padding: 20px;
+      background: var(--accent-soft);
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+    }
+
+    nav ol {
+      columns: 2;
+      padding-left: 24px;
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--surface-soft);
+      color: #0f172a;
+      text-align: left;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    pre {
+      margin: 16px 0 24px;
+      padding: 18px;
+      overflow-x: auto;
+      color: var(--code-text);
+      background: var(--code-bg);
+      border-radius: 12px;
+      line-height: 1.45;
+    }
+
+    pre code {
+      color: inherit;
+    }
+
+    figure {
+      margin: 24px 0 34px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    figure img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    details {
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-soft);
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 10px 12px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    details pre {
+      margin: 0;
+      border-radius: 0 0 10px 10px;
+    }
+
+    footer {
+      margin-top: 44px;
+      padding-top: 20px;
+      border-top: 2px solid var(--border);
+      color: var(--muted);
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    @media (max-width: 760px) {
+      article {
+        padding: 24px;
+      }
+
+      nav ol {
+        columns: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+<article typeof="schema:ScholarlyArticle">
+  <header role="doc-pageheader">
+    <h1>PAX - Platformă web pentru analiza parcului auto din România</h1>
+    <p class="subtitle">Raport în format Scholarly HTML pentru aplicația web PHP + SQLite PAX.</p>
+    <div class="meta">
+      <div><strong>Tip aplicație:</strong><br>aplicație web PHP + SQLite</div>
+      <div><strong>Perioadă date:</strong><br>2020-2024</div>
+      <div><strong>Tehnologii principale:</strong><br>PHP, SQLite, PDO, JavaScript, Chart.js, Leaflet, GeoJSON</div>
+      <div><strong>Scop:</strong><br>proiect academic de analiză și vizualizare date</div>
+      <div><strong>Autor/autori:</strong><br>nespecificat în fișierele inspectate</div>
+    </div>
+  </header>
+
+  <nav role="doc-toc" id="cuprins">
+    <h2>Cuprins</h2>
+    <ol>
+      <li><a href="#abstract">Rezumat / Abstract</a></li>
+      <li><a href="#introducere">Introducere</a></li>
+      <li><a href="#cerinte-functionale">Cerințe funcționale</a></li>
+      <li><a href="#cerinte-nefunctionale">Cerințe nefuncționale</a></li>
+      <li><a href="#arhitectura">Arhitectura aplicației</a></li>
+      <li><a href="#flux-date">Fluxul de date</a></li>
+      <li><a href="#structura">Structura aplicației</a></li>
+      <li><a href="#c4">C4 simplificat</a></li>
+      <li><a href="#model-date">Modelul de date</a></li>
+      <li><a href="#surse-date">Surse de date</a></li>
+      <li><a href="#procesare">Procesarea și normalizarea datelor</a></li>
+      <li><a href="#design-ui">Design UI</a></li>
+      <li><a href="#api">API</a></li>
+      <li><a href="#securitate">Securitate</a></li>
+      <li><a href="#testare">Testare</a></li>
+      <li><a href="#etape">Etapele de realizare a proiectului</a></li>
+      <li><a href="#limitari">Limitări și îmbunătățiri viitoare</a></li>
+      <li><a href="#concluzii">Concluzii</a></li>
+    </ol>
+  </nav>
+
+  <section id="abstract">
+    <h2>1. Rezumat / Abstract</h2>
+    <p>PAX este o platformă web pentru explorarea și interpretarea datelor despre parcul auto din România pentru perioada 2020-2024. Aplicația preia date brute din fișiere CSV, le normalizează într-o bază SQLite și le expune printr-un set de endpointuri PHP care returnează JSON sau CSV. Interfața publică permite utilizatorului să consulte un dashboard statistic, să filtreze datele, să vizualizeze distribuția geografică pe hartă, să caute înregistrări și să compare două selecții.</p>
+    <p>Problema principală abordată este dificultatea analizării directe a fișierelor CSV voluminoase. Prin transformarea datelor într-un model relațional, proiectul permite agregări eficiente pe ani, județe, combustibili, mărci, categorii și modele. Din punct de vedere tehnic, aplicația demonstrează o arhitectură simplă, dar coerentă: pagini PHP în directorul public, JavaScript asincron în frontend, endpointuri API, repository-uri pentru acces la date, conexiune PDO și persistență SQLite.</p>
+    <p>Proiectul are valoare academică deoarece combină procesarea datelor, normalizarea, proiectarea bazei de date, dezvoltarea API-urilor, proiectarea UI și documentarea. El nu este prezentat ca sistem de producție, ci ca aplicație completă pentru înțelegerea unui flux de analiză de date de la fișiere brute până la vizualizări interactive.</p>
+  </section>
+
+  <section id="introducere">
+    <h2>2. Introducere</h2>
+    <p>Analiza parcului auto este relevantă pentru înțelegerea evoluției mobilității, a distribuției teritoriale a vehiculelor și a preferințelor tehnice ale utilizatorilor. Datele despre vehicule pot indica schimbări în structura combustibililor, popularitatea mărcilor, concentrarea parcului auto în anumite județe și evoluția pe ani a unor categorii de vehicule.</p>
+    <p>Fișierele CSV sunt potrivite pentru distribuția datelor, dar nu sunt ideale pentru explorare interactivă. Un utilizator care dorește să compare județe, ani sau mărci trebuie să deschidă fișiere mari, să aplice manual filtre și să agregheze rezultate. PAX reduce această dificultate prin importul datelor într-o bază SQLite și prin expunerea unei interfețe care transformă interogările în vizualizări.</p>
+    <p>SQLite este adecvat pentru acest proiect deoarece permite stocare locală, nu necesită server de baze de date separat și se integrează direct cu PHP prin PDO. Vizualizările prin dashboard, hartă și tabel de căutare sunt utile deoarece fiecare răspunde unei întrebări diferite: dashboard-ul arată tendințe și distribuții, harta arată variația teritorială, iar căutarea oferă acces la date granular filtrate.</p>
+  </section>
+
+  <section id="cerinte-functionale">
+    <h2>3. Cerințe funcționale</h2>
+    <p>Cerințele funcționale descriu comportamentele concrete oferite de aplicație. În PAX, ele sunt implementate prin pagini PHP, fișiere JavaScript, endpointuri API și repository-uri SQL.</p>
+    <table>
+      <thead>
+        <tr><th>Cerință</th><th>Implementare</th><th>Valoare pentru proiect</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Utilizatorul poate accesa pagina principală</td><td>`public/index.php`, `public/assets/css/main.css`</td><td>Oferă punct de intrare, descrierea aplicației și navigație către module.</td></tr>
+        <tr><td>Utilizatorul poate vizualiza dashboard statistic</td><td>`public/dashboard.php`, `public/assets/js/dashboard.js`, `public/api/statistics.php`, `StatisticsRepository.php`</td><td>Transformă datele brute în indicatori, grafice și clasamente.</td></tr>
+        <tr><td>Utilizatorul poate filtra după an, județ, categorie, combustibil, marcă</td><td>`filters.php`, `FilterRepository.php`, `filters.js`, formularele din dashboard/search/map/compare</td><td>Permite analiză contextuală și reduce volumul de date afișat.</td></tr>
+        <tr><td>Utilizatorul poate consulta grafice</td><td>`charts.js`, Chart.js din CDN, `dashboard.js`, `compare.js`</td><td>Face ușor de interpretat distribuțiile și comparațiile numerice.</td></tr>
+        <tr><td>Utilizatorul poate vedea distribuția pe județe pe hartă</td><td>`map-view.php`, `map.js`, Leaflet, GeoJSON, `map.php`, `brand-map-data.php`</td><td>Adaugă o perspectivă spațială asupra parcului auto.</td></tr>
+        <tr><td>Utilizatorul poate selecta un județ pe hartă</td><td>`map.js` și elementele UI din `map-view.php`</td><td>Permite citirea detaliilor pentru județul ales, precum total și marcă predominantă.</td></tr>
+        <tr><td>Utilizatorul poate căuta în date</td><td>`search-view.php`, `search.js`, `search.php`, `VehicleRepository.php`</td><td>Permite explorarea granulară a înregistrărilor importate.</td></tr>
+        <tr><td>Utilizatorul poate sorta și pagina rezultatele</td><td>`validators.php`, `VehicleRepository::search`, `search.js`</td><td>Face posibilă navigarea prin rezultate mari fără încărcarea întregului set.</td></tr>
+        <tr><td>Utilizatorul poate compara două selecții</td><td>`compare.php`, `compare.js`, `search.php`</td><td>Permite analiza diferențelor între două contexte. Implementarea este parțială deoarece folosește primele 100 de rezultate din search.</td></tr>
+        <tr><td>Utilizatorul poate accesa pagina Despre</td><td>`public/about.php`</td><td>Documentează în interfață scopul și structura generală a proiectului.</td></tr>
+        <tr><td>Administratorul poate accesa modul admin</td><td>`public/admin/*.php`, `auth.php`, `AuthService.php`, `AdminService.php`</td><td>Permite monitorizarea locală a datelor, importurilor, setărilor și logurilor.</td></tr>
+        <tr><td>Aplicația expune endpointuri API JSON</td><td>`public/api/*.php`, `Response.php`</td><td>Separă datele de interfață și permite consum asincron.</td></tr>
+        <tr><td>Aplicația validează parametrii primiți</td><td>`validators.php`</td><td>Reduce erorile și previne valori nepermise pentru ani, paginare, sortare și view-uri.</td></tr>
+        <tr><td>Aplicația citește datele din SQLite</td><td>`Database.php`, repository-uri, `db/pax.db`</td><td>Oferă persistență locală și interogări relaționale.</td></tr>
+        <tr><td>Aplicația folosește GeoJSON pentru hartă</td><td>`public/assets/data/romania-counties.geojson`, `map.js`</td><td>Permite desenarea județelor și asocierea datelor agregate cu geometria.</td></tr>
+        <tr><td>Aplicația folosește Chart.js pentru grafice</td><td>`charts.js`, `dashboard.php`, `compare.php`</td><td>Susține vizualizări interactive și lizibile ale datelor statistice.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="cerinte-nefunctionale">
+    <h2>4. Cerințe nefuncționale</h2>
+    <p>Performanța este susținută prin agregări SQL, indexuri pe câmpuri folosite frecvent și paginare în endpointul de căutare. Aplicația nu încarcă toate datele în browser, ci cere doar rezultatele necesare prin API. Pentru hărți și dashboard, backend-ul întoarce date agregate, iar frontend-ul se ocupă de randare.</p>
+    <p>Organizarea codului urmărește separarea responsabilităților. `public/` expune paginile și endpointurile, `app/repositories/` conține interogări, `app/core/` conține infrastructura comună, iar `app/helpers/` conține validări și normalizări. Această separare face mai ușoară întreținerea și extinderea.</p>
+    <p>Securitatea de bază este acoperită prin PDO, prepared statements, validarea parametrilor, răspunsuri JSON uniforme și `debug` dezactivat în configurare. Portabilitatea locală este susținută de PHP built-in server și de SQLite. Interfața este lizibilă datorită cardurilor, tabelelor, contrastului ridicat și CSS-ului responsiv.</p>
+    <p>Extensibilitatea este prezentă la nivel de arhitectură: pot fi adăugate endpointuri noi, view-uri statistice noi sau servicii dedicate. Totuși, unele fișiere (`Router.php`, `VehicleService.php`, `StatisticsService.php`, `brand-map.php`) sunt goale și indică direcții nefinalizate.</p>
+  </section>
+
+  <section id="arhitectura">
+    <h2>5. Arhitectura aplicației</h2>
+    <p>Arhitectura PAX este o arhitectură web clasică, fără framework PHP. Browserul cere pagini PHP din `public/`, iar aceste pagini includ fișiere CSS și JavaScript. După încărcarea paginii, JavaScript-ul folosește `fetch` prin wrapperul `api.js` pentru a interoga endpointurile din `public/api/`. Endpointurile validează inputul, cer date repository-urilor, normalizează datele și trimit răspuns JSON prin `Response.php`.</p>
+    <p>Repository-urile sunt legate de `Database.php`, care creează o conexiune PDO către SQLite și activează cheile străine. Chart.js este responsabil pentru grafice, Leaflet pentru hartă, iar GeoJSON-ul județelor oferă geometria necesară reprezentării cartografice.</p>
+
+    <figure>
+      <img src="diagrams/architecture.svg" alt="Diagrama arhitecturii generale PAX">
+      <figcaption>Figura 1. Diagrama arhitecturii generale a aplicației PAX.</figcaption>
+      <details>
+        <summary>Cod PlantUML</summary>
+<pre><code class="language-plantuml">@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+skinparam ComponentBorderColor #334155
+skinparam ComponentBackgroundColor #EFF6FF
+skinparam DatabaseBackgroundColor #ECFDF5
+skinparam DatabaseBorderColor #166534
+title PAX - Arhitectura generală
+
+actor "Utilizator" as User
+
+node "Browser" as Browser {
+  component "Pagini publice PHP\nindex, dashboard, hartă,\ncăutare, comparații, despre" as Pages
+  component "JavaScript asincron\napi.js, filters.js,\ndashboard.js, map.js,\nsearch.js, compare.js" as JS
+  component "Chart.js\n(grafice)" as Chart
+  component "Leaflet\n(hartă)" as Leaflet
+}
+
+package "public/api" as API {
+  component "filters.php" as FiltersApi
+  component "statistics.php" as StatisticsApi
+  component "search.php" as SearchApi
+  component "map.php" as MapApi
+  component "brand-map-data.php" as BrandMapApi
+  component "export.php" as ExportApi
+}
+
+package "app" as App {
+  component "validators.php\nnormalizers.php" as Helpers
+  component "Response.php" as Response
+  component "Repository layer\nFilter, Statistics,\nVehicle, Map, Admin" as Repositories
+  component "Database.php\nPDO SQLite" as Database
+}
+
+database "SQLite\n db/pax.db" as SQLite
+file "GeoJSON județe\npublic/assets/data/romania-counties.geojson" as GeoJSON
+
+User --> Browser : navigare și interacțiuni
+Browser --> Pages : cereri HTTP pagini
+Pages --> JS : include scripturi
+JS --> API : fetch GET /api/*.php
+JS --> Chart : randare grafice
+JS --> Leaflet : randare hartă
+Leaflet --> GeoJSON : contururi județe
+API --> Helpers : validare / normalizare
+API --> Repositories : cereri date
+API --> Response : JSON standardizat
+Repositories --> Database : interogări
+Database --> SQLite : PDO
+API --> Browser : JSON / CSV
+
+@enduml</code></pre>
+      </details>
+    </figure>
+    <p>Diagrama a fost inclusă pentru a evidenția separarea dintre client, API, stratul de acces la date și baza SQLite. Ea ajută la înțelegerea traseului complet al unei acțiuni: utilizatorul interacționează cu UI-ul, JavaScript-ul cere date, API-ul validează și apelează repository-uri, iar rezultatul revine în browser ca JSON sau CSV. Componentele Chart.js, Leaflet și GeoJSON sunt reprezentate explicit deoarece sunt esențiale pentru experiența vizuală a aplicației.</p>
+  </section>
+
+  <section id="flux-date">
+    <h2>6. Fluxul de date</h2>
+    <p>Fluxul de date începe cu fișierele CSV din `raw_data/csv/`. Scriptul `scripts/import/import_csv_to_sqlite.php` citește fișierele, extrage anul din nume, aplică delimitatorul potrivit, verifică headerul, curăță valorile și creează lookup-uri. Datele valide ajung în `vehicle_records`, iar erorile sunt scrise în `logs/import_errors.log`.</p>
+    <p>În etapa de utilizare, pagina se încarcă inițial ca HTML. Apoi `filters.js` cere opțiuni de filtrare prin `filters.php`, iar modulele specifice cer date prin `statistics.php`, `map.php`, `brand-map-data.php` sau `search.php`. Pentru comparații, `compare.js` lansează două cereri către `search.php`, câte una pentru fiecare selecție.</p>
+
+    <figure>
+      <img src="diagrams/data-flow.svg" alt="Diagrama fluxului de date PAX">
+      <figcaption>Figura 2. Diagrama fluxului datelor de la CSV la interfața web.</figcaption>
+      <details>
+        <summary>Cod PlantUML</summary>
+<pre><code class="language-plantuml">@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+title PAX - Fluxul datelor
+
+actor "Utilizator" as User
+folder "raw_data/csv\n2020-2024" as CSV
+component "scripts/import/import_csv_to_sqlite.php" as Import
+component "Curățare și normalizare\njudețe, lookup-uri,\nvalidare numerică" as Normalize
+database "SQLite\n db/pax.db" as DB
+component "Repository-uri PHP" as Repo
+component "Endpointuri API JSON\nfilters/statistics/search/map" as API
+component "JavaScript frontend\nfetch + randare DOM" as JS
+component "UI PAX\nDashboard, Hartă,\nCăutare, Comparații" as UI
+file "GeoJSON județe" as GeoJSON
+folder "logs/import_errors.log" as Logs
+
+CSV --> Import : fișiere CSV brute
+Import --> Normalize : interpretare header,\ndelimitatori, câmpuri
+Normalize --> DB : inserare date normalizate
+Normalize --> Logs : rânduri respinse / erori
+DB --> Repo : date persistente
+Repo --> API : rezultate SQL
+API --> JS : JSON standardizat
+GeoJSON --> JS : geometrie județe
+JS --> UI : actualizare carduri,\ngrafice, hartă, tabele
+User --> UI : filtre, click, sortare,\npaginare, comparații
+UI --> JS : evenimente utilizator
+
+@enduml</code></pre>
+      </details>
+    </figure>
+    <p>Această diagramă evidențiază cele două faze ale proiectului: faza offline de import și faza online de explorare. Importul pregătește baza pentru interogări eficiente, iar frontend-ul folosește API-ul pentru a prezenta datele. Reprezentarea logurilor este importantă deoarece arată că rândurile invalide nu sunt ignorate fără urmă; ele sunt înregistrate pentru diagnosticare.</p>
+  </section>
+
+  <section id="structura">
+    <h2>7. Structura aplicației</h2>
+    <p>Structura folderelor urmărește separarea între codul intern și fișierele expuse public. `public/` este document root-ul serverului local, iar restul directoarelor conțin cod intern, date brute, schema bazei, scripturi sau documentație.</p>
+    <table>
+      <thead><tr><th>Folder</th><th>Rol</th></tr></thead>
+      <tbody>
+        <tr><td>`app/config`</td><td>Configurare globală: nume aplicație, căi, DB, ani, paginare, admin local.</td></tr>
+        <tr><td>`app/core`</td><td>Conexiune DB și răspunsuri JSON. `Router.php` există, dar este gol.</td></tr>
+        <tr><td>`app/helpers`</td><td>Validare parametri, normalizare UTF-8, funcții de autentificare admin.</td></tr>
+        <tr><td>`app/repositories`</td><td>Interogări SQL pentru filtre, statistici, căutare, hartă și admin.</td></tr>
+        <tr><td>`app/services`</td><td>Servicii admin, autentificare și export; două servicii sunt goale.</td></tr>
+        <tr><td>`public`</td><td>Pagini publice, API-uri, admin și resurse frontend.</td></tr>
+        <tr><td>`db`</td><td>Schema SQL, seed județe și baza SQLite generată.</td></tr>
+        <tr><td>`raw_data`</td><td>Fișiere CSV și GeoJSON brute.</td></tr>
+        <tr><td>`scripts`</td><td>Scripturi CLI pentru creare DB și import.</td></tr>
+        <tr><td>`logs`</td><td>Loguri de import.</td></tr>
+        <tr><td>`docs`</td><td>Raportul curent și diagramele PlantUML.</td></tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <img src="diagrams/application-structure.svg" alt="Diagrama structurii aplicației PAX">
+      <figcaption>Figura 3. Diagrama structurii aplicației PAX.</figcaption>
+      <details>
+        <summary>Cod PlantUML</summary>
+<pre><code class="language-plantuml">@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+title PAX - Structura aplicației
+
+folder "pax/" {
+  folder "app/" {
+    folder "config/" {
+      file "config.php"
+    }
+    folder "core/" {
+      file "Database.php"
+      file "Response.php"
+      file "Router.php\n(gol)"
+    }
+    folder "helpers/" {
+      file "validators.php"
+      file "normalizers.php"
+      file "auth.php"
+    }
+    folder "repositories/" {
+      file "FilterRepository.php"
+      file "StatisticsRepository.php"
+      file "VehicleRepository.php"
+      file "MapRepository.php"
+      file "AdminRepository.php"
+    }
+    folder "services/" {
+      file "AuthService.php"
+      file "AdminService.php"
+      file "ExportService.php"
+      file "VehicleService.php\n(gol)"
+      file "StatisticsService.php\n(gol)"
+    }
+  }
+  folder "public/" {
+    file "index.php"
+    file "dashboard.php"
+    file "map-view.php"
+    file "search-view.php"
+    file "compare.php"
+    file "about.php"
+    folder "api/" {
+      file "filters.php"
+      file "statistics.php"
+      file "search.php"
+      file "map.php"
+      file "brand-map-data.php"
+      file "export.php"
+      file "brand-map.php\n(gol)"
+    }
+    folder "admin/" {
+      file "login.php"
+      file "index.php"
+      file "import.php"
+      file "settings.php"
+      file "logs.php"
+    }
+    folder "assets/" {
+      folder "css/"
+      folder "js/"
+      folder "data/"
+    }
+  }
+  folder "db/" {
+    file "schema.sql"
+    file "seed_counties.sql"
+    database "pax.db"
+  }
+  folder "raw_data/" {
+    folder "csv/"
+    folder "geojson/"
+  }
+  folder "scripts/" {
+    file "create_db.php"
+    folder "import/"
+  }
+  folder "logs/"
+  folder "docs/"
+}
+
+@enduml</code></pre>
+      </details>
+    </figure>
+    <p>Diagrama ajută la înțelegerea organizării proiectului și justifică pornirea serverului cu `-t public`. Codul intern, scripturile și datele brute nu trebuie expuse direct. Structura facilitează mentenanța deoarece fiecare categorie de fișiere are o zonă clară.</p>
+  </section>
+
+  <section id="c4">
+    <h2>8. C4 simplificat</h2>
+    <p>Modelul C4 simplificat descrie sistemul prin actori și containere logice. Pentru PAX, containerele relevante sunt frontend-ul public, API-ul PHP, modulul admin și persistența SQLite. În afara sistemului apar bibliotecile vizuale și datele externe folosite pentru import sau hartă.</p>
+    <figure>
+      <img src="diagrams/c4-context.svg" alt="Diagrama C4 simplificată PAX">
+      <figcaption>Figura 4. Diagrama C4 simplificată pentru aplicația PAX.</figcaption>
+      <details>
+        <summary>Cod PlantUML</summary>
+<pre><code class="language-plantuml">@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+skinparam RectangleBorderColor #334155
+skinparam RectangleBackgroundColor #F8FAFC
+title PAX - C4 simplificat
+
+actor "Utilizator public" as PublicUser
+actor "Administrator" as AdminUser
+
+rectangle "PAX Web Application" as Pax {
+  rectangle "Container Frontend\nPagini PHP publice + JavaScript" as Frontend
+  rectangle "Container API\nEndpointuri PHP JSON/CSV" as ApiContainer
+  rectangle "Container Admin\nPagini admin + sesiune PHP" as AdminContainer
+  database "Container Persistență\nSQLite db/pax.db" as Persistence
+}
+
+rectangle "Biblioteci externe" as External {
+  component "Chart.js" as Chart
+  component "Leaflet" as Leaflet
+}
+
+file "GeoJSON județe" as GeoJSON
+folder "CSV 2020-2024" as RawData
+component "Script import CLI" as Import
+
+PublicUser --> Frontend : folosește interfața publică
+AdminUser --> AdminContainer : autentificare și monitorizare
+Frontend --> ApiContainer : cereri asincrone
+Frontend --> Chart : grafice
+Frontend --> Leaflet : hartă
+Frontend --> GeoJSON : contururi județe
+ApiContainer --> Persistence : citire date
+AdminContainer --> Persistence : rezumate admin/importuri
+RawData --> Import : surse CSV
+Import --> Persistence : populare și normalizare
+
+@enduml</code></pre>
+      </details>
+    </figure>
+    <p>Diagrama reprezintă un nivel apropiat de C4 Container. Este utilă deoarece separă sistemul în unități logice și clarifică cine interacționează cu fiecare componentă. Utilizatorul public nu accesează direct baza de date, ci interfața și API-ul; administratorul folosește paginile admin; scriptul de import acționează separat, ca proces CLI.</p>
+  </section>
+
+  <section id="model-date">
+    <h2>9. Modelul de date</h2>
+    <p>Modelul de date este definit în `db/schema.sql`. Tabela centrală este `vehicle_records`, care stochează faptele numerice: anul, județul, categoriile, marca, modelul, combustibilul și numărul de vehicule. Celelalte tabele sunt lookup-uri sau tabele de administrare/import.</p>
+    <figure>
+      <img src="diagrams/database-model.svg" alt="Diagrama modelului bazei de date PAX">
+      <figcaption>Figura 5. Diagrama modelului bazei de date PAX.</figcaption>
+      <details>
+        <summary>Cod PlantUML</summary>
+<pre><code class="language-plantuml">@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam linetype ortho
+skinparam ArrowColor #334155
+title PAX - Modelul bazei de date
+
+entity "counties" as counties {
+  * id : INTEGER &lt;&lt;PK&gt;&gt;
+  --
+  code : TEXT &lt;&lt;UNIQUE&gt;&gt;
+  name : TEXT &lt;&lt;UNIQUE&gt;&gt;
+}
+
+entity "vehicle_categories" as vehicle_categories {
+  * id : INTEGER &lt;&lt;PK&gt;&gt;
+  --
+  name : TEXT &lt;&lt;UNIQUE&gt;&gt;
+}
+
+entity "community_categories" as community_categories {
+  * id : INTEGER &lt;&lt;PK&gt;&gt;
+  --
+  name : TEXT &lt;&lt;UNIQUE&gt;&gt;
+}
+
+entity "fuel_types" as fuel_types {
+  * id : INTEGER &lt;&lt;PK&gt;&gt;
+  --
+  name : TEXT &lt;&lt;UNIQUE&gt;&gt;
+}
+
+entity "brands" as brands {
+  * id : INTEGER &lt;&lt;PK&gt;&gt;
+  --
+  name : TEXT &lt;&lt;UNIQUE&gt;&gt;
+}
+
+entity "import_batches" as import_batches {
+  * id : INTEGER &lt;&lt;PK&gt;&gt;
+  --
+  source_year : INTEGER
+  source_file : TEXT
+  imported_at : TEXT
+  rows_inserted : INTEGER
+  rows_rejected : INTEGER
+  notes : TEXT
+}
+
+entity "admins" as admins {
+  * id : INTEGER &lt;&lt;PK&gt;&gt;
+  --
+  username : TEXT &lt;&lt;UNIQUE&gt;&gt;
+  password_hash : TEXT
+  created_at : TEXT
+}
+
+entity "vehicle_records" as vehicle_records {
+  * id : INTEGER &lt;&lt;PK&gt;&gt;
+  --
+  year : INTEGER
+  county_id : INTEGER &lt;&lt;FK&gt;&gt;
+  national_category_id : INTEGER &lt;&lt;FK&gt;&gt;
+  community_category_id : INTEGER &lt;&lt;FK nullable&gt;&gt;
+  brand_id : INTEGER &lt;&lt;FK nullable&gt;&gt;
+  model_description : TEXT
+  fuel_type_id : INTEGER &lt;&lt;FK&gt;&gt;
+  vehicle_count : INTEGER
+  import_batch_id : INTEGER &lt;&lt;FK nullable&gt;&gt;
+}
+
+counties ||--o{ vehicle_records : county_id
+vehicle_categories ||--o{ vehicle_records : national_category_id
+community_categories ||--o{ vehicle_records : community_category_id
+brands ||--o{ vehicle_records : brand_id
+fuel_types ||--o{ vehicle_records : fuel_type_id
+import_batches ||--o{ vehicle_records : import_batch_id
+admins .. vehicle_records : separat în schema curentă
+
+@enduml</code></pre>
+      </details>
+    </figure>
+
+    <h3>9.1 Tabele</h3>
+    <table>
+      <thead><tr><th>Tabel</th><th>Rol și câmpuri importante</th><th>Relații</th></tr></thead>
+      <tbody>
+        <tr><td>`counties`</td><td>Județe și București: `id`, `code`, `name`.</td><td>Referit de `vehicle_records.county_id`.</td></tr>
+        <tr><td>`vehicle_categories`</td><td>Categorii naționale: `id`, `name`.</td><td>Referit de `national_category_id`.</td></tr>
+        <tr><td>`community_categories`</td><td>Categorii comunitare: `id`, `name`.</td><td>Referit opțional de `community_category_id`.</td></tr>
+        <tr><td>`fuel_types`</td><td>Tipuri de combustibil: `id`, `name`.</td><td>Referit de `fuel_type_id`.</td></tr>
+        <tr><td>`brands`</td><td>Mărci auto: `id`, `name`.</td><td>Referit opțional de `brand_id`.</td></tr>
+        <tr><td>`import_batches`</td><td>Runde de import: sursă, moment, inserări, respingeri.</td><td>Referit opțional de `import_batch_id`.</td></tr>
+        <tr><td>`admins`</td><td>Tabelă pentru administratori cu `password_hash`.</td><td>Separată; autentificarea curentă folosește config, nu tabela.</td></tr>
+        <tr><td>`vehicle_records`</td><td>Tabela centrală cu anul, dimensiunile și `vehicle_count`.</td><td>Leagă toate lookup-urile de datele numerice.</td></tr>
+      </tbody>
+    </table>
+    <p>`vehicle_records` este tabelul central deoarece toate analizele pornesc de la numărul de vehicule. Lookup-urile reduc duplicarea și permit filtrare consecventă. Indexurile `idx_vehicle_records_year`, `idx_vehicle_records_county`, `idx_vehicle_records_fuel`, `idx_vehicle_records_category`, `idx_vehicle_records_brand` și `idx_vehicle_records_year_county` susțin interogările frecvente din dashboard, hartă și căutare.</p>
+  </section>
+
+  <section id="surse-date">
+    <h2>10. Surse de date</h2>
+    <p>Pe baza structurii proiectului, aplicația folosește fișiere CSV locale din `raw_data/csv/`, câte unul pentru fiecare an între 2020 și 2024. Numele fișierelor indică date despre parcul auto pe combustibil: `parc_auto_2020_combustibil.csv`, `parc_auto_2021_combustibil.csv`, `parc_auto_2022_combustibil.csv`, `parc_auto_2023_combustibil.csv` și `parc_auto_2024_combustibil.csv`.</p>
+    <p>Scriptul de import arată că fișierele 2020-2023 folosesc delimitator `;`, iar fișierul 2024 folosește delimitator `,` și include o coloană `ID` în header. Această diferență este tratată explicit prin funcțiile `getExpectedHeaderForYear()` și `getDelimiterForYear()`.</p>
+    <p>Pentru hartă, proiectul include GeoJSON în `public/assets/data/romania-counties.geojson` și o copie brută în `raw_data/geojson/romania_counties.geojson`. Județele sunt inițializate prin `db/seed_counties.sql`, iar importurile sunt urmărite în `import_batches`. Există și `logs/import_errors.log`, folosit pentru erorile de import. Sursa oficială nominală a datelor CSV nu apare explicit în fișierele inspectate, deci raportul nu o atribuie unei instituții anume.</p>
+  </section>
+
+  <section id="procesare">
+    <h2>11. Procesarea și normalizarea datelor</h2>
+    <p>Normalizarea este necesară deoarece fișierele CSV conțin valori repetate: județe, categorii, combustibili și mărci. În loc să păstreze toate textele într-un tabel mare, aplicația creează tabele lookup și folosește ID-uri în `vehicle_records`. Acest model reduce duplicarea, păstrează consistența și permite agregări mai eficiente.</p>
+    <p>Scriptul `import_csv_to_sqlite.php` creează schema dacă este nevoie, populează județele dacă lipsesc, apoi parcurge fiecare CSV. Pentru fiecare rând se verifică numărul de coloane, se curăță câmpurile, se verifică obligația câmpurilor principale și numericitatea lui `TOTAL_VEHICULE`. Județele sunt convertite la uppercase și corectate pentru câteva variante: `CARAS SEVERIN`, `DIMBOVITA`, `VILCEA`.</p>
+    <p>Lookup-urile sunt create prin `getOrCreateLookupId()`, care acceptă doar tabele permise: `vehicle_categories`, `community_categories`, `fuel_types`, `brands`. Fiecare import creează un rând în `import_batches`, iar la final actualizează numărul de rânduri inserate și respinse. `normalizers.php` este folosit în API pentru a normaliza datele text înainte de JSON, protejând interfața de probleme de encoding.</p>
+  </section>
+
+  <section id="design-ui">
+    <h2>12. Design UI</h2>
+    <p>Interfața folosește un design întunecat, cu carduri, layouturi grid și zone vizuale bine separate. `main.css` definește tema globală: culori, tipografie, header, butoane, carduri, tabele și elemente comune. Fișierele specifice (`dashboard.css`, `map.css`, `search.css`, `compare.css`) adaugă stiluri dedicate fiecărui modul, iar `responsive.css` gestionează adaptarea pe ecrane mai mici.</p>
+    <p>Dashboard-ul folosește carduri pentru indicatorii numerici și containere pentru grafice. Harta folosește un spațiu principal pentru Leaflet și un panou lateral cu detalii despre județul selectat. Căutarea folosește formular de filtrare, status bar, tabel și controale de paginare. Comparațiile folosesc două seturi de filtre A/B, carduri pentru diferențe și tabele paralele.</p>
+    <p>Designul este potrivit pentru analiză de date deoarece pune accent pe claritate și scanare rapidă. Cardurile evidențiază indicatorii principali, tabelele oferă acces granular, iar graficele și harta convertesc volume mari de date în reprezentări vizuale ușor de interpretat. Feedback-ul vizual prin stări de loading, empty și error ajută utilizatorul să înțeleagă starea aplicației.</p>
+  </section>
+
+  <section id="api">
+    <h2>13. API</h2>
+    <p>API-ul aplicației este compus din endpointuri PHP în `public/api/`. Majoritatea folosesc metoda GET și răspund cu JSON standardizat. `export.php` este o excepție deoarece returnează CSV descărcabil pentru resursele implementate.</p>
+    <table>
+      <thead><tr><th>Endpoint</th><th>Scop</th><th>Parametri</th><th>Fișiere implicate</th></tr></thead>
+      <tbody>
+        <tr><td>`/api/filters.php`</td><td>Liste pentru filtre.</td><td>Nu necesită parametri.</td><td>`FilterRepository.php`, `normalizers.php`.</td></tr>
+        <tr><td>`/api/statistics.php`</td><td>Agregări pentru dashboard.</td><td>`view`, `year`, `county_code`, `national_category`, `community_category`, `fuel_type`, `brand`, `limit`.</td><td>`StatisticsRepository.php`, `validators.php`.</td></tr>
+        <tr><td>`/api/search.php`</td><td>Căutare, sortare, paginare.</td><td>`year`, `county_code`, `brand`, `model`, `page`, `limit`, `sort_by`, `sort_order` etc.</td><td>`VehicleRepository.php`, `validators.php`.</td></tr>
+        <tr><td>`/api/map.php`</td><td>Date agregate pe județ pentru hartă.</td><td>`year` obligatoriu, `fuel_type`, `national_category`.</td><td>`MapRepository.php`.</td></tr>
+        <tr><td>`/api/brand-map-data.php`</td><td>Date pentru componenta cartografică pe mărci.</td><td>`year` obligatoriu, `fuel_type`, `national_category`.</td><td>`MapRepository.php`.</td></tr>
+        <tr><td>`/api/export.php`</td><td>Export CSV.</td><td>`resource`, `format`, filtre specifice.</td><td>`ExportService.php`.</td></tr>
+        <tr><td>`/api/brand-map.php`</td><td>Neimplementat.</td><td>Fișier gol.</td><td>Nu trebuie considerat endpoint funcțional.</td></tr>
+      </tbody>
+    </table>
+    <h3>13.1 Exemple de apeluri</h3>
+<pre><code>http://localhost:8001/api/filters.php
+http://localhost:8001/api/statistics.php?view=overview&amp;year=2024
+http://localhost:8001/api/statistics.php?view=yearly-totals
+http://localhost:8001/api/statistics.php?view=top-brands&amp;year=2024&amp;limit=10
+http://localhost:8001/api/statistics.php?view=fuel-distribution&amp;year=2024
+http://localhost:8001/api/statistics.php?view=county-ranking&amp;year=2024
+http://localhost:8001/api/statistics.php?view=category-distribution&amp;year=2024
+http://localhost:8001/api/search.php?year=2024&amp;page=1&amp;limit=25&amp;sort_by=vehicle_count&amp;sort_order=desc
+http://localhost:8001/api/map.php?year=2024
+http://localhost:8001/api/brand-map-data.php?year=2024</code></pre>
+    <p>Răspunsurile de succes au forma `{"status":"success","data":...}`. Erorile au forma `{"status":"error","message":"..."}`. Posibilele erori includ an invalid, view invalid, limită în afara intervalului, sortare nepermisă sau indisponibilitatea bazei de date.</p>
+  </section>
+
+  <section id="securitate">
+    <h2>14. Securitate</h2>
+    <p>Aplicația folosește PDO pentru conectarea la SQLite și prepared statements în repository-uri. Această alegere reduce riscul de SQL injection pentru parametrii primiți de la utilizator. `validators.php` limitează anii la intervalul 2020-2024, limitează paginarea la maximum 100 de rezultate, validează pagina minimă, câmpurile de sortare și ordinea `asc`/`desc`.</p>
+    <p>`Response.php` standardizează răspunsurile JSON și permite endpointurilor să returneze erori uniforme. Endpointurile prind excepțiile și răspund cu mesaje generale, fără expunerea detaliilor interne. Configurarea are `debug => false`, ceea ce este potrivit pentru evitarea afișării detaliilor de eroare în interfață.</p>
+    <p>Modulul admin există și folosește sesiuni PHP. Autentificarea se face cu valori din `app/config/config.php`, comparate prin `hash_equals()`. Această soluție este acceptabilă doar pentru testare locală într-un proiect academic. În producție, credențialele nu ar trebui stocate hardcodat, iar tabela `admins` ar trebui folosită cu parole hash-uite și politici de securitate mai stricte.</p>
+    <p>Serverul trebuie pornit cu `php -S localhost:8001 -t public` pentru ca doar `public/` să fie expus. Fișierele din `app/`, `db/`, `raw_data/`, `scripts/`, `logs/` și `tests/` nu trebuie publicate direct. Fișierele de test aflate în afara `public/` sunt acceptabile local, dar trebuie evitate într-un deployment public.</p>
+  </section>
+
+  <section id="testare">
+    <h2>15. Testare</h2>
+    <p>Testarea proiectului poate fi realizată manual prin browser, prin `curl`, prin verificarea sintaxei PHP și prin interogări SQLite. Serverul local se pornește astfel:</p>
+<pre><code class="language-bash">php -S localhost:8001 -t public</code></pre>
+    <p>Testarea paginilor și resurselor statice:</p>
+<pre><code class="language-bash">curl -I http://localhost:8001/dashboard.php
+curl -I http://localhost:8001/assets/css/main.css
+curl -I http://localhost:8001/assets/js/api.js</code></pre>
+    <p>Rezultatul așteptat este `HTTP 200 OK`. Pentru API-uri:</p>
+<pre><code class="language-bash">curl "http://localhost:8001/api/filters.php"
+curl "http://localhost:8001/api/statistics.php?view=overview&amp;year=2024"</code></pre>
+    <p>Rezultatul așteptat este JSON cu `status` egal cu `success` pentru cereri valide și `error` pentru parametri invalizi. Verificarea sintaxei PHP:</p>
+<pre><code class="language-bash">find app public -name "*.php" -print0 | xargs -0 -n1 php -l</code></pre>
+    <p>Verificarea bazei SQLite:</p>
+<pre><code class="language-bash">sqlite3 db/pax.db ".tables"
+sqlite3 db/pax.db "select min(year), max(year), count(*) from vehicle_records;"
+sqlite3 db/pax.db ".schema vehicle_records"</code></pre>
+    <p>În browser, testarea trebuie să confirme încărcarea cardurilor și graficelor în dashboard, colorarea județelor pe hartă, selectarea județului, afișarea tabelului de căutare, funcționarea sortării și paginării, comparația A/B și accesul la modul admin local.</p>
+  </section>
+
+  <section id="etape">
+    <h2>16. Etapele de realizare a proiectului</h2>
+    <h3>16.1 Analiza cerințelor</h3>
+    <p>S-a urmărit definirea unei aplicații care să transforme date brute despre parcul auto într-o experiență web de analiză. Rezultatul acestei etape este împărțirea proiectului în module: dashboard, hartă, căutare, comparații, despre, admin și API.</p>
+    <h3>16.2 Analiza fișierelor CSV</h3>
+    <p>Au fost identificate fișiere pentru anii 2020-2024 și diferențe de format. Scriptul de import reflectă această analiză prin delimitatori diferiți și headere diferite pentru 2024.</p>
+    <h3>16.3 Proiectarea bazei de date</h3>
+    <p>`db/schema.sql` definește modelul relațional: lookup-uri pentru dimensiuni și `vehicle_records` ca tabel central. Această etapă a produs baza necesară pentru filtrare și agregare.</p>
+    <h3>16.4 Normalizarea datelor</h3>
+    <p>Normalizarea a urmărit reducerea duplicării și creșterea consistenței. Lookup-urile pentru categorii, combustibili și mărci sunt create la import.</p>
+    <h3>16.5 Crearea scriptului de import</h3>
+    <p>`scripts/import/import_csv_to_sqlite.php` citește CSV-uri, validează rânduri, creează batch-uri, inserează date și scrie erori în log. Această etapă conectează datele brute la baza SQLite.</p>
+    <h3>16.6 Implementarea conexiunii la baza de date</h3>
+    <p>`Database.php` centralizează conexiunea PDO, activează foreign keys și setează modurile de eroare/fetch. Fără acest strat, fiecare endpoint ar repeta logica de conectare.</p>
+    <h3>16.7 Implementarea repository-urilor</h3>
+    <p>Repository-urile separă interogările SQL de endpointuri. `FilterRepository`, `StatisticsRepository`, `VehicleRepository`, `MapRepository` și `AdminRepository` definesc accesul la date.</p>
+    <h3>16.8 Implementarea endpointurilor API</h3>
+    <p>Endpointurile din `public/api/` validează parametri și returnează JSON/CSV. Ele permit frontend-ului să lucreze asincron.</p>
+    <h3>16.9 Implementarea frontendului</h3>
+    <p>Paginile PHP din `public/` definesc structura HTML, iar fișierele JavaScript asigură interacțiunea cu API-urile. CSS-ul definește tema comună și componentele vizuale.</p>
+    <h3>16.10 Implementarea dashboardului</h3>
+    <p>`dashboard.php` și `dashboard.js` aduc împreună filtre, carduri, grafice și exporturi. Rezultatul este modulul principal de analiză statistică.</p>
+    <h3>16.11 Implementarea hărții</h3>
+    <p>`map-view.php` și `map.js` folosesc Leaflet și GeoJSON pentru explorare teritorială. Endpointurile `map.php` și `brand-map-data.php` oferă date agregate pe județe.</p>
+    <h3>16.12 Implementarea căutării</h3>
+    <p>`search-view.php` și `search.js` oferă filtrare, sortare și paginare. `VehicleRepository` susține această funcționalitate prin SQL dinamic controlat.</p>
+    <h3>16.13 Implementarea comparațiilor</h3>
+    <p>`compare.php` și `compare.js` compară două selecții A/B. Etapa este funcțională, dar parțială: comparația se bazează pe primele 100 de rânduri returnate de căutare.</p>
+    <h3>16.14 Implementarea modulului admin</h3>
+    <p>Modulul admin include autentificare locală, dashboard admin, importuri, setări și loguri. El este util pentru monitorizare, dar nu este un sistem complet de administrare de producție.</p>
+    <h3>16.15 Testare</h3>
+    <p>Testarea include verificări HTTP, API, sintaxă PHP și SQLite. Ea confirmă că fluxurile principale răspund corect.</p>
+    <h3>16.16 Curățare și documentare</h3>
+    <p>Această etapă clarifică structura, limitele și modul de rulare. Documentația este importantă pentru predarea și evaluarea proiectului.</p>
+    <h3>16.17 Pregătirea README-ului și a raportului</h3>
+    <p>README-ul descrie utilizarea proiectului, iar raportul Scholarly HTML oferă o analiză academică detaliată, inclusiv diagrame PlantUML.</p>
+  </section>
+
+  <section id="limitari">
+    <h2>17. Limitări și îmbunătățiri viitoare</h2>
+    <ul>
+      <li>`public/api/brand-map.php` există, dar este gol.</li>
+      <li>`app/core/Router.php`, `VehicleService.php` și `StatisticsService.php` sunt goale.</li>
+      <li>Exportul CSV pentru căutare este limitat la primele 100 de rezultate.</li>
+      <li>Comparațiile folosesc `search.php` cu `limit=100`; un endpoint agregat dedicat ar fi mai corect.</li>
+      <li>Nu există teste automate complete; pot fi adăugate teste API și teste de import.</li>
+      <li>Deployment-ul nu este documentat ca mediu de producție.</li>
+      <li>Autentificarea admin ar trebui mutată de la config hardcodat la parole hash-uite în DB sau secret management.</li>
+      <li>Pot fi adăugate capturi de ecran, documentație pentru sursa oficială a datelor și optimizări suplimentare.</li>
+      <li>Un router centralizat ar putea reduce accesul direct la fișiere și ar simplifica extinderea aplicației.</li>
+    </ul>
+  </section>
+
+  <section id="concluzii">
+    <h2>18. Concluzii</h2>
+    <p>PAX demonstrează un flux complet de procesare și vizualizare a datelor. Datele brute sunt importate din CSV, validate, normalizate și persistate într-un model relațional SQLite. Apoi sunt accesate prin repository-uri și endpointuri API care returnează JSON standardizat. Frontend-ul consumă asincron aceste date și le prezintă sub formă de carduri, grafice, hartă, tabele și comparații.</p>
+    <p>Proiectul arată cum poate fi construită o aplicație de analiză fără framework, folosind PHP simplu, PDO și SQLite, dar păstrând o separare rezonabilă a responsabilităților. Chart.js și Leaflet extind valoarea aplicației prin reprezentări vizuale relevante: grafice pentru tendințe și distribuții, respectiv hartă pentru variația teritorială.</p>
+    <p>Din perspectivă academică, proiectul este util deoarece include modelare de date, import, validare, API-uri, interfață asincronă, design UI, securitate de bază, testare și documentare. Limitările identificate sunt clare și pot ghida dezvoltări viitoare: export complet, comparații agregate, autentificare robustă, teste automate și pregătire pentru deployment.</p>
+  </section>
+
+  <footer>
+    <p>Raport pentru proiectul PAX</p>
+  </footer>
+</article>
+</body>
+</html>

@@ -1,0 +1,56 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+skinparam ComponentBorderColor #334155
+skinparam ComponentBackgroundColor #EFF6FF
+skinparam DatabaseBackgroundColor #ECFDF5
+skinparam DatabaseBorderColor #166534
+title PAX - Arhitectura generală
+
+actor "Utilizator" as User
+
+node "Browser" as Browser {
+  component "Pagini publice PHP\nindex, dashboard, hartă,\ncăutare, comparații, despre" as Pages
+  component "JavaScript asincron\napi.js, filters.js,\ndashboard.js, map.js,\nsearch.js, compare.js" as JS
+  component "Chart.js\n(grafice)" as Chart
+  component "Leaflet\n(hartă)" as Leaflet
+}
+
+package "public/api" as API {
+  component "filters.php" as FiltersApi
+  component "statistics.php" as StatisticsApi
+  component "search.php" as SearchApi
+  component "map.php" as MapApi
+  component "brand-map-data.php" as BrandMapApi
+  component "export.php" as ExportApi
+}
+
+package "app" as App {
+  component "validators.php\nnormalizers.php" as Helpers
+  component "Response.php" as Response
+  component "Repository layer\nFilter, Statistics,\nVehicle, Map, Admin" as Repositories
+  component "Database.php\nPDO SQLite" as Database
+}
+
+database "SQLite\n db/pax.db" as SQLite
+file "GeoJSON județe\npublic/assets/data/romania-counties.geojson" as GeoJSON
+
+User --> Browser : navigare și interacțiuni
+Browser --> Pages : cereri HTTP pagini
+Pages --> JS : include scripturi
+JS --> API : fetch GET /api/*.php
+JS --> Chart : randare grafice
+JS --> Leaflet : randare hartă
+Leaflet --> GeoJSON : contururi județe
+API --> Helpers : validare / normalizare
+API --> Repositories : cereri date
+API --> Response : JSON standardizat
+Repositories --> Database : interogări
+Database --> SQLite : PDO
+API --> Browser : JSON / CSV
+
+@enduml

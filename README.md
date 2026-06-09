@@ -360,24 +360,6 @@ Endpointul `public/api/brand-map.php` există ca fișier, dar este gol în versi
 
 ---
 
-## Capturi de ecran
-
-Nu există capturi de ecran sau imagini de documentație în proiectul inspectat. Directorul `docs/` există, dar nu conține capturi.
-
-> Capturile de ecran pot fi adăugate ulterior în `docs/screenshots/`.
-
-Sugestii de capturi utile:
-
-- pagina principală;
-- dashboard cu grafice încărcate;
-- hartă Leaflet cu județe colorate;
-- căutare cu tabel și paginare;
-- comparație A/B;
-- panoul admin.
-
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
-
----
 
 ## Tehnologii folosite
 
